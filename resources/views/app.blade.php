@@ -12,9 +12,9 @@
         <!-- Styles -->
 
         @viteReactRefresh
-        @vite('resources/js/main.tsx')
+        @vite(['resources/css/bootstrap.min.css', 'resources/js/main.tsx'])
     </head>
-    <body>
-        <div id="app"></div>
+    <body class="trendy-layout">
+        <div id="app" class="wrapper"></div>
     </body>
 </html>
