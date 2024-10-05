@@ -4,13 +4,19 @@ import '../../css/app/kaiadmin.min.css'
 
 import Sidebar from "../components/Sidebar"
 import Header from "../components/Header"
+import Footer from "../components/Footer"
 
 export default function Layout() {
     return (
         <>            
             <Sidebar />
-            <Header />
-            <Outlet />            
+            <div className="main-panel">
+                <Header />
+                <div className="container">
+                    <Outlet />  
+                </div>
+                <Footer />  
+            </div>        
         </>
     )
 }
