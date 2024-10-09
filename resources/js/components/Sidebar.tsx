@@ -1,6 +1,122 @@
+import { MouseEvent, useEffect, useState } from 'react'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
+
+import { useSidebarStore } from '../store/sidebar'
+
+library.add(fas, far)
+
 export default function Sidebar() {
+
+	const {claseMinimize, minimize, firstToggle, setMinimize, setFirstToggle, addClaseMinimize, removeClaseMinimize} = useSidebarStore();
+
+	const [classToggle, setClassToggle] = useState<string>('btn btn-toggle toggle-sidebar');
+
+	const [iconToggle, setIconToggle] = useState<String>('gg-menu-right');
+
+	const [sideNavToggler, setSideNavToggler] = useState({
+		clase:'sidenav-toggler',
+		open:false,
+	});
+
+	const [topBarToggler, setTopBarToggler] = useState({
+		clase:'topbar-toggler more',
+		open:false,
+	});
+
+	useEffect(() => {
+		//setSideNavToggler({...sideNavToggler, open:true})
+
+		if (claseMinimize.split(' ').includes('sidebar_minimize')) {
+			setMinimize(1);
+		}
+		
+		setFirstToggle(true);
+	}, [claseMinimize]);
+
+	const addClase = (clases: string[], clase: string, indice: number = -1): string => {
+		indice > 0 ? clases[indice] = clase : clases.push(clase);
+
+		return clases.join(' ');
+	}
+
+	const removeClase = (clases: string[], clase: string): string => {
+		const resultado = clases.filter($clase => $clase !== clase)
+
+		return resultado.join(' ')
+	}
+
+	const handlerMouseEnter = (e: MouseEvent<HTMLElement>) => {	
+		if (minimize == 1 && !firstToggle) {
+			addClaseMinimize('sidebar_minimize_hover');						
+			setFirstToggle(true);		
+		} else {
+			removeClaseMinimize('sidebar_minimize_hover');						
+		}
+	}
+
+	const handlerMouseLeave = (e: MouseEvent<HTMLElement>) => {
+		if (minimize == 1 && firstToggle) {
+			removeClaseMinimize('sidebar_minimize_hover');	
+			setFirstToggle(false);		
+		}
+	}
+
+	const clickSideNavToggler = (e: MouseEvent<HTMLButtonElement>) => {
+		if (sideNavToggler.open) {
+			document.getElementsByTagName('html')[0].classList.remove('nav_open');
+			setSideNavToggler({
+				clase:removeClase(sideNavToggler.clase.split(' '), 'toggled'),
+				open:false
+			});
+		} else {
+			document.getElementsByTagName('html')[0].classList.add('nav_open');
+			setSideNavToggler({
+				clase:addClase(sideNavToggler.clase.split(' '), 'toggled'),
+				open:true
+			});
+		}
+	}
+
+	const clickToggleSidebar = (e: MouseEvent<HTMLButtonElement>) => {
+		let $claseToggle = classToggle;
+
+		if (minimize === 1) {
+			$claseToggle = removeClase(classToggle.split(' '), 'toggled');
+			removeClaseMinimize('sidebar_minimize');
+			setIconToggle('gg-menu-right');	
+			setMinimize(0);
+		} else {
+			$claseToggle = addClase(classToggle.split(' '), 'toggled', 3);
+			addClaseMinimize('sidebar_minimize');
+			setIconToggle('gg-more-vertical-alt');
+			setMinimize(1);
+		}
+		
+		setClassToggle($claseToggle);
+	}
+
+	const clickTopBar = (e: MouseEvent<HTMLButtonElement>) => {
+		if (topBarToggler.clase) {
+			document.getElementsByTagName('html')[0].classList.remove('topbar_open');
+			setTopBarToggler({
+				clase:removeClase(topBarToggler.clase.split(' '), 'toggled'),
+				open:false
+			});
+		} else {
+			document.getElementsByTagName('html')[0].classList.add('topbar_open');
+			setTopBarToggler({
+				clase:addClase(topBarToggler.clase.split(' '), 'toggled'),
+				open:true
+			});
+		}
+	}
+
     return (
-		<div className="sidebar sidebar-style-2">
+		<div className="sidebar sidebar-style-2" onMouseEnter={handlerMouseEnter} onMouseLeave={handlerMouseLeave}>
 			<div className="sidebar-logo">				
 				<div className="logo-header" data-background-color="blue">
 
@@ -8,15 +124,15 @@ export default function Sidebar() {
 						<img src="assets/img/kaiadmin/logo_light.svg" alt="navbar brand" className="navbar-brand" height="20" />
 					</a>
 					<div className="nav-toggle">
-						<button className="btn btn-toggle toggle-sidebar">
-							<i className="gg-menu-right"></i>
+						<button className={classToggle} onClick={clickToggleSidebar}>
+							<i className={iconToggle}></i>
 						</button>
-						<button className="btn btn-toggle sidenav-toggler">
-							<i className="gg-menu-left"></i>
+						<button className={`btn btn-toggle ${sideNavToggler.clase}`} onClick={clickSideNavToggler}>
+							<i className="gg-menu-left"></i><strong>sidenav-toggler...</strong>
 						</button>
 					</div>
-					<button className="topbar-toggler more">
-						<i className="gg-more-vertical-alt"></i>
+					<button className={topBarToggler.clase} onClick={clickTopBar}>
+						<i className="gg-more-vertical-alt"></i><strong>topbar-toggler...</strong>
 					</button>
 				</div>				
 			</div>	
@@ -60,7 +176,7 @@ export default function Sidebar() {
 					<ul className="nav nav-primary mt-2">
 						<li className="nav-item active">
 							<a data-bs-toggle="collapse" href="#dashboard" className="collapsed" aria-expanded="false">
-								<i className="fas fa-home"></i>
+								<FontAwesomeIcon icon="fas fa-home" />
 								<p>Dashboard</p>
 								<span className="caret"></span>
 							</a>
@@ -116,33 +232,33 @@ export default function Sidebar() {
 						</li>
 						<li className="nav-section">
 							<span className="sidebar-mini-icon">
-								<i className="fa fa-ellipsis-h"></i>
+								<FontAwesomeIcon icon="fa fa-ellipsis-h" />
 							</span>
-							<h4 className="text-section">Components</h4>
+							<h4 className="text-section">Módulos</h4>
 						</li>
 						<li className="nav-item">
-							<a href="calendar.html">
-								<i className="far fa-calendar-alt"></i>
+							<a href="calendar.html">							
+								<FontAwesomeIcon icon="far fa-calendar-alt" />
 								<p>Calendar</p>
 								<span className="badge badge-info">1</span>
 							</a>
 						</li>
 						<li className="nav-item">
 							<a href="widgets.html">
-								<i className="fas fa-desktop"></i>
+								<FontAwesomeIcon icon="fas fa-desktop" />
 								<p>Widgets</p>
 								<span className="badge badge-success">4</span>
 							</a>
 						</li>
 						<li className="nav-section">
 							<span className="sidebar-mini-icon">
-								<i className="fa fa-ellipsis-h"></i>
+								<FontAwesomeIcon icon="fa fa-ellipsis-h" />
 							</span>
 							<h4 className="text-section">Snippets</h4>
 						</li>
 						<li className="nav-item">
 							<a data-bs-toggle="collapse" href="#email-nav">
-								<i className="far fa-envelope"></i>
+								<FontAwesomeIcon icon="far fa-envelope" />
 								<p>Email</p>
 								<span className="caret"></span>
 							</a>
@@ -168,7 +284,7 @@ export default function Sidebar() {
 						</li>
 						<li className="nav-item">
 							<a data-bs-toggle="collapse" href="#messages-app-nav">
-								<i className="far fa-paper-plane"></i>
+								<FontAwesomeIcon icon="far fa-paper-plane" />
 								<p>Messages App</p>
 								<span className="caret"></span>
 							</a>
@@ -189,14 +305,14 @@ export default function Sidebar() {
 						</li>
 						<li className="nav-item">
 							<a href="invoice.html">
-								<i className="fas fa-file-invoice-dollar"></i>
+								<FontAwesomeIcon icon="fas fa-file-invoice-dollar" />
 								<p>Invoices</p>
 								<span className="badge badge-count">6</span>
 							</a>
 						</li>
 						<li className="nav-item">
 							<a href="404.html">
-								<i className="fas fa-paint-roller"></i>
+								<FontAwesomeIcon icon="fas fa-paint-roller" />
 								<p>404</p>
 								<span className="badge badge-count">6</span>
 							</a>

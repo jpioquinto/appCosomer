@@ -15,6 +15,6 @@
         @vite(['resources/css/bootstrap.min.css', 'resources/css/app/plugins.min.css', 'resources/css/app/kaiadmin.min.css', 'resources/js/main.tsx'])
     </head>
     <body class="trendy-layout">
-        <div id="app" class="wrapper"></div>
+        <div id="app"></div>
     </body>
 </html>

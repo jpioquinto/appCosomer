@@ -1,14 +1,18 @@
 import { Outlet } from "react-router-dom"
-import '../../css/app/plugins.min.css'
-import '../../css/app/kaiadmin.min.css'
+
 
 import Sidebar from "../components/Sidebar"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 
+import { useSidebarStore } from '../store/sidebar'
+
 export default function Layout() {
+
+    const {claseMinimize} = useSidebarStore();
+
     return (
-        <>            
+        <div className={claseMinimize}>            
             <Sidebar />
             <div className="main-panel">
                 <Header />
@@ -17,6 +21,6 @@ export default function Layout() {
                 </div>
                 <Footer />  
             </div>        
-        </>
+        </div>
     )
 }

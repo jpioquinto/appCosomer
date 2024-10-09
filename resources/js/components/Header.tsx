@@ -1,3 +1,10 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
+
+library.add(fas, far)
+
 export default function Header() {
     return (
         <div className="main-header">
@@ -30,7 +37,7 @@ export default function Header() {
                         <div className="input-group">
                             <div className="input-group-prepend">
                                 <button type="submit" className="btn btn-search pe-1">
-                                    <i className="fa fa-search search-icon"></i>
+                                    <FontAwesomeIcon icon="fa-solid fa-search search-icon" />
                                 </button>
                             </div>
                             <input type="text" placeholder="Search ..." className="form-control" />
@@ -52,7 +59,7 @@ export default function Header() {
                         </li>
                         <li className="nav-item topbar-icon dropdown hidden-caret">
                             <a className="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i className="fa fa-envelope"></i>
+                                <FontAwesomeIcon icon="fa fa-envelope" />
                             </a>
                             <ul className="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="messageDropdown">
                                 <li>
@@ -116,13 +123,13 @@ export default function Header() {
                                     </div>
                                 </li>
                                 <li>
-                                    <a className="see-all" href="javascript:void(0);">See all messages<i className="fa fa-angle-right"></i> </a>
+                                    <a className="see-all" href="#">See all messages<i className="fa fa-angle-right"></i> </a>
                                 </li>
                             </ul>
                         </li>
                         <li className="nav-item topbar-icon dropdown hidden-caret">
                             <a className="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i className="fa fa-bell"></i>
+                                <FontAwesomeIcon icon="fa fa-bell" />
                                 <span className="notification">4</span>
                             </a>
                             <ul className="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
@@ -174,13 +181,13 @@ export default function Header() {
                                     </div>
                                 </li>
                                 <li>
-                                    <a className="see-all" href="javascript:void(0);">See all notifications<i className="fa fa-angle-right"></i> </a>
+                                    <a className="see-all" href="#">See all notifications<i className="fa fa-angle-right"></i> </a>
                                 </li>
                             </ul>
                         </li>
                         <li className="nav-item topbar-icon dropdown hidden-caret">
                             <a className="nav-link" data-bs-toggle="dropdown" href="#" aria-expanded="false">
-                                <i className="fas fa-layer-group"></i>
+                                <FontAwesomeIcon icon="fas fa-layer-group" />
                             </a>
                             <div className="dropdown-menu quick-actions animated fadeIn">
                                 <div className="quick-actions-header">
@@ -193,7 +200,7 @@ export default function Header() {
                                             <a className="col-6 col-md-4 p-0" href="#">
                                                 <div className="quick-actions-item">
                                                     <div className="avatar-item bg-danger rounded-circle">
-                                                        <i className="far fa-calendar-alt"></i>
+                                                        <FontAwesomeIcon icon="far fa-calendar-alt" />
                                                     </div>
                                                     <span className="text">Calendar</span>
                                                 </div>
@@ -201,7 +208,7 @@ export default function Header() {
                                             <a className="col-6 col-md-4 p-0" href="#">
                                                 <div className="quick-actions-item">
                                                     <div className="avatar-item bg-warning rounded-circle">
-                                                        <i className="fas fa-map"></i>
+                                                        <FontAwesomeIcon icon="fas fa-map" />
                                                     </div>
                                                     <span className="text">Maps</span>
                                                 </div>
@@ -209,7 +216,7 @@ export default function Header() {
                                             <a className="col-6 col-md-4 p-0" href="#">
                                                 <div className="quick-actions-item">
                                                     <div className="avatar-item bg-info rounded-circle">
-                                                        <i className="fas fa-file-excel"></i>
+                                                        <FontAwesomeIcon icon="fas fa-file-excel" />
                                                     </div>
                                                     <span className="text">Reports</span>
                                                 </div>
@@ -217,7 +224,7 @@ export default function Header() {
                                             <a className="col-6 col-md-4 p-0" href="#">
                                                 <div className="quick-actions-item">
                                                     <div className="avatar-item bg-success rounded-circle">
-                                                        <i className="fas fa-envelope"></i>
+                                                        <FontAwesomeIcon icon="fas fa-envelope" />
                                                     </div>
                                                     <span className="text">Emails</span>
                                                 </div>
@@ -225,7 +232,7 @@ export default function Header() {
                                             <a className="col-6 col-md-4 p-0" href="#">
                                                 <div className="quick-actions-item">
                                                     <div className="avatar-item bg-primary rounded-circle">
-                                                        <i className="fas fa-file-invoice-dollar"></i>
+                                                        <FontAwesomeIcon icon="fas fa-file-invoice-dollar" />
                                                     </div>
                                                     <span className="text">Invoice</span>
                                                 </div>
@@ -233,7 +240,7 @@ export default function Header() {
                                             <a className="col-6 col-md-4 p-0" href="#">
                                                 <div className="quick-actions-item">
                                                     <div className="avatar-item bg-secondary rounded-circle">
-                                                        <i className="fas fa-credit-card"></i>
+                                                        <FontAwesomeIcon icon="fas fa-credit-card" />
                                                     </div>
                                                     <span className="text">Payments</span>
                                                 </div>
