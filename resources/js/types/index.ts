@@ -3,3 +3,8 @@ export type Sidebar = {
     firstToggle:boolean
     claseMinimize:string
 }
+
+export type Auth = {
+    isAuthenticated:boolean
+    token:string
+}

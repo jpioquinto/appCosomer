@@ -1,0 +1,33 @@
+.loader-overlay {
+    -moz-opacity: 1;
+    -moz-perspective: 10000;
+    -moz-perspective: 10000px;
+    -moz-transition: all 800ms ease-in-out;
+    -o-transition: all 800ms ease-in-out;
+    -webkit-opacity: 1;
+    -webkit-perspective: 10000;
+    -webkit-perspective: 10000px;
+    -webkit-transition: all 800ms ease-in-out;
+    background: rgba(45, 46, 47, 0.8);
+    bottom: 0;
+    filter: alpha(opacity = 100);
+    left: 0;
+    opacity: 1;
+    overflow: hidden;
+    perspective: 10000px;
+    perspective: 10000px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    transition: all 800ms ease-in-out;
+    z-index: 10000;
+    zoom: 1;
+}
+.loader-overlay.loaded {
+    -moz-opacity: 0;
+    -webkit-opacity: 0;
+    filter: alpha(opacity = 0);
+    opacity: 0;
+    visibility: hidden;
+    zoom: 1;
+}
