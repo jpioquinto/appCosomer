@@ -1,29 +1,37 @@
 import { create } from 'zustand'
+import { addClase, removeClase } from '../utils'
+
+type LoadingProps = {
+        clase:string        
+        isLoading:boolean  
+            
+}
 
 type LoadingState = {
-    clase:string
-    isLoading:boolean
-    hidden:() => void
-    show:() => void
+    load:LoadingProps
+    loadHidden:() => void
+    loadShow:() => void
     setIsLoading:(loading:boolean) => void
 }
 
-const useLoadingStore = create<LoadingState>(set => ({
-    clase:'loader-overlay loaded',
-    isLoading:false,
-    hidden: () => {
+export const useLoadingStore = create<LoadingState>(set => ({
+    load:{
+        clase:'loader-overlay loaded',
+        isLoading:false
+    },
+    loadHidden: () => {
         set(state => ({
-            clase:addClase(state.clase.split(' '), 'loaded')
+            load:{...state.load, clase: addClase(state.load.clase.split(' '), 'loaded')}
         }))
     },
-    show: () => {
+    loadShow: () => {
         set(state => ({
-            clase:removeClase(state.clase.split(' '), 'loaded')
+            load:{...state.load, clase: removeClase(state.load.clase.split(' '), 'loaded')}            
         }))
     },
     setIsLoading: loading => {
         set(state => ({
-            isLoading:loading
+            load:{...state.load, isLoading: loading}    
         }))
     }
 }))

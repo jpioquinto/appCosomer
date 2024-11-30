@@ -2,7 +2,8 @@ import {useState, ChangeEvent, FormEvent} from 'react'
 import { useNavigate } from "react-router-dom"
 import { ToastContainer, toast } from 'react-toastify'
 import { useAuthStore } from '../store/auth'
-import Spinner from './Spinner'
+import { useLoadingStore } from '../store/loading'
+import Loading from './Loading'
 import 'react-toastify/dist/ReactToastify.css'
 import './../../css/app/plugins.min.css'
 import './../../css/app/kaiadmin.min.css'
@@ -24,12 +25,14 @@ export default function Login() {
 
     const [credenciales, setCredenciales] = useState(initialState)
 
-    const {setToken, setAuthenticated} = useAuthStore();
+    const {setIsLoading, loadShow, loadHidden} = useLoadingStore()
+
+    const {setToken, setAuthenticated} = useAuthStore()
 
     const navigate = useNavigate();
 
     const handleErrorsLogin = error => {
-        console.log(error);
+        loadHidden();
         toast.error(error.response.data.message, {
             position:"bottom-right",
             theme:"colored"
@@ -40,6 +43,8 @@ export default function Login() {
         axios.defaults.headers.common['Authorization'] = 'Bearer '+ response.data.token;
         setToken(response.data.token);
         setAuthenticated(true);
+        loadHidden();
+        
         toast.success(`Bienvenido ${response.data.user.username}`, {
             position:"bottom-right",
             theme:"colored"
@@ -47,7 +52,7 @@ export default function Login() {
         /*localStorage.setItem('access_token', response.data.access_token);
         config.asignarToken({token:response.data.access_token, nickname: response.data.user.nickname, acciones:response.data.user.acciones});*/
 
-        setTimeout(() => {
+        setTimeout(() => {            
             navigate('/inicio');               
         },1200);
     };
@@ -59,6 +64,9 @@ export default function Login() {
             toast.error('Todos los campos son obligatorios.');
             return;
         }
+
+        setIsLoading(true);
+        loadShow();
 
         axios.get('/sanctum/csrf-cookie').then(response => {
             axios.post('api/login', credenciales)
@@ -144,9 +152,7 @@ export default function Login() {
                 </div>
             </div>
             <ToastContainer />
-            <div className="loader-overlay loaded1">
-                <Spinner />
-            </div>
+            <Loading texto={`Solicitando acceso, espere un momento.`}/>
         </div>
     )
 }

@@ -5,7 +5,7 @@ import "../../css/spinner.css"
 export default function Spinner({texto, omitCancel}) {
     return (
         <div className="spinner">
-            {texto ? texto : (<h5>Cargando, espere un momento...</h5>)}
+            {texto ? (<h5>{texto}</h5>) : (<h5>Cargando, espere un momento...</h5>)}
             <div className="bounce1"></div>
             <div className="bounce2"></div>
             <div className="bounce3"></div><br />

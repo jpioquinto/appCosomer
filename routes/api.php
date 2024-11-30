@@ -10,5 +10,5 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])->group(function () {
-
+    Route::post('/permisos', [\App\Http\Controllers\API\PermisoController::class, 'index']);    
 });
