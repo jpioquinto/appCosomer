@@ -5,8 +5,12 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 
-import { useSidebarStore } from '../store/sidebar'
 import { useSidebar } from '../hooks/useSidebar'
+import { useNavBarStore } from '../store/navbar'
+
+import type { item } from '../types'// quitar
+
+import Nav from './navbar/Nav'
 
 library.add(fas, far)
 
@@ -14,6 +18,11 @@ export default function Sidebar() {
 
 	const {classToggle, iconToggle, sideNavToggler, topBarToggler, handlerMouseEnter, handlerMouseLeave, clickSideNavToggler, clickToggleSidebar, clickTopBar} = useSidebar();
 	
+	const {menu} = useNavBarStore();
+
+	/*useEffect(()=> {
+		items.map(($item:item) => setLoaded($item))
+	},[items])*/
 
     return (
 		<div className="sidebar sidebar-style-2" onMouseEnter={handlerMouseEnter} onMouseLeave={handlerMouseLeave}>
@@ -73,11 +82,16 @@ export default function Sidebar() {
 							</div>
 						</div>
 					</div>
+					<Nav 
+						menu={menu}
+						clase={'nav nav-primary mt-2'}
+						key={0}
+					/>
 					<ul className="nav nav-primary mt-2">
 						<li className="nav-item active">
 							<a data-bs-toggle="collapse" href="#dashboard" className="collapsed" aria-expanded="false">
 								<FontAwesomeIcon icon="fas fa-home" />
-								<p>Dashboard</p>
+								<p className="pt-1">Dashboard</p>
 								<span className="caret"></span>
 							</a>
 							<div className="collapse" id="dashboard">

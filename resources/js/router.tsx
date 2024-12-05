@@ -4,6 +4,7 @@ import Layout from './layouts/Layout'
 import Index from './pages/Index'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard.tsx'
+import Usuario from './components/Usuario.tsx'
 
 export default function AppRouter() {
 
@@ -14,6 +15,7 @@ export default function AppRouter() {
                 <Route path='/login' element={<Login />} />
                 <Route element={<Layout />}>
                     <Route path='/inicio' element={<Dashboard />} />
+                    <Route path='/usuarios' element={<Usuario />} />
                 </Route>  
             </Routes>
         </BrowserRouter>

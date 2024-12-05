@@ -8,7 +8,6 @@ import Header from "./Header"
 import Footer from "./Footer"
 
 import { useSidebarStore } from '../store/sidebar'
-import { getModulos } from "../services/ModuloService"
 import { useNavBarStore } from '../store/navbar'
 
 export default function Layout() {
@@ -17,21 +16,16 @@ export default function Layout() {
 
     const {token, isAuthenticated} = useAuthStore();
 
-    const {setItems} = useNavBarStore();
+    const {obtenerMenu} = useNavBarStore();
 
     const navigate = useNavigate();
 
-    useEffect(() => {        
-
-        /*axios.post('api/permisos')
-            .then(response => {console.log(response.data)})
-            .catch(error => {});*/        
-        console.log(getModulos())      
-            
+    useEffect(() => {                   
         if (!isAuthenticated || token==='' || !token) {
             navigate('./login');
             return;
         }
+        obtenerMenu();
     }, [isAuthenticated]);    
 
     return (

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import type { ModuloSchema } from '../schema/modulo-schema'
+import type { ModuloSchema, Modulo, MenuItem, Menu } from '../schema/modulo-schema'
 
 export type Sidebar = {
     minimize:number
@@ -12,4 +12,11 @@ export type Auth = {
     token:string
 }
 
-export type items = z.infer<typeof ModuloSchema>
+export type Menu = z.infer<typeof Menu>
+
+export type MenuItem = z.infer<typeof MenuItem>
+
+export type Modulos = z.infer<typeof ModuloSchema>
+
+export type Modulo = z.infer<typeof Modulo>
+

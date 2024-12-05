@@ -5,15 +5,16 @@ use Illuminate\Support\Facades\DB;
 
 class PermisoQueryBuilder
 {
-    public static function obtenerPermisosModulos($perfilId, $usuarioId)
+    public static function obtenerPermisosModulos($perfilId, $usuarioId, $grupo=1)
     {
         return DB::table('adm_permisos')
                 ->leftJoin('adm_modulos', 'adm_modulos.id', '=', 'adm_permisos.modulo_id')
                 ->select([
                     "adm_modulos.id", "adm_modulos.nombre", "adm_modulos.controlador", "adm_modulos.icono", "adm_modulos.clase", 
-                    "adm_modulos.orden", "adm_modulos.nodo_padre", "adm_modulos.descripcion", "adm_permisos.acciones"
+                    "adm_modulos.orden", "adm_modulos.nodo_padre", "adm_modulos.descripcion", "adm_modulos.ruta", "adm_permisos.acciones"
                     ])
                 ->where([
+                    ['adm_modulos.grupo', '=', $grupo],
                     ['adm_permisos.estatus', '=', 1],
                     ['adm_modulos.estatus', '=', 1]
                 ])                   

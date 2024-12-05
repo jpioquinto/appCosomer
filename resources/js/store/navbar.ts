@@ -1,24 +1,27 @@
 import { create } from 'zustand'
-import { items } from '../types'
+import { Modulos, Menu } from '../types'
+import { getModulos, getMenu } from '../services/ModuloService' 
 
 type NavBarState = {
-    items:items,
-    loaded:items,
-    setItems:(items:items) => void,
-    setLoaded:(item:items) => void
+    modulos:Modulos,
+    menu:Menu,
+    obtenerItems:() => Promise<void>,
+    obtenerMenu:() => Promise<void>
 }
 
 export const useNavBarStore = create<NavBarState>((set) => ({
-    items:[],
-    loaded:[],
-    setItems:($items) => {
-        set(state => ({
-            items:$items
-        }))
+    modulos:[],
+    menu:[],
+    obtenerItems:async () => {
+        const modulos = await getModulos();
+        set({
+            modulos
+        })
     },
-    setLoaded:(item) => {
-        set(state => ({
-            //loaded:[...state.loaded, item]
-        }))
+    obtenerMenu:async () => {
+        const menu = await getMenu();
+        set({
+            menu
+        })
     }
 }))

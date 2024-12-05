@@ -14,12 +14,22 @@ export const Modulo = z.object({
     clase:z.string(),
     controlador:z.string(),
     descripcion:z.string().nullable(),
+    grupo:z.optional(z.number()),
     icono:z.string(),
     id:z.number(),
     nodo_padre:z.number(),
     nombre:z.string(),
-    orden:z.number()
+    orden:z.number(),
+    ruta:z.optional(z.string()).nullable()
 })
+
+export const Items = z.object({items:z.optional( z.array(Modulo) ).nullable()})
+
+export const MenuItem = Modulo.merge(Items)
+
+export const Menu  = z.array(MenuItem)
+
+export type Modulo  = z.infer<typeof Modulo>
 
 export const ModuloSchema = z.array(Modulo)
 

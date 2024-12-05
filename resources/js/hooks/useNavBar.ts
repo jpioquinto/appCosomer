@@ -1,29 +1,36 @@
-import { useState } from 'react'
-
-import type { ModuloSchema } from '../schema/modulo-schema'
-
-const moduloState  = [{
-    acciones:[],
-    clase:'',
-    controlador:'',
-    descripcion:'',
-    icono:'',
-    id:0,
-    nodo_padre:0,
-    nombre:'',
-    orden:0
-}]
+import { useState, MouseEvent } from 'react'
+import { useNavBarStore } from '../store/navbar'
+import type { Modulo, Modulos, Menu, MenuItem } from '../types';
 
 export default function useNavBar() {
+    const {menu} = useNavBarStore();
 
-    const [modulos, setModulos] = useState<ModuloSchema>(moduloState)
+    const [toggle, setToggle] = useState({
+        collapsed:'collapsed',
+        collapse:'collapse',
+        classItem:'nav-item'
+    })
 
-    const obtenerModulos = async () => {
-        try {
+    const clickElemen = (e: MouseEvent<HTMLElement>) => {
+        e.preventDefault();
+        setToggle({
+            ...toggle,
+            collapsed:'',
+            classItem:'nav-item active',
+            collapse:'collapsing',
+        });
 
-        } catch (error) {
-
-        }
+        setTimeout(() => setToggle({...toggle, collapse:'collapse show'}), 750)
     }
 
+    const esModuloPadre = (menu:Menu | MenuItem, $id:number) => {
+        return Array.isArray(menu) ? menu.find(item =>  item.nodo_padre===$id) : false;
+    } 
+
+    return {
+        menu,   
+        toggle,
+        clickElemen,
+        esModuloPadre
+    }
 }
