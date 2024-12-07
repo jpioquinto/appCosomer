@@ -31,3 +31,9 @@
     visibility: hidden;
     zoom: 1;
 }
+.logo-sidebar {
+    width: 8rem; 
+    margin-top: -2%; 
+    margin-bottom: -2%; 
+    margin-left: -15%;
+}

@@ -30,8 +30,8 @@ class AuthController extends Controller
         return response([
                     'user' => [
                         'username'=> auth()->user()->nickname,
-                        #'nombre'=>(auth()->user()->directorio->nombre_completo ?: auth()->user()->nickname),
-                        #'acciones'=>$this->obtenerPermisos(auth()->user()->usuarios_id, auth()->user()->perfiles_id)
+                        'nombre'=>(auth()->user()->contacto->nombre_completo ?: auth()->user()->nickname),
+                        'perfil'=>(auth()->user()->perfil->nombre ?: '...')
                     ],
                     'token' => $resultToken->plainTextToken,
                     'token_type'   => 'Bearer',

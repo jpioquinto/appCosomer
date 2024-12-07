@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Models;
-
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+
+use Illuminate\Database\Eloquent\Relations\{HasOne, BelongsTo};
+
+use App\Models\Admin\{Perfil, Contacto};
 
 class User extends Authenticatable
 {
@@ -43,8 +46,13 @@ class User extends Authenticatable
         ];
     }
 
-    public function perfil()
+    public function perfil(): BelongsTo
     {
-        return $this->hasOne(Perfil::class, 'usuario_id')->withDefault();
+        return $this->BelongsTo(Perfil::class, 'perfil_id')->withDefault();
+    }
+
+    public function contacto(): HasOne
+    {
+        return $this->hasOne(Contacto::class, 'usuario_id')->withDefault();
     }
 }

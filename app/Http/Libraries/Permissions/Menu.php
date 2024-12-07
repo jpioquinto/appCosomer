@@ -27,8 +27,10 @@ class Menu
                 return true;
             }
             #dd($permiso);exit;
-            $this->items->push($permiso);            
-            $permiso->items = $this->obtenerItemsHijos($permiso->id);
+            $this->items->push($permiso);   
+            
+            $permiso->activo = '';
+            $permiso->items  = $this->obtenerItemsHijos($permiso->id);
 
             $this->menu->push($permiso);
         });
@@ -47,7 +49,8 @@ class Menu
             }
             $this->items->push($permiso);
 
-            $permiso->items = $this->obtenerItemsHijos($permiso->id);
+            $permiso->activo = '';
+            $permiso->items  = $this->obtenerItemsHijos($permiso->id);
             
             $items->push($permiso);
         });

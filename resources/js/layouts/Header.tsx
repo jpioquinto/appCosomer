@@ -1,3 +1,4 @@
+import logo from './../../../public/assets/images/logos/logo.svg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -11,9 +12,9 @@ export default function Header() {
             <div className="main-header-logo">
                 
                 <div className="logo-header" data-background-color="blue">
-
+foto del usuario...:)
                     <a href="index.html" className="logo">
-                        <img src="assets/img/kaiadmin/logo_light.svg" alt="navbar brand" className="navbar-brand" height="20" />
+                        <img src={logo} alt="navbar brand" className="navbar-brand" height="20" />
                     </a>
                     <button className="navbar-toggler sidenav-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon">

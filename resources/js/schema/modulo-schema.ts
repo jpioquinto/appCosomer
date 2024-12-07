@@ -11,6 +11,7 @@ export const Accion = z.object({
 
 export const Modulo = z.object({    
     acciones:z.optional(z.array(Accion)),
+    activo:z.optional(z.string()),
     clase:z.string(),
     controlador:z.string(),
     descripcion:z.string().nullable(),
@@ -29,7 +30,7 @@ export const MenuItem = Modulo.merge(Items)
 
 export const Menu  = z.array(MenuItem)
 
-export type Modulo  = z.infer<typeof Modulo>
+//export type Modulo  = z.infer<typeof Modulo>
 
 export const ModuloSchema = z.array(Modulo)
 

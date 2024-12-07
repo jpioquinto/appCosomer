@@ -7,9 +7,15 @@ export type Sidebar = {
     claseMinimize:string
 }
 
+export type User = {
+    username:string,
+    nombre:string,
+    perfil:string
+}
 export type Auth = {
     isAuthenticated:boolean
     token:string
+    user:User
 }
 
 export type Menu = z.infer<typeof Menu>

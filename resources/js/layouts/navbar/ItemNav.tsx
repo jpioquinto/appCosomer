@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react"
+import { MouseEvent } from "react"
 import { NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -11,21 +11,25 @@ import useNavBar from '../../hooks/useNavBar'
 import Nav from './Nav'
 
 library.add(fas, far)
+
 type ItemProps = {
     item:MenuItem,
-    nodoPadre:boolean
-
+    nodoPadre:boolean,
+    nivel:number
 }
-export default function ItemNav({item, nodoPadre}: ItemProps) {
+export default function ItemNav({item, nodoPadre, nivel}: ItemProps) {
     const {toggle, clickElemen} = useNavBar()
 
     return (
         <li 
-            className="nav-item" 
+            className={ nodoPadre 
+                        ? ( nivel==0 ? toggle.classItemPadre + ` ${item.activo} submenu` : `${item.activo} submenu`) 
+                        : `${toggle.classItem} ${item.activo}`
+                    } 
             key={"modulo-"+item.id}
-            onClick={clickElemen}            
+            onClick={(e: MouseEvent<HTMLElement>) => {e.stopPropagation(); clickElemen(item, nodoPadre);}}            
         >
-            <NavLink to={item.ruta} className={toggle.collapsed}>							
+            <NavLink to={item.ruta} className={nodoPadre ? toggle.collapsed : undefined}>							
                 <FontAwesomeIcon icon={item.icono} />&nbsp;
                 <p className="pt-1">{item.nombre}</p>
                 {nodoPadre ? (<span className="caret"></span>) : ''}
