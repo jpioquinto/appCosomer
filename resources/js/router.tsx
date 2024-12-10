@@ -1,12 +1,17 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
+import WebFont from 'webfontloader'
+
+import {React, useEffect} from 'react'
+
 import Layout from './layouts/Layout'
 import Index from './pages/Index'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard.tsx'
-import Usuario from './components/Usuario.tsx'
-import Perfil from './components/Perfil.tsx'
-import UR from './components/UR.tsx'
+import Usuario from './components/users/Usuario.tsx'
+import Perfil from './components/profile/Perfil.tsx'
+import UR from './components/urs/UR.tsx'
+
 
 export default function AppRouter() {
 

@@ -15,9 +15,9 @@ const activarSubItem = () => {
 
 }
 
-const activarItems = (menu:Menu, item:MenuItem) => {//console.log(menu)
+const activarItems = (menu:Menu, item:MenuItem) => {
     return menu.map($item => {
-        if ($item.id!==item.id) {console.log($item)
+        if ($item.id!==item.id) {
             $item.activo = item.nodo_padre>0 
                             ? ($item.id===item.nodo_padre ? 'active' : '') : '' ;
         } else {
