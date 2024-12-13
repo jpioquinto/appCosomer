@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import {MouseEvent} from 'react'
 import type { ModuloSchema, Modulo, MenuItem, Menu } from '../schema/modulo-schema'
 
 export type Sidebar = {

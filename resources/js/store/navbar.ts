@@ -10,10 +10,6 @@ type NavBarState = {
     activarItem:(item:MenuItem) => void,
     getMenu:() => Menu
 }
-const activarSubItem = () => {
-
-
-}
 
 const activarItems = (menu:Menu, item:MenuItem) => {
     return menu.map($item => {

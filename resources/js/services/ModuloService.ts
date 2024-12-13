@@ -27,7 +27,3 @@ export async function getMenu() {
         console.log(error);        
     }        
 }
-
-export function activarItems() {
-    
-}

@@ -1,25 +1,30 @@
 import {React, useState, useEffect} from 'react'
 import Breadcrumb from "../partial/Breadcrumb"
 import {useLocation} from "react-router-dom"
+import useModal from '../../hooks/useModal'
 import ModalUser from './ModalUser'
+import ModalTest from './ModalTest'
+import TablaUsuarios from './TablaUsuarios'
 
 import type { MenuItem } from "../../types"
 
 export default function Usuario() {
     const location = useLocation();
     
+    const {modal, triggerModal, closeModal} = useModal();    
+
     const [modulo, setModulo] = useState<MenuItem>({})
 
     useEffect(() => {
         setModulo(location.state)
-        console.log(modulo)
+        //console.log(modulo)        
     }, [])
 
     return (
         <div className="page-inner">
             <div className="page-header justify-content-between">
                 <Breadcrumb nombre={modulo.descripcion} id={modulo.id} />
-                <button type="button" className="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#userModal">
+                <button type="button" className="btn btn-outline-primary btn-sm" onClick={triggerModal}>
                     <i className="fas fa-user-plus" ></i> Nuevo
                 </button>
             </div> 
@@ -30,7 +35,9 @@ export default function Usuario() {
                                 <h4 className="card-title">Listado de Usuarios</h4>
                         </div>
                         <div className="card-body">
-                            <ModalUser />
+                            <TablaUsuarios />
+                            
+                            <ModalUser propModal={modal} close={closeModal}/>                            
                         </div>
                     </div>
                 </div>

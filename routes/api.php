@@ -12,4 +12,6 @@ Route::get('/user', function (Request $request) {
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/permisos', [\App\Http\Controllers\API\PermisoController::class, 'index']);    
     Route::get('/menu', [\App\Http\Controllers\API\MenuController::class, 'index']);    
+    Route::post('/user/save', [\App\Http\Controllers\API\UsuarioController::class, 'save']);    
+    Route::get('/user/listado', [\App\Http\Controllers\API\UsuarioController::class, 'getUsers']);    
 });
