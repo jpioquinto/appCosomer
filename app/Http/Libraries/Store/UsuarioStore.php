@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\User AS ModelUser;
+use App\Models\Admin\UsuarioQueryBuilder;
 
 class UsuarioStore extends ValidaUsuario
 {
@@ -31,14 +32,16 @@ class UsuarioStore extends ValidaUsuario
 
     public function getUsers()
     {
-        return ModelUser::with(['perfil'])
+        /*return ModelUser::with(['perfil'])
                 ->select(['ur_id', 'nickname', 'perfil_id', 'estatus', 'creado_el', 'ultimo_acceso', 'creado_por'])
                 ->where([
                     ['ur_id', '=', auth()->user()->ur_id],
                     ['estatus', '!=', 0]
                 ])
                 ->orderBy('creado_el', 'DESC')
-                ->get();
+                ->get();*/
+                
+        return UsuarioQueryBuilder::obtenerListado(auth()->user()->ur_id);
     }
 
     protected function crear(array $data)

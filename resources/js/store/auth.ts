@@ -1,8 +1,8 @@
 import { create } from 'zustand'
-import type { Auth, User } from '../types'
+import type { Auth, UserAuth } from '../types'
 
 type AuthState = Auth & {
-    setUser:(user: User) => void
+    setUser:(user: UserAuth) => void
     setToken:(token:string) => void
     setAuthenticated:(authenticated:boolean) => void
 }

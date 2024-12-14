@@ -25,12 +25,22 @@ class Permiso
                 return $value;
             }
 
-            $acciones = Accion::whereIn('id', explode(',', $value->acciones))->get();
+            $acciones =  Accion::whereIn('id', explode(',', $value->acciones))->get() ;
 
             $value->acciones = $acciones!=null ? $acciones : [];
                 
             return $value;
         });           
         return $modulos->all();
+    }
+
+    protected function procesarAcciones($acciones) 
+    {
+        return $listado = [];
+        $acciones->each(function($accion) use (&$listado) {
+            $listado[$accion->id] = $accion;
+        });
+
+        return $listado;
     }
 }

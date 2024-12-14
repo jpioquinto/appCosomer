@@ -3,8 +3,10 @@ import Breadcrumb from "../partial/Breadcrumb"
 import {useLocation} from "react-router-dom"
 import useModal from '../../hooks/useModal'
 import ModalUser from './ModalUser'
-import ModalTest from './ModalTest'
 import TablaUsuarios from './TablaUsuarios'
+import { useUserStore } from '../../store/user';
+import { useModuloStore } from '../../store/modulo'
+import { makeHash } from '../../utils'
 
 import type { MenuItem } from "../../types"
 
@@ -13,12 +15,18 @@ export default function Usuario() {
     
     const {modal, triggerModal, closeModal} = useModal();    
 
-    const [modulo, setModulo] = useState<MenuItem>({})
+    const {modulo, setModulo} = useModuloStore()
 
+    const {listUsers, users} = useUserStore();
+
+    const [keyTable, setKeyTable] = useState(makeHash(12));
+   
     useEffect(() => {
         setModulo(location.state)
-        //console.log(modulo)        
-    }, [])
+        setKeyTable(makeHash(12))
+        listUsers()
+        console.log(modulo)        
+    }, [modulo])
 
     return (
         <div className="page-inner">
@@ -35,7 +43,7 @@ export default function Usuario() {
                                 <h4 className="card-title">Listado de Usuarios</h4>
                         </div>
                         <div className="card-body">
-                            <TablaUsuarios />
+                            <TablaUsuarios users={users} key={keyTable} />
                             
                             <ModalUser propModal={modal} close={closeModal}/>                            
                         </div>

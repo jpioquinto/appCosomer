@@ -20,3 +20,31 @@ export const notificacion = (message:string, $type:string, $time:number = 300) =
         theme:"colored"
     });
 }
+
+export const isInteger = (value: string): boolean => {
+    var typeInt = /^[-]?[0-9]+$/;
+    return typeInt.test(value);
+}
+
+export const isNumeric = (value: string): boolean => {
+    var typeFloat =  /^[-]?[0-9]+\.[0-9]+$/;
+    return (typeFloat.test(value) || isInteger(value));
+}
+
+export const isNumericPositive = (value: string): boolean => {
+    var typeFloat =  /^[0-9]+\.[0-9]+$/;
+    var typeInt   = /^[0-9]+$/;
+    return (typeFloat.test(value) || typeInt.test(value));
+}
+
+export const makeHash = (longitud:number = 32): string =>  {
+
+    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let hash     = "";
+
+    for (let i = 0; i < longitud; i++) {
+        hash += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+
+    return hash;
+};

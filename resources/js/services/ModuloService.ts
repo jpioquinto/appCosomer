@@ -3,7 +3,7 @@ import { Menu, ModuloSchema } from '../schema/modulo-schema'
 export async function getModulos() {
     try {
         const response =  await axios.get('api/permisos');
-        //console.log(response.status)
+        //console.log(response)
         if (response.status==200) {
             const result = ModuloSchema.safeParse(response.data?.listado);
             
@@ -17,7 +17,7 @@ export async function getModulos() {
 export async function getMenu() {
     try {
         const response =  await axios.get('api/menu');
-        //console.log(response.status)
+        //console.log(response)
         if (response.status==200) {
             const result = Menu.safeParse(response.data?.menu);
             

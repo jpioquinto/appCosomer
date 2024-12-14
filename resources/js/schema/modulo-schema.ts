@@ -30,7 +30,7 @@ export const MenuItem = Modulo.merge(Items)
 
 export const Menu  = z.array(MenuItem)
 
-//export type Modulo  = z.infer<typeof Modulo>
+export const Acciones  = z.array(Accion)
 
 export const ModuloSchema = z.array(Modulo)
 
