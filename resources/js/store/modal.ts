@@ -1,10 +1,8 @@
 import { create } from 'zustand'
+import type { PropsModal } from '../types'
 
 type ModalState = {
-    modal:{
-        show:boolean,
-        clase:string
-    },
+    modal:PropsModal,
     showModalStore:() => void,
     hideModalStore:() => void,
 }

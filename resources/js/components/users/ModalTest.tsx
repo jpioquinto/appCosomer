@@ -1,6 +1,5 @@
 import React from 'react'
 import useModal from '../../hooks/useModal'
-import type { Modal } from '../../types'
 
 
 export default function ModalTest() {

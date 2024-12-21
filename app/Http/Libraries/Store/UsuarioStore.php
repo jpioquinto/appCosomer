@@ -2,7 +2,7 @@
 
 namespace App\Http\Libraries\Store;
 
-use App\Http\Libraries\Validations\ValidaUsuario;
+use App\Http\Libraries\Validations\{ValidaUsuario, ValidaPassword};
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,17 +31,31 @@ class UsuarioStore extends ValidaUsuario
     }
 
     public function getUsers()
+    {           
+        return UsuarioQueryBuilder::obtenerListado(auth()->user()->ur_id, auth()->user()->perfil_id);
+    }
+
+    public function changeStatus(int $estatus, int $id)
     {
-        /*return ModelUser::with(['perfil'])
-                ->select(['ur_id', 'nickname', 'perfil_id', 'estatus', 'creado_el', 'ultimo_acceso', 'creado_por'])
-                ->where([
-                    ['ur_id', '=', auth()->user()->ur_id],
-                    ['estatus', '!=', 0]
-                ])
-                ->orderBy('creado_el', 'DESC')
-                ->get();*/
-                
-        return UsuarioQueryBuilder::obtenerListado(auth()->user()->ur_id);
+        return ModelUser::where('id', $id)->update(['estatus'=>$estatus]);    
+    }
+
+    public function changeUR(int $id, int $urId)
+    {
+        return ModelUser::where('id', $id)->update(['ur_id'=>$urId]);    
+    }
+
+    public function changePerfil(int $id, int $perfilId)
+    {
+        return ModelUser::where('id', $id)->update(['perfil_id'=>$perfilId]);    
+    }
+
+    public function changePassword(int $id, array $datos)
+    {
+        $valida = new ValidaPassword($datos);
+        $campos = $valida->getValidados();
+
+        return ModelUser::where('id', $id)->update(['password'=>Hash::make($campos['password'])]);   
     }
 
     protected function crear(array $data)
@@ -52,7 +66,6 @@ class UsuarioStore extends ValidaUsuario
             'perfil_id'=>$data['perfil'],
             'ur_id'=>$data['ur'],
             'creado_por'=>$data['user'],
-            'id'=>0
         ];
 
         return ModelUser::create($campos);

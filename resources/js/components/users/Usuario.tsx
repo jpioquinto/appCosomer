@@ -1,4 +1,4 @@
-import {React, useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import Breadcrumb from "../partial/Breadcrumb"
 import {useLocation} from "react-router-dom"
 import useModal from '../../hooks/useModal'
@@ -6,9 +6,9 @@ import ModalUser from './ModalUser'
 import TablaUsuarios from './TablaUsuarios'
 import { useUserStore } from '../../store/user';
 import { useModuloStore } from '../../store/modulo'
+import { useURStore } from '../../store/urStore'
+import { usePerfilStore } from '../../store/perfil'
 import { makeHash } from '../../utils'
-
-import type { MenuItem } from "../../types"
 
 export default function Usuario() {
     const location = useLocation();
@@ -19,13 +19,18 @@ export default function Usuario() {
 
     const {listUsers, users} = useUserStore();
 
+    const {listURs} = useURStore()
+
+    const {listPerfils} = usePerfilStore()
+
     const [keyTable, setKeyTable] = useState(makeHash(12));
    
     useEffect(() => {
         setModulo(location.state)
         setKeyTable(makeHash(12))
-        listUsers()
-        console.log(modulo)        
+        listPerfils()
+        listUsers()     
+        listURs()
     }, [modulo])
 
     return (
