@@ -43,6 +43,7 @@ export default function useModal() {
 
     return {
         modal,
+        showModal,
         hideModal,
         triggerModal,
         closeModal

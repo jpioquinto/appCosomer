@@ -9,7 +9,8 @@ class UsuarioQueryBuilder
     {
         $filtros = [
             ['u.estatus', '!=', 0],
-            ['u.creado_por', '!=', 0]
+            ['u.creado_por', '!=', 0],
+            ['ur.estatus', '!=', 0]
         ];
 
         if (!in_array($perfilId, [1])) {

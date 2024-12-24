@@ -8,13 +8,16 @@ import type { MenuItem } from "../../types"
 import ModalUR from './ModalUR'
 import TablaURs from './TablaURs'
 import useModal from '../../hooks/useModal'
+import { makeHash } from '../../utils'
 
 export default function UR() {
     const location = useLocation()
 
+    const [keyTable, setKeyTable] = useState(makeHash(12))
+
     const {modal, triggerModal, closeModal} = useModal()
     
-    const [modulo, setModulo] = useState<MenuItem>({})
+    const [modulo, setModulo] = useState<MenuItem>({} as MenuItem)
 
     const {listURs, urs} = useURStore()
 
@@ -22,6 +25,7 @@ export default function UR() {
 
     useEffect(() => {
         setModulo(location.state)
+        setKeyTable(makeHash(12))
         listURs()
         listEdos()
     }, [modulo])
@@ -30,7 +34,7 @@ export default function UR() {
         <>
             <div className="page-inner">
                 <div className="page-header justify-content-between">
-                    <Breadcrumb nombre={modulo.descripcion} id={modulo.id} />
+                    <Breadcrumb nombre={`${modulo.descripcion}`} id={modulo.id} />
                     <button type="button" className="btn btn-outline-primary btn-sm" onClick={triggerModal}>
                         <i className="fas fa-plus-circle" ></i> Nueva
                     </button>
@@ -42,7 +46,7 @@ export default function UR() {
                                 <h4 className="card-title">Listado de Unidades Responsables</h4>
                             </div>
                             <div className="card-body">
-                                <TablaURs urs={urs}/>
+                                <TablaURs urs={urs} key={keyTable} />
                                 <ModalUR propModal={modal} close={closeModal}/>
                             </div>
                         </div>

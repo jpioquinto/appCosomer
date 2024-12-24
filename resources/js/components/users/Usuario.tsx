@@ -36,7 +36,7 @@ export default function Usuario() {
     return (
         <div className="page-inner">
             <div className="page-header justify-content-between">
-                <Breadcrumb nombre={modulo.descripcion} id={modulo.id} />
+                <Breadcrumb nombre={`${modulo.descripcion}`} id={modulo.id} />
                 <button type="button" className="btn btn-outline-primary btn-sm" onClick={triggerModal}>
                     <i className="fas fa-user-plus" ></i> Nuevo
                 </button>

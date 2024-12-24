@@ -9,8 +9,10 @@ import { saveUR } from '../../services/UrService'
 import useModal from '../../hooks/useModal'
 import {notificacion} from '../../utils'
 import { useEdoStore } from '../../store/edoStore'
-import { MunpioSchema, Option } from '../../types'
+import { useURStore } from '../../store/urStore'
+import { MunpioSchema, Option, DrafUR } from '../../types'
 import Select from 'react-select'
+import { URSchema } from '../../schema/ur-schema'
 
 type Modaltype = {
     propModal:PropsModal,
@@ -24,6 +26,8 @@ export default function ModalUR({propModal, close}: Modaltype) {
     const [mpio, setMunpio] = useState<MunpioSchema['id']>(0)
 
     const {currentMnpios, getEdos, listMunpios} = useEdoStore()
+
+    const {addUR, updateUR, ur} = useURStore()
     
     const schema = z.object({
         ur: z.string().min(6, {message: 'Ingrese un nombre valido para una Unidad Responsable.'}),
@@ -35,7 +39,7 @@ export default function ModalUR({propModal, close}: Modaltype) {
         cp: z.optional(z.string()).nullable(),
         edoId: z.optional(z.string()).nullable(),
         mpio: z.optional(z.number()).nullable(),
-      })
+      })      
 
     useEffect(() => {
         let $options: Option[] = [];
@@ -52,10 +56,28 @@ export default function ModalUR({propModal, close}: Modaltype) {
         resolver: zodResolver(schema)
     })
 
-    const registerUR = async (data) => {
-        const result = await saveUR({...data, mpio});
+    useEffect(() => {
+        setValue('ur', ur.nombre)
+        setValue('sigla', ur.sigla)
+        setValue('calle', ur.calle)
+        setValue('ext', ur.ext)
+        setValue('int', ur.int)
+        setValue('col', ur.col)
+        setValue('cp', ur.cp)
+        setValue('edoId', ur.edoId?.toString())
+    }, [ur])
+
+    const processResult = response => {
+        const result = URSchema.safeParse(response)
+        if (result.success) {
+            ur?.id ? updateUR(result.data) : addUR(result.data) 
+        }             
+    }
+    const registerUR = async (data: DrafUR) => {
+        const result = await saveUR({...data, mpio, id: (ur?.id ? ur.id : undefined)});
         
         if (result.response) {
+            processResult(result.ur)         
             hideModal()
             notificacion(result.message, 'success')
             reset()
@@ -77,7 +99,7 @@ export default function ModalUR({propModal, close}: Modaltype) {
         e.preventDefault()
         //setSigla(e.target.value.toString().replace(/[a-z|á-ú|ñ|Ñ|ü|Ü\s]*/g,''));
         document.getElementById('id-input-sigla') 
-        ? document.getElementById('id-input-sigla').value = e.target.value.toString().replace(/[a-z|á-ú|ñ|Ñ|ü|Ü\s]*/g,'')
+        ? document.getElementById('id-input-sigla').value = e.target.value.toString().replace(/[a-z|á-ú|ñ|Ñ|ü|Ü|,\s]*/g,'')
         : undefined;
     }
 
@@ -92,7 +114,7 @@ export default function ModalUR({propModal, close}: Modaltype) {
         <div className="modal-dialog">
             <div className="modal-content">
                 <div className="modal-header">
-                    <h1 className="modal-title fs-5" id="urModalLabel">Nueva UR</h1>
+                    <h1 className="modal-title fs-5" id="urModalLabel">{ur?.id ? 'Actualizar UR' : 'Nueva UR'}</h1>
                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={close}></button>
                 </div>
                 <form onSubmit={handleSubmit(registerUR)} className="needs-validation">
@@ -225,7 +247,7 @@ export default function ModalUR({propModal, close}: Modaltype) {
                         </div>                    
                     </div>
                     <div className="modal-footer">
-                        <button type="submit" className="btn btn-primary"><i className="fa fa-save"></i> Crear</button>
+                        <button type="submit" className="btn btn-primary"><i className="fa fa-save"></i> {ur?.id ? 'Actualizar' : 'Crear'}</button>
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={close}><i className="fa fa-window-close"></i> Cerrar</button>
                     </div>
                 </form>

@@ -23,7 +23,7 @@ export async function savePasswd(data) {
 
 export async function listadoUsuarios() {
     try {
-        const response =  await axios.get('api/user/listado');  
+        const response =  await axios.get('api/user/listado-user');  
         if (response.status) {
             const result = UsuariosSchema.safeParse(response.data?.listado);
             

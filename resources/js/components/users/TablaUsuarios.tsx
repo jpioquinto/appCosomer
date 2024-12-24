@@ -19,10 +19,8 @@ type UsersProps = {
 export default function TablaUsuarios({users}: UsersProps) {
 
     const modulo = useModuloStore(state=>state.modulo)
-
-    let [rowsActions, setRowsActions] = useState(0)   
     
-    const table = useRef();//console.log(table)
+    const table = useRef();
     
     const columns = [
         { data: 'ur' },
@@ -36,7 +34,6 @@ export default function TablaUsuarios({users}: UsersProps) {
       ];
     
     const generarAcciones = (user:User) => {
-        setRowsActions(++rowsActions)
               
         return <BtnAccion acciones={modulo.acciones as Acciones} user={user} key={user.id} />        
     }
@@ -73,7 +70,7 @@ export default function TablaUsuarios({users}: UsersProps) {
         }}
         slots={{
             3: (estatus, row) => {
-                if (estatus===2) {
+                if ([2,3].includes(estatus)) {
                     return <span className="badge rounded-pill badge-warning">Inactivo</span>
                 }
                 return <span className="badge rounded-pill badge-success">Activo</span>

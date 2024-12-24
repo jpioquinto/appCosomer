@@ -2,7 +2,7 @@ import { PerfilsSchema } from "../schema/perfil-schema";
 
 export async function listadoPerfiles() {
     try {
-        const response =  await axios.get('api/perfil/listado');  
+        const response =  await axios.get('api/perfil/listado-perfil');  
         if (response.status) {
             const result = PerfilsSchema.safeParse(response.data?.listado);
             

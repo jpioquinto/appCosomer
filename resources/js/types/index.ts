@@ -54,6 +54,8 @@ export type URSchema = z.infer<typeof URSchema>
 
 export type URsSchema = z.infer<typeof URsSchema>
 
+export type DrafUR    = Omit<URSchema, 'id'>
+
 export type PerfilSchema = z.infer<typeof PerfilSchema>
 
 export type PerfilsSchema = z.infer<typeof PerfilsSchema>
