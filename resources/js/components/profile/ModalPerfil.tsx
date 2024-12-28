@@ -4,6 +4,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import ErrorForm from '../partial/ErrorForm'
 import type { PropsModal } from '../../types'
+import { usePerfilStore } from '../../store/perfil'
+//import TreeView from 'react-jstree-table';
+
 
 type Modaltype = {
     propModal:PropsModal,
@@ -25,6 +28,16 @@ export default function ModalPerfil({propModal, close}: Modaltype) {
     const registerPerfil = () => {
 
     }
+
+    const {listPermissions, permissions, perfil} = usePerfilStore()
+
+    useEffect(() => {
+        setValue('nombre', perfil.nombre)
+        setValue('descripcion', perfil.descripcion)
+        listPermissions(perfil.id)
+
+        console.log(permissions)
+    }, [perfil])
 
   return (
     <div 
@@ -67,7 +80,16 @@ export default function ModalPerfil({propModal, close}: Modaltype) {
                                     )}
                                 </div>
                             </div>
-                        </div>                    
+                        </div> 
+                        <div className="row">
+                            <div className="col-sm-12 pt-3">
+                                <span className="h5">
+                                    <i className="fa flaticon-lock-1"></i> Permisos a Módulos
+                                </span><hr />
+                                <div id="jq_arbol_modulos"></div>
+                                
+                            </div>
+                        </div>                   
                     </div>
                     <div className="modal-footer">
                         <button type="submit" className="btn btn-primary"><i className="fa fa-save"></i> {'Crear'}</button>

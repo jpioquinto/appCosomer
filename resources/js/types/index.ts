@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { type ModuloSchema, type Modulo, type MenuItem, type Menu, Acciones, Accion } from '../schema/modulo-schema'
 import { UsuarioSchema, type UsuariosSchema  } from '../schema/usuario-schema'
 import { URsSchema, URSchema } from '../schema/ur-schema'
-import { PerfilSchema, PerfilsSchema } from '../schema/perfil-schema'
+import { ArbolPermiso, PerfilSchema, PerfilsSchema } from '../schema/perfil-schema'
 import { EdosSchema, MunpioSchema, MunpiosSchema } from '../schema/edo-schema'
 
 export type Sidebar = {
@@ -59,6 +59,8 @@ export type DrafUR    = Omit<URSchema, 'id'>
 export type PerfilSchema = z.infer<typeof PerfilSchema>
 
 export type PerfilsSchema = z.infer<typeof PerfilsSchema>
+
+export type ArbolPermiso  = z.infer<typeof ArbolPermiso>
 
 export type EdosSchema    = z.infer<typeof EdosSchema>
 

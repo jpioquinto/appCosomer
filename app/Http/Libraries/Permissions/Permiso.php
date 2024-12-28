@@ -1,46 +1,90 @@
 <?php 
 namespace App\Http\Libraries\Permissions;
 use App\Models\Admin\Accion;
+use Illuminate\Support\Facades\DB;
 
 class Permiso
 {
-    protected $listadoModulo;
+    protected $listado;
+    protected $permisos;
+    protected $modulos;
 
 
-    public function __construct($perfilId, $usuarioId)
+    public function __construct(int $perfilId, int $usuarioId = -1)
     {
-        $this->listadoModulo = new ListadoModulo($perfilId, $usuarioId);
+        $this->listado = new ListadoModulo($perfilId, $usuarioId);
+
+        $this->setPermisos( $this->procesarPermisos( $this->listado->getModulos()) );
+
+        $this->setModulos($this->listadoModulos());
     }
     
+    public function setModulos($modulos)
+    {
+        $this->modulos = $modulos;
+    }
+
+    public function getModulos()
+    {
+        return $this->modulos;
+    }
+
+    public function setPermisos($permisos)
+    {
+        $this->permisos = $permisos;
+    }
+
     public function obtenerPermisos()
     {
-        return $this->procesarPermisos($this->listadoModulo->getModulos());
+        return $this->permisos;
+    }
+
+    public function listadoModulos()
+    {
+        return $this->procesarPermisos($this->listado->getListado());
+    }
+
+    public function esModuloPadre(int $moduloId)
+    {
+        $modulo = $this->getModulos()->whereStrict('nodo_padre', $moduloId)->first();
+
+        return $modulo ?? false;
+    }
+
+    public function tienePermiso(int $moduloId, int $accionId) 
+    {
+        if (!$this->tienePermisoAmodulo($moduloId)) {
+            return false;
+        }
+
+        $permiso = $this->permisos->whereStrict('id', $muduloId)->first();
+
+        return $permiso ? $permiso->acciones->whereStrict('id', $accionId)->first() : false;
+    }
+
+    public function tienePermisoAmodulo(int $muduloId)
+    {
+        $permiso = $this->permisos->whereStrict('id', $muduloId)->first();
+
+        return $permiso ? $permiso->acciones->isNotEmpty() : false;
     }
 
     protected function procesarPermisos($modulos)
     {   
-        $modulos->map(function ($value, $index) {#return $value;
+        return $modulos->map(function ($value, $index) {#return $value;
             if ($value->acciones==null || empty($value->acciones)) {
-                $value->acciones = [];                
+                $value->acciones = collect();                
                 return $value;
             }
+            
+            $acciones = gettype($value->acciones) == 'string'
+                        ? Accion::whereIn('id', explode(',', $value->acciones))->orderBy('descripcion')->get()
+                        : $value->acciones;
 
-            $acciones =  Accion::whereIn('id', explode(',', $value->acciones))->get() ;
-
-            $value->acciones = $acciones!=null ? $acciones : [];
+            $value->acciones = $acciones ?? collect();
                 
             return $value;
         });           
-        return $modulos->all();
-    }
-
-    protected function procesarAcciones($acciones) 
-    {
-        return $listado = [];
-        $acciones->each(function($accion) use (&$listado) {
-            $listado[$accion->id] = $accion;
-        });
-
-        return $listado;
+        //return $modulos->all();
     }
 }

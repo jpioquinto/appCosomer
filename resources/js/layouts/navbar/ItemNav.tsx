@@ -1,4 +1,4 @@
-import { MouseEvent } from "react"
+import React, { MouseEvent } from "react"
 import { NavLink } from 'react-router-dom'
 import type { Menu, MenuItem } from "../../types"
 

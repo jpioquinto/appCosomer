@@ -23,7 +23,7 @@ export default function Perfil() {
 
     useEffect(() => {
         setModulo(location.state)
-        setKeyTable(makeHash(12))
+        setKeyTable(makeHash(12))        
         listPerfils()
     }, [modulo])
 

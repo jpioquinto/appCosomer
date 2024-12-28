@@ -29,5 +29,17 @@ class UsuarioQueryBuilder
                 ->orderBy('u.creado_el', 'DESC')
                 ->get();
     }
+
+    public static function listadoPerfiles()
+    {
+        return DB::table('adm_perfiles as p')
+                ->leftJoin('adm_usuarios as u', 'u.id', '=', 'p.creado_por')
+                ->select([
+                    'p.id','p.nombre', 'p.descripcion', 'p.estatus', 'p.creado_el', 'u.nickname as creador'
+                    ])
+                ->where('p.estatus', '!=', 0)                   
+                ->orderBy('p.nombre', 'ASC')
+                ->get();
+    }
     
 }

@@ -4,8 +4,9 @@ import { useModuloStore } from '../../store/modulo'
 import DataTable from 'datatables.net-react'
 import DT from 'datatables.net-bs5'
 
+import { Acciones, PerfilSchema, PerfilsSchema } from '../../types'
+import BtnAccion from './BtnAccion'
 import * as bootstrap from 'bootstrap'
-import { PerfilsSchema } from '../../types'
  
 DataTable.use(DT);
 
@@ -22,14 +23,37 @@ export default function TablaPerfils({perfils}: PerfilsProps) {
         { data: 'nombre' },
         { data: 'descripcion' },
         { data: 'estatus' },
-        { data: 'creado_el' },
+        { data: 'creado_el', className:'text-center', render: DT.render.datetime()},
         { data: 'creador' },
         { data: 'id' },
       ];
 
+    const generarAcciones = (perfil:PerfilSchema) => {
+              
+        return <BtnAccion acciones={modulo.acciones as Acciones} perfil={perfil} key={perfil.id} />        
+    }
+
+    const setTooltips = () => {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        return () => tooltipList.map(t => t.dispose())
+    }
+
+    const initTooltips = (table, intervalId:number) => {     
+        if (!table) {
+            return
+        }  
+        setTooltips()        
+        clearInterval(intervalId)                
+    }
+
+    const initEvent = (e: Event) => {        
+        const intervalId = setInterval(() => initTooltips(table.current ? table.current!.dt() : undefined, intervalId), 750);
+    }
+
   return (
     <DataTable 
-        data={urs}
+        data={perfils}
         ref={table}
         columns={columns}
         className="display"
@@ -40,19 +64,25 @@ export default function TablaPerfils({perfils}: PerfilsProps) {
             select: true,
         }}
         slots={{
-            9: (data, row) => {
+            2: (estatus, row) => {
+                if ([2,3].includes(estatus)) {
+                    return <span className="badge rounded-pill badge-warning">Inactivo</span>
+                }
+                return <span className="badge rounded-pill badge-success">Activo</span>
+            },
+            5: (data, row) => {
                 return generarAcciones(row)                
             }
         }}
     >
         <thead>
             <tr>
-                <th className="text-cente">Nombre</th>
-                <th className="text-cente">Descripción</th>
-                <th className="text-cente">Estatus</th>
-                <th className="text-cente">Fecha de creación</th>
-                <th className="text-cente">Creado por</th>
-                <th className="text-cente">Acciones</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Estatus</th>
+                <th className="text-center">Fecha de creación</th>
+                <th>Creado por</th>
+                <th className="text-center">Acciones</th>
             </tr>
         </thead>
     </DataTable>

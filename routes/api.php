@@ -24,4 +24,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/ur/listado-ur', [\App\Http\Controllers\API\URController::class, 'getURs']);    
     Route::post('/ur/delete-ur', [\App\Http\Controllers\API\URController::class, 'deleteUR']);    
     Route::get('/perfil/listado-perfil', [\App\Http\Controllers\API\PerfilController::class, 'getPerfils']);    
+    Route::get('/perfil/arbol-permisos/{id?}', [\App\Http\Controllers\API\PerfilController::class, 'getArbolPermiso'])->where(['id'=>'[0-9]+']);    
 });

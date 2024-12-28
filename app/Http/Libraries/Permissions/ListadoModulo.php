@@ -5,10 +5,23 @@ use App\Models\Admin\{PermisoQueryBuilder, Modulo};
 class ListadoModulo
 {
     protected $modulos;
+    protected $listado;
 
     public function __construct($perfilId, $usuarioId)
     {
         $this->setModulos($this->obtenerPermisos($perfilId, $usuarioId));
+
+        $this->setListado( $this->listadoModulos() );
+    }
+
+    public function setListado($listado)
+    {
+        $this->listado = $listado;
+    }
+
+    public function getListado()
+    {
+        return $this->listado;
     }
 
     public function setModulos($modulos)
@@ -21,17 +34,17 @@ class ListadoModulo
         return $this->modulos;
     }
 
-    public function ordernarPermisos($permisoA, $permisoB)
+    public function listadoModulos()
     {
-       if ($permisoA->nodo_padre != $permisoB->nodo_padre) {
-            return $permisoA->nodo_padre > $permisoB->nodo_padre;
-        }
-        return $permisoA->orden->$permisoB->orden;
-    }  
+        return Modulo::where('estatus', 1)->orderBy('nodo_padre', 'ASC')->orderBy('orden', 'ASC')->get();
+    }
     
     protected function obtenerPermisos($perfilId, $usuarioId)
     {
-        return $this->obtenerModulosPadre(PermisoQueryBuilder::obtenerPermisosModulos($perfilId, $usuarioId));
+        return $this->obtenerModulosPadre(
+            $usuarioId===-1
+            ? PermisoQueryBuilder::obtenerPermisos($perfilId)
+            : PermisoQueryBuilder::obtenerPermisosModulos($perfilId, $usuarioId));
 
     }
 

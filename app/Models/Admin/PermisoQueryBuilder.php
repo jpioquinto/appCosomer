@@ -7,22 +7,39 @@ class PermisoQueryBuilder
 {
     public static function obtenerPermisosModulos($perfilId, $usuarioId, $grupo=1)
     {
-        return DB::table('adm_permisos')
-                ->leftJoin('adm_modulos', 'adm_modulos.id', '=', 'adm_permisos.modulo_id')
+        return DB::table('adm_permisos as p')
+                ->leftJoin('adm_modulos as m', 'm.id', '=', 'p.modulo_id')
                 ->select([
-                    "adm_modulos.id", "adm_modulos.nombre", "adm_modulos.controlador", "adm_modulos.icono", "adm_modulos.clase", 
-                    "adm_modulos.orden", "adm_modulos.nodo_padre", "adm_modulos.descripcion", "adm_modulos.ruta", "adm_permisos.acciones"                    
+                    "m.id", "m.nombre", "m.controlador", "m.icono", "m.clase", 
+                    "m.orden", "m.nodo_padre", "m.descripcion", "m.ruta", "p.acciones"                    
                     ])
                 ->where([
-                    ['adm_modulos.grupo', '=', $grupo],
-                    ['adm_permisos.estatus', '=', 1],
-                    ['adm_modulos.estatus', '=', 1]
+                    ['m.grupo', '=', $grupo],
+                    ['p.estatus', '=', 1],
+                    ['m.estatus', '=', 1]
                 ])                   
-                ->where('adm_permisos.perfil_id', $perfilId)   
-                ->orWhere('adm_permisos.usuario_id', $usuarioId)
-                ->orderBy('adm_modulos.nodo_padre', 'asc') 
-                ->orderBy('adm_modulos.orden', 'asc') 
+                ->where('p.perfil_id', $perfilId)   
+                ->orWhere('p.usuario_id', $usuarioId)
+                ->orderBy('m.nodo_padre', 'asc') 
+                ->orderBy('m.orden', 'asc') 
                 ->get();
     }
     
+    public static function obtenerPermisos($perfilId)
+    {
+        return DB::table('adm_permisos as p')
+                ->leftJoin('adm_modulos as m', 'm.id', '=', 'p.modulo_id')
+                ->select([
+                    "m.id", "m.nombre", "m.controlador", "m.icono", "m.clase", 
+                    "m.orden", "m.nodo_padre", "m.descripcion", "m.ruta", "p.acciones"                    
+                    ])
+                ->where([
+                    ['p.estatus', '=', 1],
+                    ['m.estatus', '=', 1]
+                ])                   
+                ->where('p.perfil_id', $perfilId)   
+                ->orderBy('m.nodo_padre', 'asc') 
+                ->orderBy('m.orden', 'asc') 
+                ->get();
+    }
 }

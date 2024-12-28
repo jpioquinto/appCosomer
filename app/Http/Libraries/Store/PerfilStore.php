@@ -5,7 +5,7 @@ namespace App\Http\Libraries\Store;
 use App\Http\Libraries\Validations\ValidaPerfil;
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\Admin\Perfil AS ModelPerfil;
+use App\Models\Admin\{Perfil AS ModelPerfil, UsuarioQueryBuilder};
 
 class PerfilStore extends ValidaPerfil
 {
@@ -31,10 +31,7 @@ class PerfilStore extends ValidaPerfil
 
     public function getPerfils()
     {           
-        return ModelPerfil::query()
-            ->select(['id', 'nombre', 'descripcion'])
-            ->orderBy('nombre', 'ASC')
-            ->get();
+        return UsuarioQueryBuilder::listadoPerfiles();
     }
 
 
