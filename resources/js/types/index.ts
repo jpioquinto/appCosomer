@@ -1,9 +1,10 @@
 import { z } from 'zod'
 import { type ModuloSchema, type Modulo, type MenuItem, type Menu, Acciones, Accion } from '../schema/modulo-schema'
-import { UsuarioSchema, type UsuariosSchema  } from '../schema/usuario-schema'
+import { ContactoSchema, UsuarioSchema, type UsuariosSchema  } from '../schema/usuario-schema'
 import { URsSchema, URSchema } from '../schema/ur-schema'
 import { ArbolPermiso, PerfilSchema, PerfilsSchema } from '../schema/perfil-schema'
 import { EdosSchema, MunpioSchema, MunpiosSchema } from '../schema/edo-schema'
+import { PuestosSchema } from '../schema/contact-schema'
 
 export type Sidebar = {
     minimize:number
@@ -18,7 +19,8 @@ export type PropsModal = {
 
 export type UserAuth = {
     username:string,
-    nombre:string,
+    name:string,
+    name_full:string,
     perfil:string
 }
 
@@ -32,10 +34,13 @@ export type Users = z.infer<typeof UsuariosSchema>
 
 export type User = z.infer<typeof UsuarioSchema>
 
+export type Contact = z.infer<typeof ContactoSchema>
+
 export type Auth = {
     isAuthenticated:boolean
     token:string
-    user:User
+    user:UserAuth,
+    contact:Contact
 }
 
 export type Accion   = z.infer<typeof Accion> 
@@ -67,3 +72,5 @@ export type EdosSchema    = z.infer<typeof EdosSchema>
 export type MunpiosSchema = z.infer<typeof MunpiosSchema>
 
 export type MunpioSchema  = z.infer<typeof MunpioSchema>
+
+export type Puestos  = z.infer<typeof PuestosSchema>

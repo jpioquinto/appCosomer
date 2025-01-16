@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -30,8 +31,22 @@ class AuthController extends Controller
         return response([
                     'user' => [
                         'username'=> auth()->user()->nickname,
-                        'nombre'=>(auth()->user()->contacto->nombre_completo ?: auth()->user()->nickname),
+                        'name'=>(auth()->user()->contacto->nombre ?: auth()->user()->nickname),
+                        'name_full'=>(auth()->user()->contacto->nombre_completo ?: auth()->user()->nickname),
                         'perfil'=>(auth()->user()->perfil->nombre ?: '...')
+                    ],
+                    'contact'=>[
+                        'nombre'=>auth()->user()->contacto->nombre,
+                        'apPaterno'=>auth()->user()->contacto->ap_paterno,
+                        'apMaterno'=>auth()->user()->contacto->ap_materno,
+                        'cargo'=>auth()->user()->contacto->cargo,
+                        'puestoId'=>auth()->user()->contacto->puesto_id,
+                        'munpioId'=>auth()->user()->contacto->municipio_id,
+                        'edoId'=>auth()->user()->contacto->municipio->estado_id,
+                        'correo'=>auth()->user()->mail,
+                        'foto'=>Storage::disk('avatars')->exists(auth()->user()->contacto->foto)
+                                ? Storage::disk('avatars')->url(auth()->user()->contacto->foto) . '?hash=' . mt_rand()
+                                : Storage::disk('avatars')->url('default.png')
                     ],
                     'token' => $resultToken->plainTextToken,
                     'token_type'   => 'Bearer',

@@ -27,7 +27,7 @@ export default function Login() {
 
     const {setIsLoading, loadShow, loadHidden} = useLoadingStore()
 
-    const {setUser, setToken, setAuthenticated} = useAuthStore()
+    const {setUser, setToken, setContact, setAuthenticated} = useAuthStore()
 
     const navigate = useNavigate();
 
@@ -43,6 +43,7 @@ export default function Login() {
         axios.defaults.headers.common['Authorization'] = 'Bearer '+ response.data.token;
         setToken(response.data.token);
         setUser(response.data.user);
+        setContact(response.data.contact)
         setAuthenticated(true);
         loadHidden();
         

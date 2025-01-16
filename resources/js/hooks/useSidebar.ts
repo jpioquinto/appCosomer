@@ -7,7 +7,7 @@ export function useSidebar() {
 
 	const [classToggle, setClassToggle] = useState<string>('btn btn-toggle toggle-sidebar');
 
-	const [iconToggle, setIconToggle] = useState<String>('gg-menu-right');
+	const [iconToggle, setIconToggle] = useState<string>('gg-menu-right');
 
 	const [sideNavToggler, setSideNavToggler] = useState({
 		clase:'sidenav-toggler',

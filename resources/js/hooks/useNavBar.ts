@@ -21,7 +21,7 @@ export default function useNavBar() {
             classItemPadre:'nav-item',            
             collapse:'collapsing',
         });
-        setTimeout(() => setToggle({...toggle, activo:item.activo, collapse:'collapse show', show:true}), 50)
+        setTimeout(() => setToggle({...toggle, activo:item.activo!, collapse:'collapse show', show:true}), 50)
     }
 
     const hideElemens = (item: MenuItem) => {
@@ -39,7 +39,7 @@ export default function useNavBar() {
         if (nodoPadre) {
             toggle.show ? hideElemens(item) : showElemens(item);
         } else {
-            setToggle({...toggle, activo:item.activo})
+            setToggle({...toggle, activo:item.activo!})
         }
     }
 

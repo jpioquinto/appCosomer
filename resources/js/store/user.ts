@@ -22,8 +22,9 @@ type UserState =  {
 export const useUserStore = create<UserState>((set, get) => ({
     user: {
         username:'',
-        nombre:'',
-        perfil:''
+        name_full:'',
+        perfil:'',
+        name:'',
     },
     users:[],
     urSelected:{value:0, label:'', sigla:''},

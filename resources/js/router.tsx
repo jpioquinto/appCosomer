@@ -10,6 +10,7 @@ import Login from './components/Login'
 import Dashboard from './components/Dashboard.tsx'
 import Usuario from './components/users/Usuario.tsx'
 import Perfil from './components/profile/Perfil.tsx'
+import EditarPerfil from './components/users/EditarPerfil.tsx'
 import UR from './components/urs/UR.tsx'
 
 
@@ -24,6 +25,7 @@ export default function AppRouter() {
                     <Route path='/inicio' element={<Dashboard />} />
                     <Route path='/usuarios' element={<Usuario />} />
                     <Route path='/perfiles' element={<Perfil />} />
+                    <Route path='/editar-perfil' element={<EditarPerfil />} />
                     <Route path='/urs' element={<UR />} />                    
                 </Route>  
             </Routes>

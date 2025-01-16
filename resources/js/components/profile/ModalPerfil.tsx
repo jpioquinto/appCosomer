@@ -5,7 +5,9 @@ import { z } from 'zod'
 import ErrorForm from '../partial/ErrorForm'
 import type { PropsModal } from '../../types'
 import { usePerfilStore } from '../../store/perfil'
-//import TreeView from 'react-jstree-table';
+
+//import 'react-checkbox-tree/lib/react-checkbox-tree.css';
+import CheckboxTree from 'react-checkbox-tree';
 
 
 type Modaltype = {
@@ -14,6 +16,19 @@ type Modaltype = {
 }
 
 export default function ModalPerfil({propModal, close}: Modaltype) {
+
+    const nodes = [{
+        value: 'mars',
+        label: 'Mars',
+        children: [
+          { value: 'phobos', label: 'Phobos' },
+          { value: 'deimos', label: 'Deimos' },
+        ],
+      }];
+    
+    const [checked, setChecked] = useState([]);
+    const [expanded, setExpanded] = useState([]);
+    
     const schema = z.object({
         nombre: z.string().min(6, {message: 'Ingrese un nombre valido para el perfil de usuario.'}),
         descripcion: z.string().min(8, {message: 'Capture una descripción para el perfil.'}),
@@ -87,7 +102,16 @@ export default function ModalPerfil({propModal, close}: Modaltype) {
                                     <i className="fa flaticon-lock-1"></i> Permisos a Módulos
                                 </span><hr />
                                 <div id="jq_arbol_modulos"></div>
-                                
+                                <CheckboxTree
+                                    nodes={nodes}
+                                    checked={checked}
+                                    expanded={expanded}
+                                    onCheck={(checked) => setChecked(checked)}
+                                    onExpand={(expanded) => setExpanded(expanded)}
+                                    icons={{
+                                        leaf: <span className="fas fa-wrench" />,
+                                    }}
+                                />
                             </div>
                         </div>                   
                     </div>

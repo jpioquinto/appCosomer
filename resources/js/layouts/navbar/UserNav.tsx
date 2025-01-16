@@ -2,12 +2,12 @@ import React from 'react'
 import { useUserNav } from '../../hooks/useUserNav'
 
 export default function UserNav() {
-    const {user, toggle, handlerCollapse} = useUserNav()
+    const {user, toggle, getFoto, handlerCollapse} = useUserNav()
 
   return (
     <div className="user">
         <div className="avatar-sm float-start me-2">
-            <img src="assets/img/profile.jpg" alt="Foto de perfil" className="avatar-img rounded-circle" />
+            <img src={getFoto()} alt="Foto de perfil" className="avatar-img rounded-circle" />
         </div>
         <div className="info">
             <a 
@@ -18,7 +18,7 @@ export default function UserNav() {
                 onClick={handlerCollapse}
             >
                 <span>
-                    {user.nombre}
+                    {user.name}
                     <span className="user-level">{user.perfil}</span>
                     <span className="caret"></span>
                 </span>

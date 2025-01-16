@@ -2,7 +2,7 @@ import { useAuthStore } from "../store/auth";
 import {useState, MouseEvent} from 'react'
 
 export function useUserNav() {
-    const {user} = useAuthStore()
+    const {user, contact, getFoto} = useAuthStore()
 
     const [toggle, setToggle] = useState({
         aria:'true',
@@ -40,7 +40,9 @@ export function useUserNav() {
 
     return {
         user,
+        contact,
         toggle,
+        getFoto,
         handlerCollapse
     }
 }

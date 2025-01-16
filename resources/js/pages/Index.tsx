@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import Spinner from "../components/Spinner"
 import { useAuthStore } from "../store/auth"
 

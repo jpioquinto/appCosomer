@@ -228,7 +228,7 @@ export default function ModalUR({propModal, close}: Modaltype) {
                             </div>
                             <div className="col-sm-12 col-md-6">
                                 <div className="form-group">
-                                    <label htmlFor="id-select-mpio">Delgación / Municipio</label>
+                                    <label htmlFor="id-select-mpio">Alcaldía / Municipio</label>
                                     <Select 
                                         placeholder='Seleccione...'
                                         options={optionsMunpios} 
