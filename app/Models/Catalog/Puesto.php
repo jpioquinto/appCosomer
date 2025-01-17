@@ -9,5 +9,5 @@ class Puesto extends Model
 {
     use HasFactory;
 
-    protected $table = 'cat_puestos';
+    protected $table = 'adm_cat_puestos';
 }

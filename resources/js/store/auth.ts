@@ -3,6 +3,7 @@ import type { Auth, UserAuth , Contact} from '../types'
 
 type AuthState = Auth & {
     getFoto:() => string
+    setFoto:(foto: Contact['foto']) => void
     setUser:(user: UserAuth) => void
     setContact:(contact: Contact) => void
     setToken:(token:string) => void
@@ -30,6 +31,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         foto:''
     },
     getFoto:() => get().contact.foto || '',
+    setFoto:(foto) => {
+        const contact = {...get().contact, foto}
+        set({contact})
+    },
     setContact: (contact) => {
         set({
             contact

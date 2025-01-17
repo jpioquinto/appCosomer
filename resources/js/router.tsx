@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import WebFont from 'webfontloader'
 
-import {React, useEffect} from 'react'
+import React, {useEffect} from 'react'
 
 import Layout from './layouts/Layout'
 import Index from './pages/Index'

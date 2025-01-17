@@ -3,9 +3,9 @@ import { notificacion } from '../../utils'
 import { cargarFoto } from '../../services/ContactSevice'
 import { useUserNav } from '../../hooks/useUserNav'
 export default function FotoPerfil() {
-    const {getFoto} = useUserNav()
+    const {getFoto, setFoto} = useUserNav()
 
-    const [foto, setFoto] = useState<string>(getFoto())
+    const [foto, setAvatar] = useState<string>(getFoto())
     const [archivo, setArchivo] = useState<File | null>(null)
     const [mostrarBoton, setMostrarBoton] = useState<string>('invisible')
 
@@ -16,14 +16,15 @@ export default function FotoPerfil() {
     const subirFoto = async (archivo: File) => {
         try {
            const result =await cargarFoto(archivo)
-           if (result.response) {
+           if (result?.solicitud) {
+               setAvatar(result.url)
                setFoto(result.url)
                 notificacion(result.message, 'success')
            } else {
-                notificacion(result.message, 'error')
+                throw new Error(result?.response?.data?.message || result.message)
            }
-        } catch (error) {
-            console.log(error)
+        } catch (error) {            
+            notificacion(error.message, 'error')
         }
     }
 
@@ -34,7 +35,7 @@ export default function FotoPerfil() {
             return false;
         }
 
-        e.target.files ? setFoto(URL.createObjectURL(e.target.files[0])) : undefined;
+        e.target.files ? setAvatar(URL.createObjectURL(e.target.files[0])) : undefined;
         e.target.files ?  setArchivo(e.target.files[0]) : undefined;
         setMostrarBoton('')
     }

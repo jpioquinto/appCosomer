@@ -1,4 +1,4 @@
-import { StrictMode, React, useEffect } from 'react'
+import React, { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import AppRouter from './router'
 

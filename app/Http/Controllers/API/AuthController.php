@@ -36,7 +36,7 @@ class AuthController extends Controller
                         'perfil'=>(auth()->user()->perfil->nombre ?: '...')
                     ],
                     'contact'=>[
-                        'nombre'=>auth()->user()->contacto->nombre,
+                        'nombre'=>auth()->user()->contacto->nombre ?: auth()->user()->nickname,
                         'apPaterno'=>auth()->user()->contacto->ap_paterno,
                         'apMaterno'=>auth()->user()->contacto->ap_materno,
                         'cargo'=>auth()->user()->contacto->cargo,
@@ -44,7 +44,7 @@ class AuthController extends Controller
                         'munpioId'=>auth()->user()->contacto->municipio_id,
                         'edoId'=>auth()->user()->contacto->municipio->estado_id,
                         'correo'=>auth()->user()->mail,
-                        'foto'=>Storage::disk('avatars')->exists(auth()->user()->contacto->foto)
+                        'foto'=>Storage::disk('avatars')->exists(auth()->user()->contacto->foto ?? 'no_existe')
                                 ? Storage::disk('avatars')->url(auth()->user()->contacto->foto) . '?hash=' . mt_rand()
                                 : Storage::disk('avatars')->url('default.png')
                     ],

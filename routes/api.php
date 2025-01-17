@@ -21,6 +21,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/user/change-perfil', [\App\Http\Controllers\API\UsuarioController::class, 'changePerfil']); 
     Route::get('/contact/listado-puestos', [\App\Http\Controllers\API\ContactoController::class, 'getListado']); 
     Route::post('/contact/subir-foto', [\App\Http\Controllers\API\ContactoController::class, 'subirFoto']); 
+    Route::post('/contact/save-info', [\App\Http\Controllers\API\ContactoController::class, 'save']); 
     
     Route::get('/edo/listado-estados', [\App\Http\Controllers\API\EntidadController::class, 'getEdos']);    
     Route::get('/edo/listado-munpios/{edoId}', [\App\Http\Controllers\API\EntidadController::class, 'getMunpios'])->where(['edoId'=>'[0-9]+']);    

@@ -11,10 +11,12 @@ import { useContactStore } from '../../store/contactStore'
 import { Contact, Option} from '../../types'
 import ErrorForm from '../partial/ErrorForm'
 import FotoPerfil from './FotoPerfil'
+import { saveContacto } from '../../services/ContactSevice'
+import { notificacion } from '../../utils'
 
 
 export default function EditarPerfil() {
-    const {contact} = useAuthStore()
+    const {user, contact, setContact, setUser} = useAuthStore()
 
     const {currentMnpios, listEdos, getEdos, listMunpios} = useEdoStore()
 
@@ -42,9 +44,26 @@ export default function EditarPerfil() {
             resolver: zodResolver(schema)
         })
     
-    const registerContact = (data: Contact) => {
+    const registerContact = async (data: Contact) => {
         data.munpioId = +munpioId
-        console.log(data)
+        try {
+            const result = await saveContacto(data)
+           
+            if (result?.solicitud) {
+                setContact({...contact, ...data})
+                setUser({
+                    ...user,
+                    name:data?.nombre!.toString(),
+                    name_full:`${data?.nombre!.toString()} ${data?.apPaterno!.toString()} ${data?.apMaterno!.toString()}`
+                })
+                notificacion(result.message, 'success')
+            } else {
+                throw new Error(result?.response?.data?.message || result.message)
+            }
+        } catch(error) {
+            notificacion(error.message, 'error')
+        }
+        
     }
 
     const selectEntidad = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -55,7 +74,6 @@ export default function EditarPerfil() {
     const selectedMunpio = (e) => {
         setMunpioId(e.value)
     }
-
 
     useEffect(() => {
         listEdos()
@@ -80,7 +98,7 @@ export default function EditarPerfil() {
         setValue('munpioId', contact.munpioId?.toString()!)
         setValue('edoId', contact.edoId?.toString()!)
         setValue('correo', contact.correo!)
-        setValue('foto', contact.foto)                
+        contact.edoId ? listMunpios(+contact.edoId) : undefined  
     }, [contact])
 
   return (
@@ -146,6 +164,7 @@ export default function EditarPerfil() {
                                             <div className="form-group">
                                                 <label htmlFor="id-estado">Estado</label>                                        
                                                 <select className={`form-control input-solid ${errors.edoId ? 'is-invalid' : ''}`} id="id-estado" required
+                                                    value={contact.edoId?.toString()}
                                                     {...register('edoId')}
                                                     onChange={selectEntidad}
                                                 >
@@ -165,6 +184,7 @@ export default function EditarPerfil() {
                                                 <label htmlFor="id-municipio">Alcaldía / Municipio</label>                                    
                                                 <Select 
                                                     placeholder='Seleccione...'
+                                                    value={optionsMunpios.filter(({ value }) => value === contact.munpioId)}
                                                     options={optionsMunpios} 
                                                     menuPortalTarget={document.querySelector('.swal2-container')}
                                                     styles={{
@@ -182,6 +202,7 @@ export default function EditarPerfil() {
                                             <div className="form-group">
                                                 <label htmlFor="id-puesto">Puesto</label>                                        
                                                 <select className={`form-control input-solid ${errors.puestoId ? 'is-invalid' : ''}`} id="id-puesto" required
+                                                    value={contact.puestoId?.toString()}
                                                     {...register('puestoId')}
                                                 >
                                                     <option value="">Seleccione...</option>
