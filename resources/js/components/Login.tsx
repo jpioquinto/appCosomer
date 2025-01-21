@@ -1,4 +1,4 @@
-import {useState, ChangeEvent, FormEvent} from 'react'
+import React, {useState, ChangeEvent, FormEvent} from 'react'
 import { useNavigate } from "react-router-dom"
 import { ToastContainer, toast } from 'react-toastify'
 import { useAuthStore } from '../store/auth'
@@ -7,7 +7,6 @@ import Loading from './Loading'
 import 'react-toastify/dist/ReactToastify.css'
 import './../../css/app/plugins.min.css'
 import './../../css/app/kaiadmin.min.css'
-import logoDesarrollo from './../../../public/assets/images/logos/desarrollo_territorial.png'
 
 type FormProps = {
     nickname:string,
@@ -94,10 +93,9 @@ export default function Login() {
         <div className="login">            
             <div className="wrapper wrapper-login wrapper-login-full p-0">                
                 <div className="login-aside w-50 d-flex flex-column align-items-center justify-content-center text-center bg-secondary-gradient">
-                    <div className="bg-light mb-3 p-3 rounded">
-                        <img src={logoDesarrollo} className="rounded img-fluid" alt="Logo Desarrollo Territorial" />
+                    <div className="mb-3 p-3 rounded">
+                        <img src={`${import.meta.env.VITE_APP_URL}/assets/images/logos/desarrollo_territorial.png`} className="img-fluid" width={'75%'} alt="Logo Desarrollo Territorial" />
                     </div>
-                    <h1 className="title fw-bold text-white mb-3">SUBSECRETARÍA DE ORDENAMIENTO TERRITORIAL Y AGRARIO</h1>
                     <p className="fs-5 fw-bolder text-white op-9">Dirección General de Concertación Agraria y Mediación</p>
                 </div>
                 <div className="login-aside w-50 d-flex align-items-center justify-content-center bg-white">

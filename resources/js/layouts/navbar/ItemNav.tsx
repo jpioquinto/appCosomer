@@ -24,7 +24,7 @@ export default function ItemNav({item, nodoPadre, nivel}: ItemProps) {
             onClick={(e: MouseEvent<HTMLElement>) => {e.stopPropagation(); clickElemen(item, nodoPadre);}}            
         >
             <NavLink to={item.ruta} state={item} className={nodoPadre ? toggle.collapsed : undefined}>							
-                <i className={item.icono}></i>&nbsp;
+                <i className={item.icono}></i>
                 <p className="pt-1">{item.nombre}</p>
                 {nodoPadre ? (<span className="caret"></span>) : ''}
             </NavLink>

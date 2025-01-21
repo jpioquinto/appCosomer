@@ -41,3 +41,10 @@
     margin-bottom: -2%; 
     margin-left: -15%;
 }
+.footer {
+    background: #002f2a!important;
+    color:#FFF!important;
+}
+.sidebar .nav>.nav-item a p, .sidebar[data-background-color=white] .nav>.nav-item a p {
+    white-space:normal!important;
+}

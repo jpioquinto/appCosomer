@@ -13,6 +13,12 @@ import Perfil from './components/profile/Perfil.tsx'
 import EditarPerfil from './components/users/EditarPerfil.tsx'
 import UR from './components/urs/UR.tsx'
 
+import Solicitud from './components/ management/request/Solicitud.tsx'
+import MarcoJuridico from './components/ management/legal/MarcoJuridico.tsx'
+import Correspondencia from './components/ management/envelope/Correspondencia.tsx'
+import Historico from './components/ management/historical/Historico.tsx'
+import Registro from './components/ management/register/Registro.tsx'
+import Tramite from './components/ management/procedure/Tramite.tsx'
 
 export default function AppRouter() {
 
@@ -27,6 +33,12 @@ export default function AppRouter() {
                     <Route path='/perfiles' element={<Perfil />} />
                     <Route path='/editar-perfil' element={<EditarPerfil />} />
                     <Route path='/urs' element={<UR />} />                    
+                    <Route path='/solicitud' element={<Solicitud />} />                    
+                    <Route path='/marco-juridico' element={<MarcoJuridico />} />                    
+                    <Route path='/unidad-correspondencia' element={<Correspondencia />} />                    
+                    <Route path='/historico' element={<Historico />} />                    
+                    <Route path='/registro' element={<Registro />} />                    
+                    <Route path='/tramite' element={<Tramite />} />                    
                 </Route>  
             </Routes>
         </BrowserRouter>

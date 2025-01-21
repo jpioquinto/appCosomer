@@ -1,4 +1,3 @@
-import logo from './../../../public/assets/images/logos/logo.svg'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
@@ -28,7 +27,7 @@ export default function Sidebar() {
 			<div className="sidebar-logo">				
 				<div className="logo-header" data-background-color="blue">
 					<Link to="/" className="logo">
-						<img src={logo} alt="navbar brand" className="navbar-brand logo-sidebar" />
+						<img src={`${import.meta.env.VITE_APP_URL}/assets/images/logos/logo.svg`} alt="navbar brand" className="navbar-brand logo-sidebar" />
 					</Link>
 					<div className="nav-toggle">
 						<button className={classToggle} onClick={clickToggleSidebar}>

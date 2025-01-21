@@ -28,5 +28,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/ur/listado-ur', [\App\Http\Controllers\API\URController::class, 'getURs']);    
     Route::post('/ur/delete-ur', [\App\Http\Controllers\API\URController::class, 'deleteUR']);    
     Route::get('/perfil/listado-perfil', [\App\Http\Controllers\API\PerfilController::class, 'getPerfils']);    
-    Route::get('/perfil/arbol-permisos/{id?}', [\App\Http\Controllers\API\PerfilController::class, 'getArbolPermiso'])->where(['id'=>'[0-9]+']);    
+    Route::get('/perfil/arbol-permisos/{id?}', [\App\Http\Controllers\API\PerfilController::class, 'getArbolPermiso'])->where(['id'=>'[0-9]+']);  
+    
+    Route::get('/catalog/listado-vertientes', [\App\Http\Controllers\API\CatalogoController::class, 'listarVertientes']); 
+    Route::get('/catalog/listado-unidades', [\App\Http\Controllers\API\CatalogoController::class, 'listarUnidades']); 
+    Route::get('/catalog/listado-regimenes', [\App\Http\Controllers\API\CatalogoController::class, 'listarRegimenes']); 
+    Route::get('/catalog/listado-organizaciones', [\App\Http\Controllers\API\CatalogoController::class, 'listarOrganizaciones']); 
+    Route::get('/catalog/listado-estatus', [\App\Http\Controllers\API\CatalogoController::class, 'listarEstatus']); 
 });
