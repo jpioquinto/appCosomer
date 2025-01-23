@@ -1,35 +1,43 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import Breadcrumb from '../../partial/Breadcrumb'
+import { useModuloStore } from '../../../store/modulo'
+import { makeHash } from '../../../utils'
+import { useLocation } from 'react-router-dom'
+import TablaRegistro from '../register/TablaRegistro'
 
 export default function Historico() {
-  return (
-    <>
-      <div className="panel-header bg-primary-gradient">
-            <div className="page-inner py-5">
-                <div className="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-                    <div>
-                        <h3 className="text-white fw-bold mb-3">Histórico</h3>
-                        <h6 className="text-white op-7 mb-2">Por favor, ingrese la histórico</h6>
-                    </div>
-                    <div className="ms-md-auto py-2 py-md-0">
-                        <a href="#" className="btn btn-secondary btn-round">Salir</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div className="page-inner mt--5 pt-0">
-            <div className="row">
-                <div className="col-md-12">
-                    <div className="card full-height">
-                        <div className="card-body">
-                            <div className='row'>
-                                <h1>Histórico</h1>
+    const location = useLocation();
 
-                            </div>
-                        </div>
+    const {modulo, setModulo} = useModuloStore()
+
+    const [keyTable, setKeyTable] = useState<string>(makeHash(12))
+
+    useEffect(() => {
+        setModulo(location.state)
+        setKeyTable(makeHash(12))
+    }, [modulo])
+
+  return (
+   <div className="page-inner">
+        <div className="page-header justify-content-between">
+            <Breadcrumb nombre={`${modulo.descripcion}`} id={modulo.id} />
+            <button type="button" className="btn btn-outline-primary btn-sm">
+                <i className="fas fa-user-plus" ></i> Nueva
+            </button>
+        </div> 
+        <div className="row">
+            <div className="col-md-12">
+                <div className="card">
+                    <div className="card-header">
+                            <h4 className="card-title">Listado de...</h4>
+                    </div>
+                    <div className="card-body">
+                        <TablaRegistro key={keyTable} />            
                     </div>
                 </div>
             </div>
         </div>
-    </>
+
+    </div>
   )
 }

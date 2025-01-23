@@ -23,6 +23,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/contact/subir-foto', [\App\Http\Controllers\API\ContactoController::class, 'subirFoto']); 
     Route::post('/contact/save-info', [\App\Http\Controllers\API\ContactoController::class, 'save']); 
     
+    Route::post('/conflict/save', [\App\Http\Controllers\API\ConflictoController::class, 'save']); 
+    
     Route::get('/edo/listado-estados', [\App\Http\Controllers\API\EntidadController::class, 'getEdos']);    
     Route::get('/edo/listado-munpios/{edoId}', [\App\Http\Controllers\API\EntidadController::class, 'getMunpios'])->where(['edoId'=>'[0-9]+']);    
     Route::get('/ur/listado-ur', [\App\Http\Controllers\API\URController::class, 'getURs']);    
