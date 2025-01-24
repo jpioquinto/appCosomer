@@ -15,7 +15,7 @@ class ValidaConflicto extends Validacion
     public function rules()
     {
         return [
-            'fecha'=>'required',
+            'fecha'=>'required|min:10',
             'munpioId'=>'required|numeric',
             'promovente'=>'required|min:7',
             'contraparte'=>'required|min:7',
@@ -28,11 +28,7 @@ class ValidaConflicto extends Validacion
             'sintEstatus'=>'required|min:10',
             'orgInvolucradaId'=>'required|numeric',
             'problematica'=>'required|min:10',
-            'actualizadoEl'=>'nullable|string',
-            'eliminadoEl'=>'nullable|string',
-            'creadoPor'=>'nullable|numeric',
-            'actualizadoPor'=>'nullable|numeric',
-            'eliminadoPor'=>'nullable|numeric',
+            'user'=>'nullable|numeric',
         ];
     }
 
@@ -65,6 +61,7 @@ class ValidaConflicto extends Validacion
             'orgInvolucradaId.numeric'=>"El identificador de la :attribute debe ser un entero.",
             'problematica.required'=>"La :attribute es requerida.",
             'problematica.min:10'=>"La :attribute debe contener al menos 10 caracteres.",
+            'user.numeric'=>"No se recibió el identificador del :attribute",
         ];
     }
 
@@ -84,9 +81,7 @@ class ValidaConflicto extends Validacion
             'sintEstatus'=>'sintésis del estatus',
             'orgInvolucradaId'=>'organización involucrada',
             'problematica'=>'problemática',
-            'creadoPor'=>'usuario creador',            
-            'actualizadoEl'=>'fecha de actualización',            
-            'actualizadoPor'=>'usuario actualizador',            
+            'user'=>'usuario creador',           
         ];
     }
 }

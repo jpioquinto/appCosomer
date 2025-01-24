@@ -2,31 +2,38 @@ import React from 'react'
 
 import DataTable from 'datatables.net-react'
 import DT from 'datatables.net-bs5'
+import 'datatables.net-select-bs5'
+import 'datatables.net-responsive-bs5'
+import { Registros } from '../../../types/conflicto';
 
 DataTable.use(DT);
 
-export default function TablaRegistro() {
+type ConflictsProps = {
+    conflictos:Registros
+}
+
+export default function TablaRegistro({conflictos}: ConflictsProps) {
     const columns = [
-        { data: 'fecha' },
+        { data: 'fecha', render: DT.render.date()},
         { data: 'estado' },
         { data: 'municipio' },
         { data: 'promovente'},
         { data: 'contraparte'},
         { data: 'vertiente'},
         { data: 'problematica'},
-        { data: 'superficie'},
-        { data: 'superficie_atendida'},
-        { data: 'num_beneficiarios' },
-        { data: 'reg_social' },
-        { data: 'estatus' },
-        { data: 'sintesis_estatus' },
-        { data: 'org_involucrada' },
+        { data: 'supConflicto'},
+        { data: 'supAtendida'},
+        { data: 'numBeneficiario', className:'text-center'},
+        { data: 'regimen' },
+        { data: 'descEstatus' },
+        { data: 'sintEstatus' },
+        { data: 'orgInvolucrada' },
         { data: 'id' },
       ];
 
   return (
     <DataTable 
-        data={[]}
+        data={conflictos}
     
         columns={columns}
         className="display"
@@ -35,7 +42,8 @@ export default function TablaRegistro() {
             select: true,
         }}
     >
-        <tr>
+        <thead>
+            <tr>
                 <th className="text-center">Fecha</th>
                 <th className="text-center">Estado</th>
                 <th className="text-center">Municipio</th>
@@ -52,6 +60,7 @@ export default function TablaRegistro() {
                 <th className="text-center">Organización Inv.</th>
                 <th className="text-center">Acciones</th>
             </tr>
+        </thead>
     </DataTable>
   )
 }

@@ -54,7 +54,7 @@ export default function ModalUser({propModal, close}: Modaltype) {
   return (
     <div 
         className={`modal fade ${propModal.clase}`}         
-        tabIndex="-1" 
+        tabIndex={-1} 
         aria-labelledby="userModalLabel" 
         aria-hidden={propModal.show ? "false" : "true"}     
         aria-modal={propModal.show ? "true" : undefined}     

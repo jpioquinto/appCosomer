@@ -12,10 +12,19 @@ export const RegistroSchema = z.object({
         supAtendidaId:z.number(),
         numBeneficiario:z.number(),
         regSocialId:z.number(),
+        estatus:z.number(),
         estatusId:z.number(),
         sintEstatus:z.string(),
         orgInvolucradaId:z.number(),
-        problematica:z.string()
+        problematica:z.string(),
+        municipio:z.string(),
+        estado:z.string(),
+        vertiente:z.string(),
+        supConflicto:z.string(),
+        supAtendida:z.string(),
+        regimen:z.string(),
+        descEstatus:z.string(),
+        orgInvolucrada:z.string(),
 })
 
 export const RegistrosSchema = z.array(RegistroSchema)
