@@ -82,13 +82,13 @@ export default function TablaUsuarios({users}: UsersProps) {
     >
         <thead>
             <tr>
-                <th rowSpan="2" className="text-center">UR</th>
-                <th rowSpan="2" className="text-center">Usuario</th>
-                <th rowSpan="2" className="text-center">Perfil</th>
-                <th rowSpan="2" className="text-center">Estatus</th>
-                <th colSpan="2" className="text-center">Fechas</th>
-                <th rowSpan="2" className="text-center">Creado por</th>
-                <th rowSpan="2" className="text-center">Acciones</th>
+                <th rowSpan={2} className="text-center">UR</th>
+                <th rowSpan={2} className="text-center">Usuario</th>
+                <th rowSpan={2} className="text-center">Perfil</th>
+                <th rowSpan={2} className="text-center">Estatus</th>
+                <th colSpan={2} className="text-center">Fechas</th>
+                <th rowSpan={2} className="text-center">Creado por</th>
+                <th rowSpan={2} className="text-center">Acciones</th>
             </tr>
             <tr>
                 <th className="text-center">Creado el</th>

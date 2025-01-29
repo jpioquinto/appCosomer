@@ -48,8 +48,6 @@ export default function Registro() {
         promovente:z.string().min(6, {message: 'Ingrese el Promovente.'}),    
         contraparte:z.string().min(6, {message: 'Ingrese la Contraparte.'}),    
         vertienteId:z.string().min(1, {message: 'Seleccione la Vertiente.'}),
-        supConflictoId:z.string().min(1, {message: 'Seleccione la Superficie en Conflicto.'}),
-        supAtendidaId:z.string().min(1, {message: 'Seleccione la Superficie Atendida.'}),
         numBeneficiario:z.preprocess(
                 (dato) => parseInt(z.string().parse(dato), 10),
                 z.number().min(0)
@@ -58,7 +56,31 @@ export default function Registro() {
         estatusId:z.string().min(1, {message: 'Seleccione el Estatus.'}),
         sintEstatus:z.string().min(6, {message: 'Ingrese la Sintésis del Estatus.'}),
         orgInvolucradaId:z.string().min(1, {message: 'Seleccione la organización involucrada.'}),
-        problematica:z.optional(z.string()).nullable()
+        problematica:z.optional(z.string()).nullable(),
+        ha:z.preprocess(
+            (dato) => parseInt(z.string().parse(dato), 10),
+            z.number().min(0)
+        ),
+        area:z.preprocess(
+            (dato) => parseInt(z.string().parse(dato), 10),
+            z.number().min(0)
+        ),
+        ca:z.preprocess(
+            (dato) => parseFloat(z.string().parse(dato)),
+            z.number().min(0)
+        ),
+        haa:z.preprocess(
+            (dato) => parseInt(z.string().parse(dato), 10),
+            z.number().min(0)
+        ),
+        areaa:z.preprocess(
+            (dato) => parseInt(z.string().parse(dato), 10),
+            z.number().min(0)
+        ),
+        caa:z.preprocess(
+            (dato) => parseFloat(z.string().parse(dato)),
+            z.number().min(0)
+        )
     })
 
     type ValidationSchemaType = z.infer<typeof schema>
@@ -95,12 +117,6 @@ export default function Registro() {
             const result = await saveConflicto(data)
             
             if (result?.solicitud) {
-                /*setContact({...contact, ...data})
-                setUser({
-                    ...user,
-                    name:data?.nombre!.toString(),
-                    name_full:`${data?.nombre!.toString()} ${data?.apPaterno!.toString()} ${data?.apMaterno!.toString()}`
-                })*/
                 notificacion(result.message, 'success')
             } else {
                 throw new Error(result?.response?.data?.message || result.message)
@@ -197,6 +213,23 @@ export default function Registro() {
 
                                 <div className='col-md-3'>
                                     <div className="form-group">
+                                        <label htmlFor="id-vertiente" className='fw-bold'>Vertiente:</label>
+                                        <select id="id-vertiente"  className={`form-control ${errors.vertienteId ? 'is-invalid' : ''}`} 
+                                            {...register('vertienteId')}
+                                        >
+                                            <option value="">Seleccione...</option>
+                                            {getVertientes().map(vertiente => (
+                                                <option value={vertiente.id} key={vertiente.id}>{vertiente.vertiente}</option>
+                                            ))}
+                                        </select>
+                                        {errors.vertienteId && (                                    
+                                            <ErrorForm>{errors.vertienteId?.message}</ErrorForm>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className='col-md-3'>
+                                    <div className="form-group">
                                         <label htmlFor="id-promovente" className='fw-bold'>Promovente:</label>
                                         <input id="id-promovente" type="text" className={`form-control input-solid ${errors.promovente ? 'is-invalid' : ''}`} 
                                             {...register('promovente')}
@@ -218,55 +251,44 @@ export default function Registro() {
                                         )}
                                     </div>
                                 </div>
-
-                                <div className='col-md-3'>
-                                    <div className="form-group">
-                                        <label htmlFor="id-vertiente" className='fw-bold'>Vertiente:</label>
-                                        <select id="id-vertiente"  className={`form-control input-solid ${errors.vertienteId ? 'is-invalid' : ''}`} 
-                                            {...register('vertienteId')}
-                                        >
-                                            <option value="">Seleccione...</option>
-                                            {getVertientes().map(vertiente => (
-                                                <option value={vertiente.id} key={vertiente.id}>{vertiente.vertiente}</option>
-                                            ))}
-                                        </select>
-                                        {errors.vertienteId && (                                    
-                                            <ErrorForm>{errors.vertienteId?.message}</ErrorForm>
-                                        )}
-                                    </div>
-                                </div>
-
+                                
                                 <div className='col-md-3'>
                                     <div className="form-group">
                                         <label htmlFor="id-superficie" className='fw-bold'>Superficie en Conflicto:</label>
-                                        <select id="id-superficie"  className={`form-control input-solid ${errors.supConflictoId ? 'is-invalid' : ''}`} 
-                                            {...register('supConflictoId')}
-                                        >
-                                            <option value="">Seleccione...</option>
-                                            {getUnidades().map(unidad => (
-                                                <option value={unidad.id} key={unidad.id}>{unidad.descripcion} {unidad.unidad}</option>
-                                            ))}
-                                        </select>
-                                        {errors.supConflictoId && (                                    
-                                            <ErrorForm>{errors.supConflictoId?.message}</ErrorForm>
-                                        )}
+                                        <div className='d-flex align-items-center'>
+                                            <input type='number' className={`form-control ${errors.ha ? 'is-invalid' : ''}`} {...register('ha')}/> - 
+                                            <input type='number' className={`form-control ${errors.area ? 'is-invalid' : ''}`} {...register('area')}/> - 
+                                            <input type='text' className={`form-control ${errors.ca ? 'is-invalid' : ''}`} {...register('ca')}/>
+                                        </div>
+                                        {errors.ha && (                                    
+                                            <ErrorForm>{errors.ha?.message}</ErrorForm>
+                                        )}  
+                                        {errors.area && (                                    
+                                            <ErrorForm>{errors.area?.message}</ErrorForm>
+                                        )} 
+                                        {errors.ca && (                                    
+                                            <ErrorForm>{errors.ca?.message}</ErrorForm>
+                                        )}                                       
                                     </div>
                                 </div>
 
                                 <div className='col-md-3'>
                                     <div className="form-group">
-                                        <label htmlFor="id-super-atendida" className='fw-bold'>Superficie Atendida:</label>
-                                        <select id="id-super-atendida"  className={`form-control input-solid ${errors.supAtendidaId ? 'is-invalid' : ''}`} 
-                                            {...register('supAtendidaId')}
-                                        >
-                                            <option value="">Seleccione...</option>
-                                            {getUnidades().map(unidad => (
-                                                <option value={unidad.id} key={unidad.id}>{unidad.descripcion} {unidad.unidad}</option>
-                                            ))}
-                                        </select>
-                                        {errors.supAtendidaId && (                                    
-                                            <ErrorForm>{errors.supAtendidaId?.message}</ErrorForm>
-                                        )}
+                                        <label htmlFor="id-super-atendida" className='fw-bold'>Superficie Atendida:</label>                                        
+                                        <div className='d-flex align-items-center'>
+                                            <input type='number' className={`form-control ${errors.haa ? 'is-invalid' : ''}`} {...register('haa')}/> - 
+                                            <input type='number' className={`form-control ${errors.areaa ? 'is-invalid' : ''}`} {...register('areaa')}/> - 
+                                            <input type='text' className={`form-control ${errors.caa ? 'is-invalid' : ''}`} {...register('caa')}/>
+                                        </div>
+                                        {errors.haa && (                                    
+                                            <ErrorForm>{errors.haa?.message}</ErrorForm>
+                                        )}  
+                                        {errors.areaa && (                                    
+                                            <ErrorForm>{errors.areaa?.message}</ErrorForm>
+                                        )} 
+                                        {errors.caa && (                                    
+                                            <ErrorForm>{errors.caa?.message}</ErrorForm>
+                                        )} 
                                     </div>
                                 </div>
 
@@ -302,7 +324,7 @@ export default function Registro() {
                                 <div className='col-md-3'>
                                     <div className="form-group">
                                         <label htmlFor="id-estatus" className='fw-bold'>Estatus:</label>
-                                        <select id="id-estatus"  className={`form-control input-solid ${errors.estatusId ? 'is-invalid' : ''}`} 
+                                        <select id="id-estatus"  className={`form-control ${errors.estatusId ? 'is-invalid' : ''}`} 
                                             {...register('estatusId')}
                                         >
                                             <option value="">Seleccione...</option>
@@ -315,23 +337,11 @@ export default function Registro() {
                                         )}
                                     </div>
                                 </div>
-
-                                <div className='col-md-3'>
-                                    <div className="form-group">
-                                        <label htmlFor="id-sintesis-estatus" className='fw-bold'>Sintésis del Estatus:</label>
-                                        <input id="id-sintesis-estatus" type="text" className={`form-control input-solid ${errors.sintEstatus ? 'is-invalid' : ''}`} 
-                                            {...register('sintEstatus')}
-                                        />
-                                        {errors.sintEstatus && (                                    
-                                            <ErrorForm>{errors.sintEstatus?.message}</ErrorForm>
-                                        )}
-                                    </div>
-                                </div>
-
+                                
                                 <div className='col-md-3'>
                                     <div className="form-group">
                                         <label htmlFor="id-org-involucrada" className='fw-bold'>Organización Involucrada:</label>
-                                        <select id="id-org-involucrada"  className={`form-control input-solid ${errors.orgInvolucradaId ? 'is-invalid' : ''}`} 
+                                        <select id="id-org-involucrada"  className={`form-control ${errors.orgInvolucradaId ? 'is-invalid' : ''}`} 
                                             {...register('orgInvolucradaId')}
                                         >
                                             <option value="">Seleccione...</option>
@@ -341,6 +351,20 @@ export default function Registro() {
                                         </select>
                                         {errors.orgInvolucradaId && (                                    
                                             <ErrorForm>{errors.orgInvolucradaId?.message}</ErrorForm>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className='col-md-6'>
+                                    <div className="form-group">
+                                        <label htmlFor="id-sintesis-estatus" className='fw-bold'>Sintésis de Atención:</label>
+                                        <textarea 
+                                            id="id-sintesis-estatus" className={`form-control input-solid ${errors.sintEstatus ? 'is-invalid' : ''}`} 
+                                            {...register('sintEstatus')}
+                                            rows={3}
+                                        />
+                                        {errors.sintEstatus && (                                    
+                                            <ErrorForm>{errors.sintEstatus?.message}</ErrorForm>
                                         )}
                                     </div>
                                 </div>

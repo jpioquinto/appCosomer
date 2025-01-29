@@ -76,12 +76,12 @@ export default function TablaURs({urs}: URsProps) {
     >
         <thead>
             <tr>
-                <th rowSpan="2" className="text-center">Nombre</th>
-                <th rowSpan="2" className="text-center">Acrónimo</th>
-                <th colSpan="5" className="text-center">Dirección</th>
-                <th rowSpan="2" className="text-center">Entidad</th>
-                <th rowSpan="2" className="text-center">Del./Munpio.</th>
-                <th rowSpan="2" className="text-center">Acciones</th>
+                <th rowSpan={2} className="text-center">Nombre</th>
+                <th rowSpan={2} className="text-center">Acrónimo</th>
+                <th colSpan={5} className="text-center">Dirección</th>
+                <th rowSpan={2} className="text-center">Entidad</th>
+                <th rowSpan={2} className="text-center">Del./Munpio.</th>
+                <th rowSpan={2} className="text-center">Acciones</th>
             </tr>
             <tr>
                 <th className="text-center">Calle</th>

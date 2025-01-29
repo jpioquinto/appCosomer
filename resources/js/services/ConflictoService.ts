@@ -1,5 +1,5 @@
 import { RegistrosSchema } from "../schema/conflicto-schema";
-import type { DraftRegistro } from "../types/conflicto";
+import type { DraftRegistro, Registro } from "../types/conflicto";
 
 export async function listadoConflictos() {
     try {
@@ -14,6 +14,16 @@ export async function listadoConflictos() {
 }
 
 export async function saveConflicto(data: DraftRegistro) {
+    try {
+        const response =  await axios.post('api/conflict/save', data);
+        
+        return response.data
+    } catch(error) {
+        return error      
+    } 
+}
+
+export async function updateConflicto(data: Registro) {
     try {
         const response =  await axios.post('api/conflict/save', data);
         
