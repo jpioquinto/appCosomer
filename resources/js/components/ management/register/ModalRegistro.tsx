@@ -18,6 +18,7 @@ import { useEdoStore } from '../../../store/edoStore'
 import ErrorForm from '../../partial/ErrorForm'
 import useModal from '../../../hooks/useModal'
 import { RegistroSchema } from '../../../schema/conflicto-schema'
+import { makeHash } from '../../../utils'
 
 
 type Modaltype = {
@@ -26,9 +27,9 @@ type Modaltype = {
 }
 
 export default function ModalRegistro({propModal, close}: Modaltype) {
-    const [munpioId, setMunpioId] = useState<string>('');
+    const [munpioId, setMunpioId] = useState<number>(0);
     const {currentMnpios, listEdos, getEdos, listMunpios} = useEdoStore();
-    const {conflicto, updateConflicto, setCurrentConflicto} = useConflictStore();
+    const {conflicto, updateConflicto, setKeyTable} = useConflictStore();
 
     const [problematica, setProblematica] = useState<string>(conflicto ? conflicto.problematica : '');
 
@@ -37,6 +38,8 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
     const {hideModal} = useModal();
 
     const [optionsMunpios, setOptionsMunpios] = useState<Option[]>([]);
+
+    const [option, setOption] = useState<Option>({} as Option)
 
     type ValidationSchemaType = z.infer<typeof form.schema>
 
@@ -51,18 +54,19 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
 
     const selectedMunpio = (e) => {
         setMunpioId(e.value)
+        setOption(e)
     }
 
      const processResult = response => {
         const result = RegistroSchema.safeParse(response)
         if (result.success) {
-            updateConflicto(result.data)
-            setCurrentConflicto({} as Registro)
+            updateConflicto(result.data)            
+            setKeyTable(makeHash(12))
         }             
     }
 
-    const registerConflicto = async (data: DraftRegistro) => {console.log(data)
-        if (!isInteger(munpioId)) {
+    const registerConflicto = async (data: DraftRegistro) => {
+        if (munpioId<=0) {
             notificacion("Seleccione el municipio ó alcaldía.", 'error');
             return;
         }
@@ -79,8 +83,7 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
             const result = await updateConflictoService({...data, id: conflicto.id})
             
             if (result?.solicitud) {
-                processResult(result?.conflicto)
-                //setProblematica('')
+                processResult(result?.conflicto)                
                 hideModal()
                 notificacion(result?.message, 'success')
                 reset()
@@ -106,13 +109,13 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
             $options.push({value: municipio.id, label: municipio.municipio, sigla:undefined})
         })
 
-        setOptionsMunpios($options)
+        setOptionsMunpios($options)        
     } , [currentMnpios])
 
     useEffect(() => {
         let supConflicto = conflicto?.supConflicto ? conflicto.supConflicto.split('-') : [];
         let supAtentida  = conflicto?.supAtendida ? conflicto.supAtendida.split('-')  : [];
-        console.log(supConflicto, supConflicto)
+        
         if (supConflicto.length> 0) {
             setValue('ha', +supConflicto[0]);
             setValue('area', +supConflicto[1]);
@@ -131,15 +134,16 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
         setValue('vertienteId', conflicto?.vertienteId ? conflicto.vertienteId.toString() : '')
         setValue('promovente', conflicto.promovente)
         setValue('contraparte', conflicto.contraparte)
-        setValue('numBeneficiario', +conflicto.numBeneficiario)
+        setValue('numBeneficiario', conflicto.numBeneficiario)
         setValue('regSocialId', conflicto?.regSocialId ? conflicto.regSocialId.toString() : '')
         setValue('estatusId', conflicto?.estatusId ? conflicto.estatusId.toString() : '')
         setValue('orgInvolucradaId', conflicto?.orgInvolucradaId ? conflicto.orgInvolucradaId.toString() : '')
         setValue('sintEstatus', conflicto.sintEstatus)
         setValue('problematica', conflicto.problematica)
         setProblematica(conflicto.problematica)
+        setMunpioId(conflicto.munpioId)
         conflicto.edoId ? listMunpios(+conflicto.edoId) : undefined 
-        console.log(conflicto) 
+                
     }, [conflicto])
   return (
     <div
@@ -192,16 +196,9 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
                                     <label htmlFor="id-municipio" className='fw-bold'>Municipio:</label>
                                     <Select 
                                         placeholder='Seleccione...'
-                                        options={optionsMunpios} 
-                                        menuPortalTarget={document.querySelector('.swal2-container')}
-                                        styles={{
-                                            menuPortal: base => ({ ...base, zIndex: 9999 }),
-                                            control: (baseStyles, state) => ({
-                                                ...baseStyles,
-                                                textAlign: 'left',
-                                            })
-                                        }}                                                    
-                                        onChange={selectedMunpio}                                                    
+                                        value={optionsMunpios.filter(({ value }) => value === munpioId)}
+                                        options={optionsMunpios}                                                                                           
+                                        onChange={selectedMunpio}   
                                     />
                                 </div>
                             </div>

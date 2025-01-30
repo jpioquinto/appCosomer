@@ -1,19 +1,25 @@
 import React, {useEffect, useState} from 'react'
+import { useConflictStore } from '../../../store/conflict/conflictStore'
+import useSegundaModal from '../../../hooks/useSegundaModal'
+import { useModuloStore } from '../../../store/modulo'
+import ModalDiagnostico from './ModalDiagnostico'
 import Breadcrumb from '../../partial/Breadcrumb'
 import { useLocation } from 'react-router-dom'
-import { useModuloStore } from '../../../store/modulo'
-import { useConflictStore } from '../../../store/conflict/conflictStore'
+import useModal from '../../../hooks/useModal'
 import { makeHash } from '../../../utils'
 import TablaTramite from './TablaTramite'
+import ModalCedula from './ModalCedula'
 
 export default function Tramite() {
     const location = useLocation()
 
+    const {modal, closeModal} = useModal()
+
+    const {segundaModal, closeSecondModal} = useSegundaModal()
+
     const {modulo, setModulo} = useModuloStore()
 
-    const {conflictos, listConflicts} = useConflictStore()
-
-    const [keyTable, setKeyTable] = useState<string>(makeHash(12))
+    const {keyTable, conflictos, listConflicts, setKeyTable} = useConflictStore()
 
     useEffect(() => {
         listConflicts()
@@ -35,7 +41,11 @@ export default function Tramite() {
                             <h4 className="card-title">Listado de...</h4>
                     </div>
                     <div className="card-body">
-                        <TablaTramite conflictos={conflictos} key={keyTable} />   
+                        <TablaTramite conflictos={conflictos} key={keyTable} /> 
+
+                        <ModalDiagnostico propModal={modal} close={closeModal}/> 
+
+                        <ModalCedula propModal={segundaModal} close={closeSecondModal}/>  
                     </div>
                 </div>
             </div>

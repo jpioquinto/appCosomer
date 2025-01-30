@@ -48,3 +48,7 @@
 .sidebar .nav>.nav-item a p, .sidebar[data-background-color=white] .nav>.nav-item a p {
     white-space:normal!important;
 }
+
+.accion-tabla {
+    i { font-size: 1.25rem !important;  }  
+}

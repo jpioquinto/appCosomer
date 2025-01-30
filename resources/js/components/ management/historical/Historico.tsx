@@ -15,9 +15,9 @@ export default function Historico() {
 
     const {modulo, setModulo} = useModuloStore()
 
-    const {conflictos, listConflicts} = useConflictStore()
+    const {conflictos, keyTable, listConflicts, setKeyTable} = useConflictStore()
 
-    const [keyTable, setKeyTable] = useState<string>(makeHash(12))
+    //const [keyTable, setKeyTable] = useState<string>(makeHash(12))
 
     useEffect(() => {
         listConflicts()
@@ -29,9 +29,6 @@ export default function Historico() {
    <div className="page-inner">
         <div className="page-header justify-content-between">
             <Breadcrumb nombre={`${modulo.descripcion}`} id={modulo.id} />
-            <button type="button" className="btn btn-outline-primary btn-sm"  onClick={triggerModal}>
-                <i className="fas fa-user-plus" ></i> Nuevo
-            </button>
         </div> 
         <div className="row">
             <div className="col-md-12">

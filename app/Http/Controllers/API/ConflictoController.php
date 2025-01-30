@@ -24,7 +24,7 @@ class ConflictoController extends Controller
     }
 
     public function save(Request $request)
-    {
+    {        
         try {            
             $conflicto = new ConflictoStore( array_merge($request->all(), ['user'=>auth()->user()->id]) );            
         } catch (Exception $e) {            
@@ -34,7 +34,26 @@ class ConflictoController extends Controller
         return response([
             'solicitud'=>true,
             'conflicto'=>$conflicto->getConflicto(),
-            'message'=> 'Información guardada correctamente.',
+            'message'=> 'Información guardada correctamente.',            
+        ], 200);
+    }
+
+    public function deleteConflicto(Request $request)
+    {        
+        try {            
+            $conflicto = new ConflictoStore(); 
+
+            if (!$conflicto->delete($request->id)) {
+                throw new Exception('Operación fallida.');
+            }  
+                        
+        } catch (Exception $e) {                        
+            return response(['message'=>'Error al intentar eliminar el registro. '.$e->getMessage()], 400);
+        }
+
+        return response([
+            'solicitud'=>true,
+            'message'=> 'Registro eliminado correctamente.',
         ], 200);
     }
 }

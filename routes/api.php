@@ -24,6 +24,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/contact/save-info', [\App\Http\Controllers\API\ContactoController::class, 'save']); 
     
     Route::post('/conflict/save', [\App\Http\Controllers\API\ConflictoController::class, 'save']); 
+    Route::post('/conflict/delete-conflicto', [\App\Http\Controllers\API\ConflictoController::class, 'deleteConflicto']); 
     Route::get('/conflict/listado-conflictos', [\App\Http\Controllers\API\ConflictoController::class, 'getConflictos']); 
     
     Route::get('/edo/listado-estados', [\App\Http\Controllers\API\EntidadController::class, 'getEdos']);    

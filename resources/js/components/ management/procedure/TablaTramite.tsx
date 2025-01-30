@@ -1,10 +1,15 @@
-import React from 'react'
+import React, {useRef} from 'react'
 
-import DataTable from 'datatables.net-react'
+import DataTable, {DataTableRef} from 'datatables.net-react'
+import DataTablesCore from 'datatables.net'
 import DT from 'datatables.net-bs5'
 import 'datatables.net-select-bs5'
 import 'datatables.net-responsive-bs5'
-import { Registros } from '../../../types/conflicto';
+import { Registros, Registro } from '../../../types/conflicto'
+import { useModuloStore } from '../../../store/modulo'
+import type { Acciones } from '../../../types'
+import BtnAccion from './BtnAccion'
+
 
 DataTable.use(DT);
 
@@ -13,6 +18,10 @@ type ConflictsProps = {
 }
 
 export default function TablaTramite({conflictos}: ConflictsProps) {
+    const modulo = useModuloStore(state=>state.modulo);
+    
+    const table = useRef<DataTableRef>(null);
+
     const columns = [
         { data: 'fecha', render: DT.render.date()},
         { data: 'estado' },
@@ -27,18 +36,49 @@ export default function TablaTramite({conflictos}: ConflictsProps) {
         { data: 'sintEstatus' },
         { data: 'orgInvolucrada' },
         { data: 'id' },
-      ];
+    ];
+
+    const generarAcciones = (registro:Registro) => {            
+        return <BtnAccion acciones={modulo.acciones as Acciones} conflicto={registro} key={registro.id}/>     
+    }
+
+    const setTooltips = () => {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        return () => tooltipList.map(t => t.dispose())
+    }
+
+    const initTooltips = (table, intervalId:number) => {     
+        if (!table) {
+            return
+        }  
+        setTooltips()        
+        clearInterval(intervalId)                
+    }
+
+    const initEvent = (e: Event) => {        
+        const intervalId = setInterval(() => initTooltips(table.current ? table.current.dt() : undefined, intervalId), 750);
+    }
 
   return (
     <DataTable 
         data={conflictos}
-    
+        ref={table}
         columns={columns}
         className="display"
+        onInit={initEvent}
+        onDraw={(e: Event) =>setTooltips()}
         options={{
-            responsive: true,
+            responsive: {
+                details: {
+                    renderer:   DataTablesCore.Responsive.renderer.listHiddenNodes()
+                }
+            },
             select: true,
         }}
+        slots={{
+            12: (data, row) => (generarAcciones(row))
+        }} 
     >
         <thead>
             <tr>

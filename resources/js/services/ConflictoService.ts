@@ -32,3 +32,13 @@ export async function updateConflicto(data: Registro) {
         return error      
     } 
 }
+
+export async function deleteConflicto(data) {
+    try {
+        const response =  await axios.post('api/conflict/delete-conflicto', data);
+        
+        return response.data
+    } catch(error) {
+        return error      
+    } 
+}

@@ -8,39 +8,20 @@ const schema = z.object({
     promovente:z.string().min(6, {message: 'Ingrese el Promovente.'}),    
     contraparte:z.string().min(6, {message: 'Ingrese la Contraparte.'}),    
     vertienteId:z.string().min(1, {message: 'Seleccione la Vertiente.'}),
-    numBeneficiario:z.preprocess(
-            (dato) => parseInt(z.string().parse(dato), 10),
-            z.number().min(0)
-    ),
+    numBeneficiario:z.coerce.number().min(0, {message:'Ingrese una dato numérico mayor o igual a 0'}),
     regSocialId:z.string().min(1, {message: 'Seleccione el Régimen Social.'}),
     estatusId:z.string().min(1, {message: 'Seleccione el Estatus.'}),
     sintEstatus:z.string().min(6, {message: 'Ingrese la Sintésis del Estatus.'}),
     orgInvolucradaId:z.string().min(1, {message: 'Seleccione la organización involucrada.'}),
     problematica:z.optional(z.string()).nullable(),
-    ha:z.preprocess(
-        (dato) => parseInt(z.string().parse(dato), 10),
-        z.number().min(0)
-    ),
-    area:z.preprocess(
-        (dato) => parseInt(z.string().parse(dato), 10),
-        z.number().min(0)
-    ),
-    ca:z.preprocess(
-        (dato) => parseFloat(z.string().parse(dato)),
-        z.number().min(0)
-    ),
-    haa:z.preprocess(
-        (dato) => parseInt(z.string().parse(dato), 10),
-        z.number().min(0)
-    ),
-    areaa:z.preprocess(
-        (dato) => parseInt(z.string().parse(dato), 10),
-        z.number().min(0)
-    ),
-    caa:z.preprocess(
-        (dato) => parseFloat(z.string().parse(dato)),
-        z.number().min(0)
-    )
+    ha:z.coerce.number().min(0, {message:'Ingrese una dato numérico mayor o igual a 0'}),
+    area:z.coerce.number().min(0, {message:'Ingrese una dato numérico mayor o igual a 0'}),
+    ca:z.coerce.number({required_error: 'Se requiere una cantidad numérica positiva.', invalid_type_error: 'Ingrese una cantidad numérica positiva.'})
+        .min(0, {message:'Ingrese una dato numérico mayor o igual a 0'}),
+    haa:z.coerce.number().min(0, {message:'Ingrese una dato numérico mayor o igual a 0'}),
+    areaa:z.coerce.number().min(0, {message:'Ingrese una dato numérico mayor o igual a 0'}),
+    caa:z.coerce.number({required_error: 'Se requiere una cantidad numérica positiva.', invalid_type_error: 'Ingrese una cantidad numérica positiva.'})
+        .min(0, {message:'Ingrese una dato numérico mayor o igual a 0'})
 })
 
 const modules = {

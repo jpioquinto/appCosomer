@@ -34,6 +34,11 @@ class ConflictoStore extends ValidaConflicto
         return QueryBuilder::obtenerListado();
     }
 
+    public function delete(int $id)
+    {
+        return Conflicto::where('id', $id)->update(['estatus'=>0, 'eliminado_el'=>'now()', 'eliminado_por'=>auth()->user()->id]);
+    }
+
     protected function save(array $data, int $id = -1)
     {
         $campos = [

@@ -1,4 +1,5 @@
 import React, {MouseEvent} from 'react'
+import { deleteConflicto as deleteConflictoService } from '../../../services/ConflictoService'
 import { useConflictStore } from '../../../store/conflict/conflictStore'
 import type { Registro } from '../../../types/conflicto'
 import type { Acciones,Accion } from '../../../types'
@@ -19,13 +20,13 @@ type AccionProps= {
 export default function BtnAccion({acciones, conflicto}: AccionesProps) {
     const {modal, showModal, closeModal} = useModal();
 
-    const setCurrentConflicto = useConflictStore(state => state.setCurrentConflicto);
+    const {setCurrentConflicto, deleteConflicto} = useConflictStore();
 
-    const eliminarConflicto = async (id:Registro['id']) => {
-        const result = {response:true, message:'prueba'}//await _deleteUR({id});
+    const eliminarConflicto = async (id: Registro['id']) => {
+        const result = await deleteConflictoService({id});
             
-        if (result.response) {       
-            //deleteUR(id)
+        if (result.solicitud) {       
+            deleteConflicto(id)
             notificacion(result.message, 'success')            
         } else {
             notificacion(result.message, 'error')
