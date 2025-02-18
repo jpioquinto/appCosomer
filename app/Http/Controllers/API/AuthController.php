@@ -53,4 +53,17 @@ class AuthController extends Controller
                     'expires_at'   => Carbon::parse($resultToken->accessToken->expires_at)->toDateTimeString(),                    
                 ],200);
     }
+
+    public function logout(Request $request)
+    {
+        // Revoke all tokens...
+		$request->user()->tokens()->delete();
+
+		$request->user()->currentAccessToken()->delete();
+
+		return response()->json([
+            'solicitud'=>true,
+            'message' => 'Sessión cerrada correctamente.'], 
+            200);
+    }
 }

@@ -3,6 +3,8 @@ import { Outlet } from "react-router-dom"
 import { useAuthStore } from '../store/auth'
 import { useNavigate } from "react-router-dom"
 import { ToastContainer, toast } from 'react-toastify'
+import { useLoadingStore } from "../store/loading"
+import { useConfigStore } from "../store/config"
 
 import Sidebar from "./Sidebar"
 import Header from "./Header"
@@ -10,6 +12,7 @@ import Footer from "./Footer"
 
 import { useSidebarStore } from '../store/sidebar'
 import { useNavBarStore } from '../store/navbar'
+import Loading from "../components/Loading"
 
 export default function Layout() {
 
@@ -17,11 +20,36 @@ export default function Layout() {
 
     const {token, isAuthenticated} = useAuthStore();
 
+    const setInterceptor = useConfigStore(state => state.setInterceptor);
+
+    const {setIsLoading, loadShow, loadHidden} = useLoadingStore();
+
     const {obtenerMenu} = useNavBarStore();
 
     const navigate = useNavigate();
 
-    useEffect(() => {                   
+    const activarInterceptor = () => {
+        const interceptor = axios.interceptors.request.use((config) => {
+            setIsLoading(true); loadShow();
+            return config;
+        }, (error) => {
+            setIsLoading(true); loadShow();
+            return Promise.reject(error);
+        });
+
+        axios.interceptors.response.use((response) => {
+            setIsLoading(false); loadHidden();
+            return response;
+        }, function(error) {
+            setIsLoading(false); loadHidden();
+            return Promise.reject(error);
+        });
+
+        setInterceptor(interceptor);
+    };
+
+    useEffect(() => {  
+        activarInterceptor();                 
         if (!isAuthenticated || token==='' || !token) {
             navigate('./login');
             return;
@@ -39,7 +67,8 @@ export default function Layout() {
                 </div>
                 <ToastContainer />
                 <Footer />  
-            </div>        
+            </div>  
+            <Loading />      
         </div>
     )
 }

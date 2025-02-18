@@ -52,3 +52,7 @@
 .accion-tabla {
     i { font-size: 1.25rem !important;  }  
 }
+
+.dropdown-item {
+    cursor: pointer!important;
+}

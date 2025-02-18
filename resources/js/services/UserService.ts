@@ -21,6 +21,16 @@ export async function savePasswd(data) {
     } 
 }
 
+export async function logout() {
+    try {
+        const response =  await axios.post('api/user/logout');
+        return await response.data;
+        //return response.data
+    } catch(error) {
+        return error      
+    } 
+}
+
 export async function listadoUsuarios() {
     try {
         const response =  await axios.get('api/user/listado-user');  

@@ -1,8 +1,10 @@
-import React from 'react'
+import React, {MouseEvent} from 'react'
 import { Link } from 'react-router-dom'
 import { useItemUserNav } from '../../hooks/useItemUserNav'
+
+
 export default function ItemUserNav() {
-    const {contact, toggle, handlerToggle} = useItemUserNav()
+    const {contact, toggle, clickLogout, handlerToggle} = useItemUserNav()
 
   return (
     <>
@@ -32,8 +34,8 @@ export default function ItemUserNav() {
                 </li>
                 <li>
                     <div className="dropdown-divider"></div>
-                    <a className="dropdown-item">Cambiar contraseña</a>
-                    <a className="dropdown-item">Salir</a>
+                    <Link className="dropdown-item" to="/cambiar-pswd">Cambiar contraseña</Link>
+                    <a className="dropdown-item" onClick={clickLogout}>Salir</a>
                 </li>
             </div>
         </ul>

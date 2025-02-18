@@ -4,10 +4,12 @@ import useSegundaModal from '../../../hooks/useSegundaModal'
 import { Acciones, Accion } from '../../../types'
 import { Registro } from '../../../types/conflicto'
 import useModal from '../../../hooks/useModal'
+import { redirect, useNavigate } from "react-router-dom";
 
 type AccionesProps= {
     acciones:Acciones,
-    conflicto:Registro
+    conflicto:Registro,
+    prueba:() => void
 }
 
 type AccionProps= {
@@ -15,10 +17,12 @@ type AccionProps= {
     id:Accion['id']
 }
 
-export default function BtnAccion({acciones, conflicto}: AccionesProps) {
+export default function BtnAccion({acciones, conflicto, prueba}: AccionesProps) {
     const {modal, showModal, closeModal} = useModal();
 
     const {showSecondModal}  = useSegundaModal();
+
+    //const navigate = useNavigate();
 
     const showModalDiagnostico = (conflicto: Registro) => {
         showModal()
@@ -35,6 +39,11 @@ export default function BtnAccion({acciones, conflicto}: AccionesProps) {
                 break;
             case 10:
                 showModalCedula(conflicto)
+                break;
+            case 11:
+                console.log('redireccionar...')
+                prueba();
+                //return navigate('/registro');
                 break;
               default:break;
           }

@@ -9,6 +9,7 @@ import useModal from '../../../hooks/useModal'
 import { makeHash } from '../../../utils'
 import TablaTramite from './TablaTramite'
 import ModalCedula from './ModalCedula'
+import { useNavigate } from 'react-router-dom'
 
 export default function Tramite() {
     const location = useLocation()
@@ -26,13 +27,19 @@ export default function Tramite() {
         setModulo(location.state)
         setKeyTable(makeHash(12))
     }, [modulo])
-    
+    //const history  = useHistory()
+    const navigate = useNavigate()
+    const prueba = () => {
+        console.log('hey chido...')
+        //history.push('/registro');
+        return navigate('/registro')
+    }
 
   return (
      <div className="page-inner">
         <div className="page-header justify-content-between">
             <Breadcrumb nombre={`${modulo.descripcion}`} id={modulo.id} />
-           
+            <button onClick={prueba}>Prueba</button>
         </div> 
         <div className="row">
             <div className="col-md-12">
@@ -41,7 +48,7 @@ export default function Tramite() {
                             <h4 className="card-title">Listado de...</h4>
                     </div>
                     <div className="card-body">
-                        <TablaTramite conflictos={conflictos} key={keyTable} /> 
+                        <TablaTramite conflictos={conflictos} key={keyTable} prueba={prueba} /> 
 
                         <ModalDiagnostico propModal={modal} close={closeModal}/> 
 

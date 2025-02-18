@@ -13,11 +13,13 @@ import Perfil from './components/profile/Perfil.tsx'
 import EditarPerfil from './components/users/EditarPerfil.tsx'
 import UR from './components/urs/UR.tsx'
 
-import Solicitud from './components/ management/request/Solicitud.tsx'
-import MarcoJuridico from './components/ management/legal/MarcoJuridico.tsx'
-import Historico from './components/ management/historical/Historico.tsx'
-import Registro from './components/ management/register/Registro.tsx'
-import Tramite from './components/ management/procedure/Tramite.tsx'
+import Solicitud from './components/management/request/Solicitud.tsx'
+import MarcoJuridico from './components/management/legal/MarcoJuridico.tsx'
+import Historico from './components/management/historical/Historico.tsx'
+import Registro from './components/management/register/Registro.tsx'
+import Tramite from './components/management/procedure/Tramite.tsx'
+
+import NotFound from './components/NotFound.tsx'
 
 export default function AppRouter() {
 
@@ -37,6 +39,7 @@ export default function AppRouter() {
                     <Route path='/historico' element={<Historico />} />                    
                     <Route path='/registro' element={<Registro />} />                    
                     <Route path='/tramite' element={<Tramite />} />                    
+                    <Route path='*' element={<NotFound />} />                    
                 </Route>  
             </Routes>
         </BrowserRouter>

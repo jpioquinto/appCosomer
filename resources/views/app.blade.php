@@ -18,7 +18,7 @@
         @vite([
             'resources/css/bootstrap.min.css', 
             'resources/css/app/plugins.min.css', 
-            'resources/css/app/kaiadmin.min.css',             
+            'resources/css/app/kaiadmin.creative.min.css',             
             'resources/js/popper.min.js', 
             'resources/js/bootstrap.min.js', 
             'resources/css/app.css', 

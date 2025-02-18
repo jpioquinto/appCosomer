@@ -10,6 +10,8 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/user/logout', [\App\Http\Controllers\API\AuthController::class, 'logout']);
+
     Route::get('/permisos', [\App\Http\Controllers\API\PermisoController::class, 'index']);    
     Route::get('/menu', [\App\Http\Controllers\API\MenuController::class, 'index']);    
     Route::post('/ur/save-ur', [\App\Http\Controllers\API\URController::class, 'save']);    

@@ -6,6 +6,11 @@ import { ArbolPermiso, PerfilSchema, PerfilsSchema } from '../schema/perfil-sche
 import { EdosSchema, MunpioSchema, MunpiosSchema } from '../schema/edo-schema'
 import { PuestosSchema } from '../schema/contact-schema'
 
+export type LoadingProps = {
+    texto?:string | undefined | null,
+    omitCancel?:boolean | undefined | null
+}
+
 export type Sidebar = {
     minimize:number
     firstToggle:boolean

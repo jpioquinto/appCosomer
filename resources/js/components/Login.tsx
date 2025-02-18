@@ -40,9 +40,14 @@ export default function Login() {
 
     const handleSuccessLogin = response => {
         axios.defaults.headers.common['Authorization'] = 'Bearer '+ response.data.token;
+        localStorage.setItem('accessAuth', JSON.stringify({
+            contact:response.data.contact,
+            token:response.data.token,
+            user:response.data.user,
+        }));
+        setContact(response.data.contact);
         setToken(response.data.token);
         setUser(response.data.user);
-        setContact(response.data.contact)
         setAuthenticated(true);
         loadHidden();
         

@@ -14,10 +14,11 @@ import BtnAccion from './BtnAccion'
 DataTable.use(DT);
 
 type ConflictsProps = {
-    conflictos:Registros
+    conflictos:Registros,
+    prueba:() => void
 }
 
-export default function TablaTramite({conflictos}: ConflictsProps) {
+export default function TablaTramite({conflictos, prueba}: ConflictsProps) {
     const modulo = useModuloStore(state=>state.modulo);
     
     const table = useRef<DataTableRef>(null);
@@ -39,7 +40,7 @@ export default function TablaTramite({conflictos}: ConflictsProps) {
     ];
 
     const generarAcciones = (registro:Registro) => {            
-        return <BtnAccion acciones={modulo.acciones as Acciones} conflicto={registro} key={registro.id}/>     
+        return <BtnAccion acciones={modulo.acciones as Acciones} conflicto={registro} key={registro.id} prueba={prueba}/>     
     }
 
     const setTooltips = () => {
