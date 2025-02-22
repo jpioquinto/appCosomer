@@ -1,10 +1,17 @@
 import { useAuthStore } from "../store/auth";
 import {useState, MouseEvent} from 'react'
 
+type ToggleUserNav = {
+    aria:string,
+    classToggle:string,
+    collapse:string,
+    show:boolean
+}
+
 export function useUserNav() {
     const {user, contact, getFoto, setFoto} = useAuthStore()
 
-    const [toggle, setToggle] = useState({
+    const [toggle, setToggle] = useState<ToggleUserNav>({
         aria:'true',
         classToggle:'',
         collapse:'in collapse',
@@ -13,7 +20,6 @@ export function useUserNav() {
 
     const showElemens = () => {
         setToggle({
-            ...toggle,  
             aria:'true', 
             classToggle:'',         
             collapse:'in collapse show',
@@ -24,7 +30,6 @@ export function useUserNav() {
 
     const hideElemens = () => {
         setToggle({
-            ...toggle,    
             aria:'false',
             classToggle:'collapsed',
             collapse:'in collapse',
@@ -34,7 +39,7 @@ export function useUserNav() {
     }
 
     const handlerCollapse = (e: MouseEvent<HTMLElement>) => {
-        //e.preventDefault();
+        e.preventDefault();
         toggle.show ? hideElemens() : showElemens();
 	}
 

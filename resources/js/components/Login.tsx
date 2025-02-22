@@ -1,9 +1,10 @@
-import React, {useState, ChangeEvent, FormEvent} from 'react'
+import React, {useState, ChangeEvent, FormEvent, MouseEvent, useEffect} from 'react'
 import { useNavigate } from "react-router-dom"
 import { ToastContainer, toast } from 'react-toastify'
 import { useAuthStore } from '../store/auth'
 import { useLoadingStore } from '../store/loading'
 import Loading from './Loading'
+
 import 'react-toastify/dist/ReactToastify.css'
 import './../../css/app/plugins.min.css'
 import './../../css/app/kaiadmin.min.css'
@@ -22,13 +23,24 @@ const initialState : FormProps = {
 
 export default function Login() {
 
-    const [credenciales, setCredenciales] = useState(initialState)
+    const [credenciales, setCredenciales] = useState(initialState);
 
-    const {setIsLoading, loadShow, loadHidden} = useLoadingStore()
+    const {setIsLoading, loadShow, loadHidden} = useLoadingStore();
 
-    const {setUser, setToken, setContact, setAuthenticated} = useAuthStore()
+    const {setUser, setToken, setContact, setAuthenticated, setDataAuthenticate} = useAuthStore();
+
+    const [fieldPasswd, setFieldPasswd] = useState({show:false, icon:'icon-eye', type:'password'});
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem('accessAuth')) {
+            const data = JSON.parse(localStorage.getItem('accessAuth')!); 
+            axios.defaults.headers.common['Authorization'] = 'Bearer '+ data.token;  
+            setDataAuthenticate(data.user, data.contact, data.token);    
+            navigate('/inicio');      
+        }   
+    }, [])
 
     const handleErrorsLogin = error => {
         loadHidden();
@@ -61,6 +73,11 @@ export default function Login() {
         setTimeout(() => {            
             navigate('/inicio');               
         },1200);
+    };
+
+    const toggleFieldPassword = (e: MouseEvent<HTMLElement>) => {
+        e.preventDefault();
+        setFieldPasswd({show:!fieldPasswd.show, icon:!fieldPasswd.show ? 'icon-eye' : 'far fa-eye-slash', type:!fieldPasswd.show ? 'password' : 'text'});
     };
 
     const clickIngresar = (e: FormEvent<HTMLFormElement>) => {
@@ -126,14 +143,14 @@ export default function Login() {
                                         <input 
                                             id="password" 
                                             name="password" 
-                                            type="password" 
+                                            type={`${fieldPasswd.type}`} 
                                             className="form-control" 
                                             required 
                                             value={credenciales.password}
                                             onChange={handleChange}
                                         />
-                                        <div className="show-password">
-                                            <i className="icon-eye"></i>
+                                        <div className="show-password" onClick={toggleFieldPassword}>
+                                            <i className={`${fieldPasswd.icon}`}></i>
                                         </div>
                                     </div>
                                 </div>

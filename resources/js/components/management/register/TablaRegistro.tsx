@@ -1,16 +1,20 @@
-import React, {useRef} from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 
 import DataTable, {DataTableRef} from 'datatables.net-react'
-import DataTablesCore from 'datatables.net';
+import DataTablesCore from 'datatables.net'
 import DT from 'datatables.net-bs5'
 import 'datatables.net-select-bs5'
 import 'datatables.net-responsive-bs5'
 
+import languaje from '../../../data/Spanish_Mexico.json'
 import { Registro, Registros } from '../../../types/conflicto'
+import { useCatalogStore } from '../../../store/catalogStore'
 import type { Acciones } from '../../../types'
 import { useModuloStore } from '../../../store/modulo'
 import BtnAccion from './BtnAccion'
 import * as bootstrap from 'bootstrap'
+
+import type { Option } from '../../../types'
 
 DataTable.use(DT);
 
@@ -21,22 +25,23 @@ type ConflictsProps = {
 export default function TablaRegistro({conflictos}: ConflictsProps) {
     const modulo = useModuloStore(state=>state.modulo);
 
+    const {getEstatus, setOptionsEstatus} = useCatalogStore();
+
     const table = useRef<DataTableRef>(null);
 
     const columns = [
         { data: 'fecha', render: DT.render.date()},
+        { data: 'folio' },
         { data: 'estado' },
         { data: 'municipio' },
         { data: 'promovente'},
         { data: 'contraparte'},
         { data: 'vertiente'},
         { data: 'problematica'},
-        { data: 'supConflicto'},
-        { data: 'supAtendida'},
+        { data: 'supconflicto'},
         { data: 'numBeneficiario', className:'text-center'},
         { data: 'regimen' },
         { data: 'descEstatus' },
-        { data: 'sintEstatus' },
         { data: 'orgInvolucrada' },
         { data: 'id' },
       ];
@@ -63,6 +68,14 @@ export default function TablaRegistro({conflictos}: ConflictsProps) {
         const intervalId = setInterval(() => initTooltips(table.current ? table.current.dt() : undefined, intervalId), 750);
     }
 
+    useEffect(() => {
+        let $options: Option[] = [];
+        getEstatus().forEach((estatus) => {
+            $options.push({value: estatus.id, label: estatus.descripcion})
+        })
+        setOptionsEstatus($options)
+    }, [])
+
   return (
     <DataTable 
         data={conflictos}
@@ -72,6 +85,7 @@ export default function TablaRegistro({conflictos}: ConflictsProps) {
         onInit={initEvent}
         onDraw={(e: Event) =>setTooltips()}
         options={{
+            language: languaje,
             responsive: {
                 details: {
                     renderer:   DataTablesCore.Responsive.renderer.listHiddenNodes()
@@ -80,12 +94,13 @@ export default function TablaRegistro({conflictos}: ConflictsProps) {
             select: true,
         }}       
         slots={{
-            14: (data, row) => (generarAcciones(row))
+            13: (data, row) => (generarAcciones(row))
         }}
     >
         <thead>
             <tr>
                 <th className="text-center">Fecha</th>
+                <th className="text-center">Folio</th>
                 <th className="text-center">Estado</th>
                 <th className="text-center">Municipio</th>
                 <th className="text-center">Promovente</th>
@@ -93,11 +108,9 @@ export default function TablaRegistro({conflictos}: ConflictsProps) {
                 <th className="text-center">Vertiente</th>
                 <th className="text-center">Problemática</th>
                 <th className="text-center">Superficie en Conflicto</th>
-                <th className="text-center">Superficie Atendida</th>
                 <th className="text-center">Número de Beneficiarios</th>
                 <th className="text-center">Régimen Social</th>
                 <th className="text-center">Estatus</th>
-                <th className="text-center">Sintésis de Atención</th>
                 <th className="text-center">Organización Inv.</th>
                 <th className="text-center">Acciones</th>
             </tr>

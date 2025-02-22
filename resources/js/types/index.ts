@@ -32,7 +32,7 @@ export type UserAuth = {
 export type Option = {
     value:number,
     label:string,
-    sigla:string | undefined | null
+    sigla?:string | undefined | null
 }
 
 export type Users = z.infer<typeof UsuariosSchema>

@@ -12,9 +12,8 @@ export default function UserNav() {
         <div className="info">
             <a 
                 data-bs-toggle="collapse" 
-                href="#collapseUser" 
-                className={toggle.classToggle}
-                aria-expanded={toggle.aria} 
+                className={`${toggle.classToggle}`}
+                aria-expanded={`${toggle.aria}`}
                 onClick={handlerCollapse}
             >
                 <span>
@@ -25,7 +24,7 @@ export default function UserNav() {
             </a>
             <div className="clearfix"></div>
 
-            <div className={toggle.collapse} id="collapseUser">
+            <div className={`${toggle.collapse}`}>
                 <ul className="nav">
                     <li>
                         <a href="#edit">

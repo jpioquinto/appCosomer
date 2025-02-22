@@ -45,7 +45,7 @@ export default function Tramite() {
             <div className="col-md-12">
                 <div className="card">
                     <div className="card-header">
-                            <h4 className="card-title">Listado de...</h4>
+                            <h4 className="card-title">Listado de Trámites</h4>
                     </div>
                     <div className="card-body">
                         <TablaTramite conflictos={conflictos} key={keyTable} prueba={prueba} /> 

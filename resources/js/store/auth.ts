@@ -8,6 +8,7 @@ type AuthState = Auth & {
     setContact:(contact: Contact) => void
     setToken:(token:string) => void
     setAuthenticated:(authenticated:boolean) => void
+    setDataAuthenticate:(user: UserAuth, contact: Contact, token:string) => void
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -54,5 +55,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         set(state => ({
             isAuthenticated:authenticated
         }))
+    },
+    setDataAuthenticate:(user, contact, token) => {
+        set({user, contact, token, isAuthenticated:true})
     }
 }))

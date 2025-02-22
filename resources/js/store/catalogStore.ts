@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { listadoVertientes, listadoUnidades, listadoRegimenes, listadoOrganizaciones, listadoEstatus } from '../services/CatalogService'
 import { EstatusSchema, OrganizacionesSchema, RegimenesSchema, UnidadesSchema, VertientesSchema } from '../types/catalog'
+import type { Option } from '../types'
 
 type CatalogState = {
     vertientes:VertientesSchema,
@@ -8,6 +9,9 @@ type CatalogState = {
     regimenes:RegimenesSchema,
     organizaciones:OrganizacionesSchema,
     estatus:EstatusSchema,
+    optionsEstatus:Option[],
+    getOptionsEstatus:() => Option[], 
+    setOptionsEstatus:(options: Option[]) => void, 
     getVertientes:() => VertientesSchema,
     getUnidades:() => UnidadesSchema,
     getRegimenes:() => RegimenesSchema,
@@ -20,11 +24,14 @@ type CatalogState = {
     listEstatus:() => Promise<void>,
 }
 export const useCatalogStore = create<CatalogState>((set, get) => ({
+    optionsEstatus:[],
     vertientes:[],
     unidades:[],
     regimenes:[],
     organizaciones:[],
     estatus:[],
+    setOptionsEstatus:(optionsEstatus) => set({optionsEstatus}),
+    getOptionsEstatus:() => get().optionsEstatus,
     getVertientes:() => get().vertientes,
     getUnidades:() => get().unidades,
     getRegimenes:() => get().regimenes,

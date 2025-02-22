@@ -78,7 +78,7 @@ class Permiso
             }
             
             $acciones = gettype($value->acciones) == 'string'
-                        ? Accion::whereIn('id', explode(',', $value->acciones))->orderBy('descripcion')->get()
+                        ? Accion::whereIn('id', explode(',', $value->acciones))->orderBy('orden')->get()
                         : $value->acciones;
 
             $value->acciones = $acciones ?? collect();

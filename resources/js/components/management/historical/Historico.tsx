@@ -1,25 +1,29 @@
-import React, {useEffect, useState} from 'react'
-import Breadcrumb from '../../partial/Breadcrumb'
-import { useModuloStore } from '../../../store/modulo'
-import { makeHash } from '../../../utils'
+import React, {useEffect} from 'react'
 import { useLocation } from 'react-router-dom'
+
+import { useConflictStore } from '../../../store/conflict/conflictStore'
+import { useCatalogStore } from '../../../store/catalogStore'
+import { useModuloStore } from '../../../store/modulo'
 import TablaRegistro from '../register/TablaRegistro'
 import ModalRegistro from '../register/ModalRegistro'
+import Breadcrumb from '../../partial/Breadcrumb'
 import useModal from '../../../hooks/useModal'
-import { useConflictStore } from '../../../store/conflict/conflictStore'
+import { makeHash } from '../../../utils'
 
 export default function Historico() {
     const location = useLocation()
 
+    const {conflictos, keyTable, listConflicts, setKeyTable} = useConflictStore()
+
     const {modal, triggerModal, closeModal} = useModal()
+    
+    const {listEstatus, getEstatus} = useCatalogStore()
 
     const {modulo, setModulo} = useModuloStore()
 
-    const {conflictos, keyTable, listConflicts, setKeyTable} = useConflictStore()
-
-    //const [keyTable, setKeyTable] = useState<string>(makeHash(12))
-
     useEffect(() => {
+        getEstatus().length == 0 ? listEstatus() : undefined
+        
         listConflicts()
         setModulo(location.state)
         setKeyTable(makeHash(12))
@@ -34,7 +38,7 @@ export default function Historico() {
             <div className="col-md-12">
                 <div className="card">
                     <div className="card-header">
-                            <h4 className="card-title">Listado de...</h4>
+                        <h4 className="card-title">Listado de Asuntos</h4>
                     </div>
                     <div className="card-body">
                         <TablaRegistro conflictos={conflictos} key={keyTable} />   

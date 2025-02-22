@@ -12,6 +12,11 @@ class ValidaConflicto extends Validacion
         parent::__construct($datos);
     }
 
+    public function getEdoId()
+    {
+        return $this->datos['edoId'] ?? -1;
+    }
+
     public function rules()
     {
         return [
@@ -29,9 +34,9 @@ class ValidaConflicto extends Validacion
             'numBeneficiario'=>'required|numeric',
             'regSocialId'=>'required|numeric',
             'estatusId'=>'required|numeric',
-            'sintEstatus'=>'required|min:10',
+            'sintEstatus'=>'required|min:20',
             'orgInvolucradaId'=>'required|numeric',
-            'problematica'=>'required|min:10',
+            'problematica'=>'required|min:30',
             'user'=>'nullable|numeric',
         ];
     }
@@ -40,13 +45,13 @@ class ValidaConflicto extends Validacion
     {
         return [
             'fecha.required'=>"La :attribute es requerida.",
-            'fecha.min:10'=>"La :attribute debe tener 10 caracteres.",
+            'fecha.min'=>"La :attribute debe tener 10 caracteres.",
             'munpioId.required'=>"El :attribute es requerido.",
             'munpioId.numeric'=>"El identificador del :attribute debe ser un entero.",
             'promovente.required'=>"El :attribute es requerido.",
-            'promovente.min:7'=>"El :attribute debe contener por lo menos 7 caracteres.",
+            'promovente.min'=>"El :attribute debe contener por lo menos 7 caracteres.",
             'contraparte.required'=>"El :attribute es requerido.",
-            'contraparte.min:7'=>"El :attribute debe contener por lo menos 7 caracteres.",
+            'contraparte.min'=>"El :attribute debe contener por lo menos 7 caracteres.",
             'vertienteId.required'=>"La :attribute es requerida.",
             'vertienteId.numeric'=>"El identificador de la :attribute debe ser un entero.",
             'ha.required'=>"El campo correspondiente a la :attribute es requerido.",
@@ -68,11 +73,11 @@ class ValidaConflicto extends Validacion
             'estatusId.required'=>"El :attribute es requerido.",
             'estatusId.numeric'=>"El identificador del :attribute debe ser un entero.",
             'sintEstatus.required'=>"La :attribute es requerida.",
-            'sintEstatus.min:10'=>"El campo :attribute debe contener al menos 10 caracteres.",
+            'sintEstatus.min'=>"El campo :attribute debe contener al menos 20 caracteres.",
             'orgInvolucradaId.required'=>"La :attribute es requerida.",
             'orgInvolucradaId.numeric'=>"El identificador de la :attribute debe ser un entero.",
             'problematica.required'=>"La :attribute es requerida.",
-            'problematica.min:10'=>"La :attribute debe contener al menos 10 caracteres.",
+            'problematica.min'=>"La :attribute debe contener al menos 30 caracteres.",
             'user.numeric'=>"No se recibió el identificador del :attribute",
         ];
     }

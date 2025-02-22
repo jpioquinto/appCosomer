@@ -5,13 +5,14 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Libraries\Store\ConflictoStore;
 use Illuminate\Http\Request;
+use Exception;
 
 class ConflictoController extends Controller
 {
     public function getConflictos()
     {
         try {            
-            $conflicto = new ConflictoStore();            
+            $conflicto = new ConflictoStore();                   
         } catch (Exception $e) {            
             return response(['message'=>'Error al recuperar los conflictos registrados en el sistema. '.$e->getMessage()], 400);
         }
@@ -26,8 +27,11 @@ class ConflictoController extends Controller
     public function save(Request $request)
     {        
         try {            
-            $conflicto = new ConflictoStore( array_merge($request->all(), ['user'=>auth()->user()->id]) );            
-        } catch (Exception $e) {            
+            $conflicto = new ConflictoStore( array_merge($request->all(), ['user'=>auth()->user()->id]) ); #var_dump($conflicto->getFirstError());exit;
+            if ($conflicto->existsError()) {
+                throw new Exception($conflicto->getFirstError());
+            }              
+        } catch (Exception $e) {          
             return response(['message'=>'Error al intentar guardar la información. '.$e->getMessage()], 400);
         }
 

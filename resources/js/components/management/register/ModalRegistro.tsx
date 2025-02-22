@@ -316,7 +316,7 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
                             <div className='col-md-3'>
                                 <div className="form-group">
                                     <label htmlFor="id-estatus" className='fw-bold'>Estatus:</label>
-                                    <select id="id-estatus"  className={`form-control ${errors.estatusId ? 'is-invalid' : ''}`}
+                                    <select id="id-estatus"  className={`form-control ${errors.estatusId ? 'is-invalid' : ''}`} disabled
                                         {...register('estatusId')}
                                     >
                                         <option value="">Seleccione...</option>

@@ -5,6 +5,7 @@ import DataTablesCore from 'datatables.net'
 import DT from 'datatables.net-bs5'
 import 'datatables.net-select-bs5'
 import 'datatables.net-responsive-bs5'
+
 import { Registros, Registro } from '../../../types/conflicto'
 import { useModuloStore } from '../../../store/modulo'
 import type { Acciones } from '../../../types'
@@ -25,13 +26,14 @@ export default function TablaTramite({conflictos, prueba}: ConflictsProps) {
 
     const columns = [
         { data: 'fecha', render: DT.render.date()},
+        { data: 'folio' },
         { data: 'estado' },
         { data: 'municipio' },
         { data: 'promovente'},
         { data: 'contraparte'},
         { data: 'vertiente'},
-        { data: 'supConflicto'},
-        { data: 'supAtendida'},  
+        { data: 'supconflicto'},
+        { data: 'supatendida'},  
         { data: 'regimen' },
         { data: 'descEstatus' },
         { data: 'sintEstatus' },
@@ -78,12 +80,13 @@ export default function TablaTramite({conflictos, prueba}: ConflictsProps) {
             select: true,
         }}
         slots={{
-            12: (data, row) => (generarAcciones(row))
+            13: (data, row) => (generarAcciones(row))
         }} 
     >
         <thead>
             <tr>
                 <th className="text-center">Fecha</th>
+                <th className="text-center">Folio</th>
                 <th className="text-center">Estado</th>
                 <th className="text-center">Municipio</th>
                 <th className="text-center">Promovente</th>

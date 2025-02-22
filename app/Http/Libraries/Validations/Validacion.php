@@ -33,10 +33,14 @@ abstract class Validacion
         return $this->validados;
     }
 
+    public function existsError()
+    {
+        return $this->validador->fails();
+    }
 
     public function validate(array $datos)
     {
-        try {
+        try {#print_r($this->attributes());exit;
 
             $this->validador = Validator::make($datos, $this->rules(), $this->messages(), $this->attributes());
 
@@ -63,5 +67,4 @@ abstract class Validacion
 
         return $error;
     }
-
 }

@@ -1,22 +1,28 @@
 import { useNavigate } from "react-router-dom";
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Spinner from "../components/Spinner"
 import { useAuthStore } from "../store/auth"
 
-export default function Index() {    
-    const {isAuthenticated, setAuthenticated} = useAuthStore();
+export default function Index() {       
+    const {isAuthenticated, setAuthenticated, setUser, setToken, setContact, setDataAuthenticate} = useAuthStore();
+
     const navigate = useNavigate();
 
+    const setData = data => {
+        //setAuthenticated(data.hasOwnProperty('token') && data.hasOwnProperty('user'))
+        axios.defaults.headers.common['Authorization'] = 'Bearer '+ data.token;        
+        /*setContact(data.contact);
+        setToken(data.token);
+        setUser(data.user);*/
+
+        setDataAuthenticate(data.user, data.contact, data.token);
+    };
+
     useEffect(() => {
-        console.log(JSON.parse(localStorage.getItem('accessAuth')!))
-
-
-
         if (localStorage.getItem('accessAuth')) {
-            const accessData = JSON.parse(localStorage.getItem('accessAuth')!);
-            console.log(accessData.hasOwnProperty('token') && accessData.hasOwnProperty('user'))
-            setAuthenticated(accessData.hasOwnProperty('token') && accessData.hasOwnProperty('user'))
-        }
+            setData(JSON.parse(localStorage.getItem('accessAuth')!));            
+        }   
+          
         !isAuthenticated ? navigate('/login') : navigate('/inicio')
     }, [isAuthenticated]);
     

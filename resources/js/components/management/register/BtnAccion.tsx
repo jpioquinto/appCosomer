@@ -1,11 +1,15 @@
 import React, {MouseEvent} from 'react'
+
 import { deleteConflicto as deleteConflictoService } from '../../../services/ConflictoService'
 import { useConflictStore } from '../../../store/conflict/conflictStore'
+import type { Acciones,Accion, Option } from '../../../types'
 import type { Registro } from '../../../types/conflicto'
-import type { Acciones,Accion } from '../../../types'
+import CambiarEstatus from '../historical/CambiarEstatus'
 import useModal from '../../../hooks/useModal'
 import { notificacion } from '../../../utils'
+
 import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 type AccionesProps= {
     acciones:Acciones,
@@ -16,6 +20,8 @@ type AccionProps= {
     conflicto:Registro,
     id:Accion['id']
 }
+
+const MySwal = withReactContent(Swal)
 
 export default function BtnAccion({acciones, conflicto}: AccionesProps) {
     const {modal, showModal, closeModal} = useModal();
@@ -56,6 +62,23 @@ export default function BtnAccion({acciones, conflicto}: AccionesProps) {
         });
     }
 
+    const showModalChangeEstatus = (conflicto: Registro) => {
+        MySwal.fire({
+            title: "Cambiar el estatus del Asunto",
+            html: <CambiarEstatus/>,
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            cancelButtonText: "Cancelar",
+            confirmButtonText: "Actualizar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                eliminarConflicto(conflicto.id)    
+            }
+        });
+    }
+
     const clickAccion = ({conflicto, id}:AccionProps) => {
         switch(id) {
             case 2:
@@ -63,6 +86,9 @@ export default function BtnAccion({acciones, conflicto}: AccionesProps) {
                 break;
             case 3:
                 showModalEliminarConflicto(conflicto)
+                break;
+            case 12:
+                showModalChangeEstatus(conflicto)
                 break;
               default:break;
           }
@@ -72,7 +98,7 @@ export default function BtnAccion({acciones, conflicto}: AccionesProps) {
         const listado : JSX.Element[] = []
         acciones?.map(accion => {
             switch(accion.id) {
-                case 2: case 3:
+                case 2: case 3: case 12:
                     listado.push( 
                         <button 
                             key={accion.id}

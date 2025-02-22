@@ -79,17 +79,6 @@ export function useItemUserNav() {
         e.preventDefault();
         console.log('Cerrar sesión...');
         cerrarSession();
-        /*try {
-            const result = cerrarSession();console.log(result)
-            if (result?.solicitud) {
-                notificacion(result.message, 'success')
-            } else {
-                throw new Error(result?.response?.data?.message || result.message)
-            }
-        } catch (error) {
-            notificacion(error.message, 'error')
-        }*/
-
     }
 
     return {

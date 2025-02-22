@@ -85,7 +85,7 @@ export default function Registro() {
 
     type ValidationSchemaType = z.infer<typeof schema>
 
-    const { register, handleSubmit, setValue , formState: { errors } } = useForm<ValidationSchemaType>({
+    const { register, handleSubmit, setValue , formState: { errors }, reset } = useForm<ValidationSchemaType>({
             resolver: zodResolver(schema)
         })
 
@@ -110,19 +110,20 @@ export default function Registro() {
         }
         
         try {
-            data.munpioId = +munpioId
-            data.problematica = problematica
-            console.log(data)
+            data.munpioId = +munpioId;
+            data.problematica = problematica;
+            //console.log(data)
 
-            const result = await saveConflicto(data)
+            const result = await saveConflicto(data);
             
             if (result?.solicitud) {
-                notificacion(result.message, 'success')
+                reset(); setProblematica(''); setMunpioId(''); setOptionsMunpios([]); selectedMunpio({label:'', value:0});
+                notificacion(result.message, 'success');
             } else {
-                throw new Error(result?.response?.data?.message || result.message)
+                throw new Error(result?.response?.data?.message || result.message);
             }
         } catch(error) {
-            notificacion(error.message, 'error')
+            notificacion(error.message, 'error');
         }
     }
 
@@ -138,7 +139,7 @@ export default function Registro() {
     useEffect(() => {
         let $options: Option[] = [];
         currentMnpios.forEach((municipio) => {
-            $options.push({value: municipio.id, label: municipio.municipio, sigla:undefined})
+            $options.push({value: municipio.id, label: municipio.municipio})
         })
 
         setOptionsMunpios($options)
@@ -256,9 +257,9 @@ export default function Registro() {
                                     <div className="form-group">
                                         <label htmlFor="id-superficie" className='fw-bold'>Superficie en Conflicto:</label>
                                         <div className='d-flex align-items-center'>
-                                            <input type='number' className={`form-control ${errors.ha ? 'is-invalid' : ''}`} {...register('ha')}/> - 
-                                            <input type='number' className={`form-control ${errors.area ? 'is-invalid' : ''}`} {...register('area')}/> - 
-                                            <input type='text' className={`form-control ${errors.ca ? 'is-invalid' : ''}`} {...register('ca')}/>
+                                            <input type='number' placeholder='Hectárea(s)' className={`form-control ${errors.ha ? 'is-invalid' : ''}`} {...register('ha')}/> - 
+                                            <input type='number' placeholder='Área(s)' className={`form-control ${errors.area ? 'is-invalid' : ''}`} {...register('area')}/> - 
+                                            <input type='text' placeholder='Centiárea(s)' className={`form-control ${errors.ca ? 'is-invalid' : ''}`} {...register('ca')}/>
                                         </div>
                                         {errors.ha && (                                    
                                             <ErrorForm>{errors.ha?.message}</ErrorForm>
@@ -276,9 +277,9 @@ export default function Registro() {
                                     <div className="form-group">
                                         <label htmlFor="id-super-atendida" className='fw-bold'>Superficie Atendida:</label>                                        
                                         <div className='d-flex align-items-center'>
-                                            <input type='number' className={`form-control ${errors.haa ? 'is-invalid' : ''}`} {...register('haa')}/> - 
-                                            <input type='number' className={`form-control ${errors.areaa ? 'is-invalid' : ''}`} {...register('areaa')}/> - 
-                                            <input type='text' className={`form-control ${errors.caa ? 'is-invalid' : ''}`} {...register('caa')}/>
+                                            <input type='number' placeholder='Hectárea(s)' className={`form-control ${errors.haa ? 'is-invalid' : ''}`} {...register('haa')}/> - 
+                                            <input type='number' placeholder='Área(s)' className={`form-control ${errors.areaa ? 'is-invalid' : ''}`} {...register('areaa')}/> - 
+                                            <input type='text' placeholder='Centiárea(s)' className={`form-control ${errors.caa ? 'is-invalid' : ''}`} {...register('caa')}/>
                                         </div>
                                         {errors.haa && (                                    
                                             <ErrorForm>{errors.haa?.message}</ErrorForm>
