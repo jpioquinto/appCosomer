@@ -6,7 +6,7 @@ import ErrorForm from '../partial/ErrorForm'
 import type { PropsModal } from '../../types'
 import { usePerfilStore } from '../../store/perfil'
 
-//import 'react-checkbox-tree/lib/react-checkbox-tree.css';
+import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 import CheckboxTree from 'react-checkbox-tree';
 
 
@@ -109,6 +109,8 @@ export default function ModalPerfil({propModal, close}: Modaltype) {
                                     onCheck={(checked) => setChecked(checked)}
                                     onExpand={(expanded) => setExpanded(expanded)}
                                     icons={{
+                                        expandClose:<span className="fas fa-caret-right" />,
+                                        expandOpen:<span className="fas fa-caret-down" />,
                                         leaf: <span className="fas fa-wrench" />,
                                     }}
                                 />

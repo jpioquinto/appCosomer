@@ -11,6 +11,10 @@ class Modulo extends Model
 
     protected $table = 'adm_modulos';
 
+    public $timestamps = false;
+
+    protected $guarded = ['id'];
+
     public function permisos(): HasMany
     {
         return $this->hasMany(Permiso::class);

@@ -29,6 +29,11 @@ class Permiso
         return $this->modulos;
     }
 
+    public function listarModulos()
+    {
+        return $this->listado->listadoModulos(); 
+    }
+
     public function setPermisos($permisos)
     {
         $this->permisos = $permisos;

@@ -13,80 +13,20 @@ import { DraftRegistro } from '../../../types/conflicto';
 import ErrorForm from '../../partial/ErrorForm';
 import { notificacion, isInteger} from '../../../utils';
 import { saveConflicto } from '../../../services/ConflictoService';
+import { useConflicto } from '../../../hooks/useConflicto';
 
 export default function Registro() {
+    const {currentMnpios, listEdos, getEdos, listMunpios} = useEdoStore();
     const [problematica, setProblematica] = useState<string>('');
     const [munpioId, setMunpioId] = useState<string>('');
-    const {currentMnpios, listEdos, getEdos, listMunpios} = useEdoStore();
-    const {
-        getVertientes, getUnidades, getRegimenes, getEstatus, getOrganizaciones, 
-        listVertientes, listUnidades, listRegimenes, listEstatus, listOrganizaciones} = useCatalogStore();
+    const {catalog, form, config} = useConflicto();
+
     const [optionsMunpios, setOptionsMunpios] = useState<Option[]>([]);
 
-    const modules = {
-        toolbar: [
-            [{ 'header': [1, 2, false] }],
-            ['bold', 'italic', 'underline','strike', 'blockquote'],
-            [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],            
-            [{ 'align': [] }],
-            ['link'],
-            ['clean']
-          ]
-    };
-
-    const formats = [
-        'header',
-        'bold', 'italic', 'underline', 'strike', 'blockquote',
-        'list', 'indent','align',
-        'link'
-    ];
-
-    const schema = z.object({
-        fecha:z.string().min(10, {message: 'Seleccione una Fecha válida.'}),
-        edoId:z.string().min(1, {message: 'Seleccione una Entidad Federativa.'}),
-        munpioId:z.optional(z.string()).nullable(),
-        promovente:z.string().min(6, {message: 'Ingrese el Promovente.'}),    
-        contraparte:z.string().min(6, {message: 'Ingrese la Contraparte.'}),    
-        vertienteId:z.string().min(1, {message: 'Seleccione la Vertiente.'}),
-        numBeneficiario:z.preprocess(
-                (dato) => parseInt(z.string().parse(dato), 10),
-                z.number().min(0)
-        ),
-        regSocialId:z.string().min(1, {message: 'Seleccione el Régimen Social.'}),
-        estatusId:z.string().min(1, {message: 'Seleccione el Estatus.'}),
-        sintEstatus:z.string().min(6, {message: 'Ingrese la Sintésis del Estatus.'}),
-        orgInvolucradaId:z.string().min(1, {message: 'Seleccione la organización involucrada.'}),
-        problematica:z.optional(z.string()).nullable(),
-        ha:z.preprocess(
-            (dato) => parseInt(z.string().parse(dato), 10),
-            z.number().min(0)
-        ),
-        area:z.preprocess(
-            (dato) => parseInt(z.string().parse(dato), 10),
-            z.number().min(0)
-        ),
-        ca:z.preprocess(
-            (dato) => parseFloat(z.string().parse(dato)),
-            z.number().min(0)
-        ),
-        haa:z.preprocess(
-            (dato) => parseInt(z.string().parse(dato), 10),
-            z.number().min(0)
-        ),
-        areaa:z.preprocess(
-            (dato) => parseInt(z.string().parse(dato), 10),
-            z.number().min(0)
-        ),
-        caa:z.preprocess(
-            (dato) => parseFloat(z.string().parse(dato)),
-            z.number().min(0)
-        )
-    })
-
-    type ValidationSchemaType = z.infer<typeof schema>
+    type ValidationSchemaType = z.infer<typeof form.schema>
 
     const { register, handleSubmit, setValue , formState: { errors }, reset } = useForm<ValidationSchemaType>({
-            resolver: zodResolver(schema)
+            resolver: zodResolver(form.schema)
         })
 
     const selectEntidad = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -129,11 +69,10 @@ export default function Registro() {
 
     useEffect(() => {
         getEdos().length==0 ? listEdos() : undefined;
-        getVertientes().length == 0 ? listVertientes() : undefined;
-        getUnidades().length == 0 ? listUnidades() : undefined;
-        getRegimenes().length == 0 ? listRegimenes() : undefined;
-        getEstatus().length == 0 ? listEstatus() : undefined;
-        getOrganizaciones().length == 0 ? listOrganizaciones() : undefined;
+        catalog.getVertientes().length == 0 ? catalog.listVertientes() : undefined;
+        catalog.getRegimenes().length == 0  ? catalog.listRegimenes()  : undefined;
+        catalog.getEstatus().length == 0    ? catalog.listEstatus()    : undefined;
+        catalog.getOrganizaciones().length == 0 ? catalog.listOrganizaciones() : undefined;
     }, [])
 
     useEffect(() => {
@@ -219,7 +158,7 @@ export default function Registro() {
                                             {...register('vertienteId')}
                                         >
                                             <option value="">Seleccione...</option>
-                                            {getVertientes().map(vertiente => (
+                                            {catalog.getVertientes().map(vertiente => (
                                                 <option value={vertiente.id} key={vertiente.id}>{vertiente.vertiente}</option>
                                             ))}
                                         </select>
@@ -312,7 +251,7 @@ export default function Registro() {
                                             {...register('regSocialId')}
                                         >
                                             <option value="">Seleccione...</option>
-                                            {getRegimenes().map(regimen => (
+                                            {catalog.getRegimenes().map(regimen => (
                                                 <option value={regimen.id} key={regimen.id}>{regimen.regimen}</option>
                                             ))}
                                         </select>
@@ -329,7 +268,7 @@ export default function Registro() {
                                             {...register('estatusId')}
                                         >
                                             <option value="">Seleccione...</option>
-                                            {getEstatus().map(estatus => (
+                                            {catalog.getEstatus().map(estatus => (
                                                 <option value={estatus.id} key={estatus.id}>{estatus.descripcion}</option>
                                             ))}
                                         </select>
@@ -346,7 +285,7 @@ export default function Registro() {
                                             {...register('orgInvolucradaId')}
                                         >
                                             <option value="">Seleccione...</option>
-                                            {getOrganizaciones().map(organizacion => (
+                                            {catalog.getOrganizaciones().map(organizacion => (
                                                 <option value={organizacion.id} key={organizacion.id}>{organizacion.nombre}</option>
                                             ))}
                                         </select>
@@ -375,8 +314,8 @@ export default function Registro() {
                                         <label htmlFor="id-problematica" className='fw-bold'>Problemática:</label>
                                         <ReactQuill 
                                             theme="snow" 
-                                            modules={modules}
-                                            formats={formats}
+                                            modules={config.modules}
+                                            formats={config.formats}
                                             value={problematica} 
                                             onChange={setProblematica}
                                         />

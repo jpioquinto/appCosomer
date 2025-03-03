@@ -13,6 +13,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/user/logout', [\App\Http\Controllers\API\AuthController::class, 'logout']);
 
     Route::get('/permisos', [\App\Http\Controllers\API\PermisoController::class, 'index']);    
+    Route::get('/admin/listado-modulos', [\App\Http\Controllers\API\PermisoController::class, 'listarModulos']); 
+    Route::post('/admin/delete-modulo', [\App\Http\Controllers\API\PermisoController::class, 'changeStatus']);    
+    Route::post('/admin/save-modulo', [\App\Http\Controllers\API\PermisoController::class, 'saveModulo']);    
     Route::get('/menu', [\App\Http\Controllers\API\MenuController::class, 'index']);    
     Route::post('/ur/save-ur', [\App\Http\Controllers\API\URController::class, 'save']);    
     Route::post('/user/save', [\App\Http\Controllers\API\UsuarioController::class, 'save']);    

@@ -1,4 +1,4 @@
-import { Menu, ModuloSchema } from '../schema/modulo-schema'
+import { DraftRegModulo, Menu, ModuloSchema, RegistroModulo, RegistrosModulo } from '../schema/modulo-schema'
 
 export async function getModulos() {
     try {
@@ -26,4 +26,37 @@ export async function getMenu() {
     } catch(error) {
         console.log(error);        
     }        
+}
+
+export async function listadoModulos() {
+    try {
+        const response =  await axios.get('api/admin/listado-modulos');  
+        if (response.status) {
+            const result = RegistrosModulo.safeParse(response.data?.listado);
+            
+            return result.success ? result.data : []
+        }              
+    } catch(error) {
+        return []      
+    } 
+}
+
+export async function changeStatusModulo(data) {
+    try {
+        const response =  await axios.post('api/admin/delete-modulo', data);
+        
+        return response.data
+    } catch(error) {
+        return error      
+    } 
+}
+
+export async function saveModulo(data: DraftRegModulo, id:RegistroModulo['id']|undefined) {
+    try {
+        const response =  await axios.post('api/admin/save-modulo', {...data, id});
+        
+        return response.data
+    } catch(error) {
+        return error      
+    } 
 }

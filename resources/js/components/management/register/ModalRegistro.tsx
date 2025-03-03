@@ -113,8 +113,8 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
     } , [currentMnpios])
 
     useEffect(() => {
-        let supConflicto = conflicto?.supConflicto ? conflicto.supConflicto.split('-') : [];
-        let supAtentida  = conflicto?.supAtendida ? conflicto.supAtendida.split('-')  : [];
+        let supConflicto = conflicto?.supconflicto ? conflicto.supconflicto.split('-') : [];
+        let supAtentida  = conflicto?.supatendida ? conflicto.supatendida.split('-')  : [];
         
         if (supConflicto.length> 0) {
             setValue('ha', +supConflicto[0]);
@@ -248,9 +248,9 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
                                 <div className="form-group">
                                     <label htmlFor="id-superficie" className='fw-bold'>Superficie en Conflicto:</label>
                                     <div className='d-flex align-items-center'>
-                                        <input type='number' className={`form-control ${errors.ha ? 'is-invalid' : ''}`} {...register('ha')}/> - 
-                                        <input type='number' className={`form-control ${errors.area ? 'is-invalid' : ''}`} {...register('area')}/> - 
-                                        <input type='text' className={`form-control ${errors.ca ? 'is-invalid' : ''}`} {...register('ca')}/>
+                                        <input type='number' placeholder='Hectárea(s)' className={`form-control ${errors.ha ? 'is-invalid' : ''}`} {...register('ha')}/> - 
+                                        <input type='number' placeholder='Área(s)' className={`form-control ${errors.area ? 'is-invalid' : ''}`} {...register('area')}/> - 
+                                        <input type='text' placeholder='Centiárea(s)' className={`form-control ${errors.ca ? 'is-invalid' : ''}`} {...register('ca')}/>
                                     </div>
                                     {errors.ha && (                                    
                                         <ErrorForm>{errors.ha?.message}</ErrorForm>
@@ -268,9 +268,9 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
                                 <div className="form-group">
                                     <label htmlFor="id-super-atendida" className='fw-bold'>Superficie Atendida:</label>                                        
                                     <div className='d-flex align-items-center'>
-                                        <input type='number' className={`form-control ${errors.haa ? 'is-invalid' : ''}`} {...register('haa')}/> - 
-                                        <input type='number' className={`form-control ${errors.areaa ? 'is-invalid' : ''}`} {...register('areaa')}/> - 
-                                        <input type='text' className={`form-control ${errors.caa ? 'is-invalid' : ''}`} {...register('caa')}/>
+                                        <input type='number' placeholder='Hectárea(s)' className={`form-control ${errors.haa ? 'is-invalid' : ''}`} {...register('haa')}/> - 
+                                        <input type='number' placeholder='Área(s)' className={`form-control ${errors.areaa ? 'is-invalid' : ''}`} {...register('areaa')}/> - 
+                                        <input type='text' placeholder='Centiárea(s)' className={`form-control ${errors.caa ? 'is-invalid' : ''}`} {...register('caa')}/>
                                     </div>
                                     {errors.haa && (                                    
                                         <ErrorForm>{errors.haa?.message}</ErrorForm>
@@ -353,7 +353,7 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
                                     <textarea 
                                         id="id-sintesis-estatus" className={`form-control input-solid ${errors.sintEstatus ? 'is-invalid' : ''}`} 
                                         {...register('sintEstatus')}
-                                        rows={3}
+                                        rows={4}
                                     />
                                     {errors.sintEstatus && (                                    
                                         <ErrorForm>{errors.sintEstatus?.message}</ErrorForm>

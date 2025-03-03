@@ -1,10 +1,13 @@
 import React, {useRef, useEffect, useState} from 'react'
 
-import DataTable from 'datatables.net-react'
+import DataTable, {DataTableRef} from 'datatables.net-react'
+import DataTablesCore from 'datatables.net'
 import DT from 'datatables.net-bs5'
 /*import 'datatables.nt-responsive-dt';
 import 'datatables.net-select-dt';*/
 import type { Acciones, User, Users } from '../../types'
+
+import languaje from './../../data/Spanish_Mexico.json'
 
 import { useModuloStore } from '../../store/modulo'
 import BtnAccion from './BtnAccion'
@@ -20,7 +23,7 @@ export default function TablaUsuarios({users}: UsersProps) {
 
     const modulo = useModuloStore(state=>state.modulo)
     
-    const table = useRef();
+    const table = useRef<DataTableRef>(null);
     
     const columns = [
         { data: 'ur' },
@@ -65,7 +68,13 @@ export default function TablaUsuarios({users}: UsersProps) {
         onInit={initEvent}
         onDraw={(e: Event) =>setTooltips()}
         options={{
-            responsive: true,
+            pageLength: 100,
+            language: languaje,
+            responsive: {
+                details: {
+                    renderer:   DataTablesCore.Responsive.renderer.listHiddenNodes()
+                }
+            },
             select: true,
         }}
         slots={{

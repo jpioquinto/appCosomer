@@ -17,7 +17,7 @@ export default function Footer() {
                     </ul>
                 </nav>
                 <div className="copyright ms-auto">
-                    <span className='fw-medium'>{anio}, Subsecretaría de Ordenamiento Territorial | Dirección General de Concertación Agraria</span>
+                    <span className='fw-medium'>{anio}, Subsecretaría de Ordenamiento Agrario e Inventarios de la Propiedad | Dirección General de Concertación Agraria</span>
                 </div>				
             </div>
         </footer>

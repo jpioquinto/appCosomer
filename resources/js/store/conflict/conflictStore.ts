@@ -9,6 +9,7 @@ type ConflicState = {
     keyTable:string,
     setCurrentConflicto:(conflicto: Registro) => void,
     updateConflicto:(conflicto: Registro) => void,
+    addConflicto:(conflicto: Registro) => void,
     deleteConflicto:(id: Registro['id']) => void
     listConflicts:() => Promise<void>,
     setKeyTable:(keyTable:string) => void

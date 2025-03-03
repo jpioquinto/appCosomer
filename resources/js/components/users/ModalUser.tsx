@@ -73,10 +73,10 @@ export default function ModalUser({propModal, close}: Modaltype) {
                                 <div className="form-group">
                                     <label htmlFor="usuario">Usuario</label>
                                     <input 
-                                        type="text" id="usuario" className={`form-control ${errors.usuario ? 'is-invalid' : ''}`} placeholder="Eje. juan.perez" required                                        
+                                        type="text" id="usuario" className={`form-control ${errors.username ? 'is-invalid' : ''}`} placeholder="Eje. juan.perez" required                                        
                                         {...register('username')}
                                     />
-                                    {errors.usuario && (                                    
+                                    {errors.username && (                                    
                                         <ErrorForm>{errors.username?.message}</ErrorForm>
                                     )}
                                 </div>

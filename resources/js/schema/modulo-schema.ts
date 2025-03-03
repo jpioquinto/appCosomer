@@ -16,6 +16,7 @@ export const Modulo = z.object({
     controlador:z.string(),
     descripcion:z.string().nullable(),
     grupo:z.optional(z.number()),
+    estatus:z.optional(z.number()),
     icono:z.string(),
     id:z.number(),
     nodo_padre:z.number(),
@@ -23,6 +24,16 @@ export const Modulo = z.object({
     orden:z.number(),
     ruta:z.optional(z.string()).nullable()
 })
+
+export const RegistroModulo = Modulo.merge( z.object({acciones:z.optional( z.string() ).nullable()}) )
+
+export const RegistrosModulo = z.array(RegistroModulo)
+
+export type RegistrosModulo  = z.infer<typeof RegistrosModulo>
+
+export type RegistroModulo   = z.infer<typeof RegistroModulo>
+
+export type DraftRegModulo = Omit<RegistroModulo, 'id'>
 
 export const Items = z.object({items:z.optional( z.array(Modulo) ).nullable()})
 
