@@ -61,7 +61,7 @@ export default function BtnAccion({acciones, perfil}: AccionesProps) {
     }
 
   return (
-    <div className="d-flex">
+    <div className="d-grid gap-1 d-md-flex justify-content-md-end">
       {crearAcciones(acciones)}
     </div>
   )

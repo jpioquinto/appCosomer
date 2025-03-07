@@ -23,7 +23,7 @@ export default function ItemNav({item, nodoPadre, nivel}: ItemProps) {
             key={"modulo-"+item.id}
             onClick={(e: MouseEvent<HTMLElement>) => {e.stopPropagation(); clickElemen(item, nodoPadre);}}            
         >
-            <NavLink to={item.ruta} state={item} className={nodoPadre ? toggle.collapsed : undefined}>							
+            <NavLink to={item.ruta!} state={item} className={nodoPadre ? toggle.collapsed : undefined}>							
                 <i className={item.icono}></i>
                 <p className="pt-1">{item.nombre}</p>
                 {nodoPadre ? (<span className="caret"></span>) : ''}
@@ -31,7 +31,7 @@ export default function ItemNav({item, nodoPadre, nivel}: ItemProps) {
             {
                 nodoPadre 
                 ? (<div className={toggle.collapse} id={'modulo-'+(100+item.id)}>
-                        <Nav menu={item.items as Menu} clase={'nav nav-collapse'} key={`items-`+item.id}/>
+                        <Nav menu={item.items as Menu} clase={'nav nav-collapse'} nivel={nivel+1} key={`items-`+item.id}/>
                     </div>) : ''
             }
         </li>

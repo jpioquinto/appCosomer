@@ -22,25 +22,24 @@ export function useUserNav() {
         setToggle({
             aria:'true', 
             classToggle:'',         
-            collapse:'in collapse show',
+            collapse:'in collapse show animate__animated animate__fadeIn',
             show:true
         });
-        //setTimeout(() => setToggle({...toggle, activo:item.activo, collapse:'collapse show', show:true}), 50)
     }
 
     const hideElemens = () => {
         setToggle({
             aria:'false',
             classToggle:'collapsed',
-            collapse:'in collapse',
+            collapse:'in collapse animate__animated animate__fadeOutUp',
             show:false        
         });
-        //setTimeout(() => setToggle({...toggle, collapse:'collapse', show:false}), 50)            
     }
 
     const handlerCollapse = (e: MouseEvent<HTMLElement>) => {
         e.preventDefault();
-        toggle.show ? hideElemens() : showElemens();
+        setToggle({...toggle, collapse:'in collapsing'});
+        setTimeout(() => toggle.show ? hideElemens() : showElemens(), 150);
 	}
 
     return {

@@ -14,6 +14,8 @@ import { useSidebarStore } from '../store/sidebar'
 import { useNavBarStore } from '../store/navbar'
 import Loading from "../components/Loading"
 
+import 'animate.css'
+
 export default function Layout() {
 
     const {claseMinimize} = useSidebarStore();

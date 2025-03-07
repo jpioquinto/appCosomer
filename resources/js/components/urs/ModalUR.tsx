@@ -1,18 +1,19 @@
 import React, {MouseEvent, ChangeEvent, useState, useEffect } from 'react'
-import type { PropsModal } from '../../types'
+import type { PropsModal, MunpioSchema, Option, DrafUR } from '../../types'
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import ErrorForm from '../partial/ErrorForm'
+
 import { saveUR } from '../../services/UrService'
+import { useEdoStore } from '../../store/edoStore'
+import { URSchema } from '../../schema/ur-schema'
+import { useURStore } from '../../store/urStore'
+import ErrorForm from '../partial/ErrorForm'
 import useModal from '../../hooks/useModal'
 import {notificacion} from '../../utils'
-import { useEdoStore } from '../../store/edoStore'
-import { useURStore } from '../../store/urStore'
-import { MunpioSchema, Option, DrafUR } from '../../types'
+
 import Select from 'react-select'
-import { URSchema } from '../../schema/ur-schema'
 
 type Modaltype = {
     propModal:PropsModal,
@@ -97,10 +98,11 @@ export default function ModalUR({propModal, close}: Modaltype) {
 
     const capturaUR = (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
-        //setSigla(e.target.value.toString().replace(/[a-z|á-ú|ñ|Ñ|ü|Ü\s]*/g,''));
-        document.getElementById('id-input-sigla') 
-        ? document.getElementById('id-input-sigla').value = e.target.value.toString().replace(/[a-z|á-ú|ñ|Ñ|ü|Ü|,\s]*/g,'')
-        : undefined;
+        /*document.getElementById('id-input-sigla') 
+        ? document.getElementById('id-input-sigla').value = e.target.value.toString().replace(/[a-z|á-ú|ñ|Ñ|ü|Ü|,\s]/g,'')
+        : undefined;*/
+
+        setValue('sigla', e.target.value.toString().replace(/[a-z|á-ú|ñ|Ñ|ü|Ü|,\s]*/g,''))
     }
 
   return (

@@ -1,26 +1,17 @@
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { far } from '@fortawesome/free-regular-svg-icons'
-import { Link } from "react-router-dom"
 import React from 'react'
 
 import { useSidebar } from '../hooks/useSidebar'
 import { useNavBarStore } from '../store/navbar'
 
+import { Link } from 'react-router-dom'
+import UserNav from './navbar/UserNav'
 import Nav from './navbar/Nav'
-import UserNav from './navbar/UserNav';
-
-library.add(fas, far)
 
 export default function Sidebar() {
 
 	const {classToggle, iconToggle, sideNavToggler, topBarToggler, handlerMouseEnter, handlerMouseLeave, clickSideNavToggler, clickToggleSidebar, clickTopBar} = useSidebar();
 	
 	const {menu} = useNavBarStore();
-
-	/*useEffect(()=> {
-		items.map(($item:item) => setLoaded($item))
-	},[items])*/
 
     return (
 		<div className="sidebar sidebar-style-2" onMouseEnter={handlerMouseEnter} onMouseLeave={handlerMouseLeave}>
@@ -34,11 +25,11 @@ export default function Sidebar() {
 							<i className={iconToggle}></i>
 						</button>
 						<button className={`btn btn-toggle ${sideNavToggler.clase}`} onClick={clickSideNavToggler}>
-							<i className="gg-menu-left"></i><strong>sidenav-toggler...</strong>
+							<i className="gg-menu-left"></i>
 						</button>
 					</div>
 					<button className={topBarToggler.clase} onClick={clickTopBar}>
-						<i className="gg-more-vertical-alt"></i><strong>topbar-toggler...</strong>
+						<i className="gg-more-vertical-alt"></i>
 					</button>
 				</div>				
 			</div>	

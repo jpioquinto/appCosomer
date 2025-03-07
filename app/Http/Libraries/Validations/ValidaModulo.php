@@ -55,7 +55,7 @@ class ValidaModulo extends Validacion
             'icono'=>'icono',
             'clase'=>'clase',
             'orden'=>'orden',
-            'nodo_padre'=>'modulo padre',           
+            'nodo_padre'=>'módulo padre',           
             'acciones'=>'acciones',           
             'descripcion'=>'descripción',           
             'ruta'=>'ruta',           

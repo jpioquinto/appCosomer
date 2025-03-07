@@ -1,10 +1,13 @@
-import React, {useRef, useEffect, useState} from 'react'
+import React, {useRef} from 'react'
 
-import DataTable from 'datatables.net-react'
+import DataTable, {DataTableRef} from 'datatables.net-react'
+import DataTablesCore from 'datatables.net'
 import DT from 'datatables.net-bs5'
-import type { Acciones, URsSchema, URSchema, User, Users } from '../../types'
 
+import type { Acciones, URsSchema, URSchema } from '../../types'
+import languaje from './../../data/Spanish_Mexico.json'
 import { useModuloStore } from '../../store/modulo'
+//import { makeHash } from '../../utils'
 import BtnAccion from './BtnAccion'
 import * as bootstrap from 'bootstrap'
  
@@ -18,7 +21,7 @@ export default function TablaURs({urs}: URsProps) {
 
     const modulo = useModuloStore(state=>state.modulo)
     
-    const table = useRef(null);
+    const table = useRef<DataTableRef>(null);
     
     const columns = [
         { data: 'nombre' },
@@ -65,7 +68,13 @@ export default function TablaURs({urs}: URsProps) {
         onInit={initEvent}
         onDraw={(e: Event) =>setTooltips()}
         options={{
-            responsive: true,
+            pageLength: 100,
+            language: languaje,
+            responsive: {
+                details: {
+                    renderer:   DataTablesCore.Responsive.renderer.listHiddenNodes()
+                }
+            },
             select: true,
         }}
         slots={{
@@ -76,19 +85,16 @@ export default function TablaURs({urs}: URsProps) {
     >
         <thead>
             <tr>
-                <th rowSpan={2} className="text-center">Nombre</th>
-                <th rowSpan={2} className="text-center">Acrónimo</th>
-                <th colSpan={5} className="text-center">Dirección</th>
-                <th rowSpan={2} className="text-center">Entidad</th>
-                <th rowSpan={2} className="text-center">Del./Munpio.</th>
-                <th rowSpan={2} className="text-center">Acciones</th>
-            </tr>
-            <tr>
+                <th className="text-center">Nombre</th>
+                <th className="text-center">Acrónimo</th>
                 <th className="text-center">Calle</th>
                 <th className="text-center">Num. Ext.</th>
                 <th className="text-center">Num. Int.</th>
                 <th className="text-center">Col.</th>
                 <th className="text-center">C.P.</th>
+                <th className="text-center">Entidad</th>
+                <th className="text-center">Del./Munpio.</th>
+                <th className="text-center">Acciones</th>
             </tr>
         </thead>
     </DataTable>

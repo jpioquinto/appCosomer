@@ -19,8 +19,8 @@ type AccionProps= {
 }
 
 export default function BtnAccion({acciones, module}:  AccionesProps) {
-    const {modal, showModal, closeModal} = useModal();
     const {deleteModulo, setCurrentModulo} = useModuloStore();
+    const {showModal} = useModal();
 
     const showModalEditModulo = (module: RegistroModulo) => {
         setCurrentModulo(module)
@@ -94,7 +94,7 @@ export default function BtnAccion({acciones, module}:  AccionesProps) {
     }
 
   return (
-    <div className="d-flex">
+    <div className="d-grid gap-1 d-md-flex justify-content-md-start">
       {crearAcciones(acciones)}
     </div>
   )

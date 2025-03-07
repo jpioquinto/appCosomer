@@ -26,9 +26,9 @@ export default function ModalModulo({propModal, close}: Modaltype) {
 
   const schema = z.object({
           nombre: z.string().min(4, {message: 'El nombre del módulo debe contener al menos 4 caracteres.'}),
-          controlador: z.optional(z.string()).nullable(),
-          icono: z.optional(z.string()).nullable(),
-          clase: z.optional(z.string()).nullable(),
+          controlador: z.optional(z.string()),
+          icono: z.optional(z.string()),
+          clase: z.optional(z.string()),
           orden: z.coerce.number({
               required_error: "Capture el orden, debe ser un entero mayor o igual a 0.",
               invalid_type_error: "Debe capturar un dato numérico."            
@@ -37,9 +37,9 @@ export default function ModalModulo({propModal, close}: Modaltype) {
               required_error: "Capture el orden, debe ser un entero mayor o igual a 0.",
               invalid_type_error: "Debe capturar un dato numérico."            
           }).int().min(0, {message:"Debe capturar un dato numérico mayor o igual a 0."}),
-          acciones: z.optional(z.string()).nullable(),
-          descripcion: z.optional(z.string()).nullable(),
-          ruta: z.optional(z.string()).nullable(),
+          acciones: z.optional(z.string()),
+          descripcion: z.optional(z.string()),
+          ruta: z.optional(z.string()),
           grupo: z.coerce.number({
               required_error: "Capture el grupo al que pertenece el módulo, debe ser un entero mayor o igual a 0.",
               invalid_type_error: "Debe capturar un dato numérico."            
@@ -79,10 +79,10 @@ export default function ModalModulo({propModal, close}: Modaltype) {
       setValue('clase', registro.clase);
       setValue('orden', registro.orden);
       setValue('nodo_padre', registro.nodo_padre);
-      setValue('acciones', registro.acciones);
-      setValue('descripcion', registro.descripcion);
+      setValue('acciones', registro.acciones!);
+      setValue('descripcion', registro.descripcion!);
       setValue('grupo', registro.grupo!);
-      setValue('ruta', registro.ruta);
+      setValue('ruta', registro.ruta!);
     }, [registro])
   
   return (

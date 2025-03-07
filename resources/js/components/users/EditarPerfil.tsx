@@ -111,7 +111,6 @@ export default function EditarPerfil() {
                         <h6 className="text-white op-7 mb-2">Por favor, ingrese su información de contacto</h6>
                     </div>
                     <div className="ms-md-auto py-2 py-md-0">
-                        <a href="#" className="btn btn-secondary btn-round">Salir</a>
                     </div>
                 </div>
             </div>
@@ -249,7 +248,6 @@ export default function EditarPerfil() {
                                                 <button type="submit" className="btn btn-primary btn-round me-2">
                                                     <i className="fa fa-save"/> Guardar
                                                 </button>
-                                                <button className="btn btn-secondary btn-round">Salir</button>
                                             </div>
                                         </div>                                
                                     </form>

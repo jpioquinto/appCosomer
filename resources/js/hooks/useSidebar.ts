@@ -86,7 +86,7 @@ export function useSidebar() {
 	}
 
 	const clickTopBar = (e: MouseEvent<HTMLButtonElement>) => {
-		if (topBarToggler.clase) {
+		if (topBarToggler.open) {
 			document.getElementsByTagName('html')[0].classList.remove('topbar_open');
 			setTopBarToggler({
 				clase:removeClase(topBarToggler.clase.split(' '), 'toggled'),

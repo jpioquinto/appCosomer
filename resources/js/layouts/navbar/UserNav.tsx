@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 import { useUserNav } from '../../hooks/useUserNav'
 
 export default function UserNav() {
@@ -12,6 +13,7 @@ export default function UserNav() {
         <div className="info">
             <a 
                 data-bs-toggle="collapse" 
+                href='#config-user'
                 className={`${toggle.classToggle}`}
                 aria-expanded={`${toggle.aria}`}
                 onClick={handlerCollapse}
@@ -27,9 +29,9 @@ export default function UserNav() {
             <div className={`${toggle.collapse}`}>
                 <ul className="nav">
                     <li>
-                        <a href="#edit">
+                        <NavLink to="/editar-perfil">
                             <span className="link-collapse">Editar perfil</span>
-                        </a>
+                        </NavLink>
                     </li>
                     <li>
                         <a href="#settings">

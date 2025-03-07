@@ -31,6 +31,7 @@ export default function TablaModulos({modules} : ModulesProps) {
         { data: 'id', className:'text-center'},
         { data: 'nombre' },
         { data: 'controlador' },
+        { data: 'icono' },
         { data: 'clase' },
         { data: 'orden', className:'text-center'},
         { data: 'nodo_padre', className:'text-center'},
@@ -83,7 +84,7 @@ export default function TablaModulos({modules} : ModulesProps) {
             select: true,
         }}
         slots={{
-            11: (data, row) => {
+            12: (data, row) => {
                 return generarAcciones(row)                
             }  
         }}      
@@ -93,6 +94,7 @@ export default function TablaModulos({modules} : ModulesProps) {
                 <th className="text-center">ID</th>
                 <th className="text-center">Nombre</th>
                 <th className="text-center">Controlador</th>
+                <th className="text-center">Icono</th>
                 <th className="text-center">Clase</th>
                 <th className="text-center">Orden</th>
                 <th className="text-center">Nodo Padre</th>

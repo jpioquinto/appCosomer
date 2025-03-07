@@ -15,7 +15,7 @@ type URState = {
 }
 
 export const useURStore = create<URState>((set, get) => ({
-    urs:[] as URsSchema,
+    urs:[],
     ur:{} as URSchema,
     getUR:() => get().ur,
     getURs:() => get().urs,

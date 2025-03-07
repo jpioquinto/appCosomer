@@ -1,25 +1,27 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import ItemUserNav from './navbar/ItemUserNav'
 import ItemActionsNav from './navbar/ItemActionsNav'
+import { useSidebar } from '../hooks/useSidebar'
+import ItemUserNav from './navbar/ItemUserNav'
+import { Link } from 'react-router-dom'
 
 export default function Header() {
+    const {clickSideNavToggler, clickTopBar, clickToggleSidebar} = useSidebar();
     return (
         <div className="main-header">
             <div className="main-header-logo">
                 
                 <div className="logo-header" data-background-color="blue">
-                    <a href="index.html" className="logo">
+                    <Link to="/" className="logo">
                         <img src={`${import.meta.env.VITE_APP_URL}/assets/images/logos/logo.svg`} alt="navbar brand" className="navbar-brand" height="20" />
-                    </a>
-                    <button className="navbar-toggler sidenav-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    </Link>
+                    <button className="navbar-toggler sidenav-toggler ms-auto" type="button" onClick={clickSideNavToggler} data-bs-toggle="collapse" data-bs-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon">
                             <i className="gg-menu-right"></i>
                         </span>
                     </button>
-                    <button className="topbar-toggler more"><i className="icon-options-vertical"></i></button>
+                    <button className="topbar-toggler more" onClick={clickTopBar}><i className="icon-options-vertical"></i></button>
                     <div className="nav-toggle">
-                        <button className="btn btn-toggle toggle-sidebar">
+                        <button className="btn btn-toggle toggle-sidebar" onClick={clickToggleSidebar}>
                             <i className="gg-menu-right"></i>
                         </button>
                     </div>

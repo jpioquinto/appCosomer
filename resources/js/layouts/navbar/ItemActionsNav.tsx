@@ -13,7 +13,7 @@ export default function ItemActionsNav() {
     const {toggle, handlerToggle} = useItemActionsNav();
   return (
     <>
-        <a className={`nav-link ${toggle.classToggle}`} data-bs-toggle="dropdown" aria-expanded={`${toggle.aria}`} onClick={handlerToggle}>
+        <a className={`nav-link ${toggle.classToggle}`} href='#' data-bs-toggle="dropdown" aria-expanded={`${toggle.aria}`} onClick={handlerToggle}>
             <i className='fas fa-layer-group'></i>
         </a>
         <div className={`dropdown-menu quick-actions animated fadeIn ${toggle.classToggle}`}>

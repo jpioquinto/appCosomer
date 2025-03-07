@@ -1,18 +1,18 @@
 import React, {useState, useEffect} from 'react'
 import Breadcrumb from "../partial/Breadcrumb"
 import {useLocation} from "react-router-dom"
-import useModal from '../../hooks/useModal'
-import ModalPerfil from './ModalPerfil'
-import { usePerfilStore } from '../../store/perfil'
-import TablaPerfils from './TablaPerfils'
-import { makeHash } from '../../utils'
 
-import type { MenuItem } from "../../types"
+import { usePerfilStore } from '../../store/perfil'
+import { useModuloStore } from '../../store/modulo'
+import useModal from '../../hooks/useModal'
+import TablaPerfils from './TablaPerfils'
+import ModalPerfil from './ModalPerfil'
+import { makeHash } from '../../utils'
 
 export default function Perfil() {
     const location = useLocation();
 
-    const [modulo, setModulo] = useState<MenuItem>({} as MenuItem)
+    const {modulo, setModulo} = useModuloStore()
 
     const [keyTable, setKeyTable] = useState(makeHash(12))
     

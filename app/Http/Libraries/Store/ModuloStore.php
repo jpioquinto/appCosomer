@@ -54,6 +54,8 @@ class ModuloStore extends ValidaModulo
         isset($data['ruta'])        ? $campos['ruta'] = $data['ruta'] : null;        
         isset($data['grupo'])       ? $campos['grupo'] = $data['grupo'] : null;        
 
-        return Modulo::updateOrCreate(['id'=>$id], $campos);        
+        $modulo = Modulo::updateOrCreate(['id'=>$id], $campos);        
+
+        return Modulo::where('id', $modulo->id)->first();
     }
 }

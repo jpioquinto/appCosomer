@@ -1,11 +1,14 @@
 import React, {useRef, useEffect, useState} from 'react'
 import { useModuloStore } from '../../store/modulo'
 
-import DataTable from 'datatables.net-react'
+import DataTable, {DataTableRef} from 'datatables.net-react'
+import DataTablesCore from 'datatables.net'
 import DT from 'datatables.net-bs5'
 
 import { Acciones, PerfilSchema, PerfilsSchema } from '../../types'
+import languaje from './../../data/Spanish_Mexico.json'
 import BtnAccion from './BtnAccion'
+
 import * as bootstrap from 'bootstrap'
  
 DataTable.use(DT);
@@ -17,7 +20,7 @@ type PerfilsProps = {
 export default function TablaPerfils({perfils}: PerfilsProps) {
     const modulo = useModuloStore(state=>state.modulo)
     
-    const table = useRef(null);
+    const table = useRef<DataTableRef>(null);
     
     const columns = [
         { data: 'nombre' },
@@ -60,7 +63,13 @@ export default function TablaPerfils({perfils}: PerfilsProps) {
         onInit={initEvent}
         onDraw={(e: Event) =>setTooltips()}
         options={{
-            responsive: true,
+            pageLength: 100,
+            language: languaje,
+            responsive: {
+                details: {
+                    renderer:   DataTablesCore.Responsive.renderer.listHiddenNodes()
+                }
+            },
             select: true,
         }}
         slots={{
