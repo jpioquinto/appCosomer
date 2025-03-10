@@ -30,19 +30,17 @@ export default function TablaRegistro({conflictos}: ConflictsProps) {
     const table = useRef<DataTableRef>(null);
 
     const columns = [
-        { data: 'fecha', render: DT.render.date()},
         { data: 'folio' },
+        { data: 'vertAcronimo', className:'text-center'},
+        { data: 'anioFiscal', className:'text-center'},
+        { data: 'asunto' },
         { data: 'estado' },
         { data: 'municipio' },
         { data: 'promovente'},
-        { data: 'contraparte'},
-        { data: 'vertiente'},
-        { data: 'problematica'},
-        { data: 'supconflicto'},
-        { data: 'numBeneficiario', className:'text-center'},
-        { data: 'regimen' },
+        { data: 'predio'},
         { data: 'descEstatus' },
-        { data: 'orgInvolucrada' },
+        { data: 'supconflicto'},
+        { data: 'supatendida'},
         { data: 'id' },
       ];
 
@@ -85,6 +83,7 @@ export default function TablaRegistro({conflictos}: ConflictsProps) {
         onInit={initEvent}
         onDraw={(e: Event) =>setTooltips()}
         options={{
+            pageLength: 100,
             language: languaje,
             responsive: {
                 details: {
@@ -94,24 +93,22 @@ export default function TablaRegistro({conflictos}: ConflictsProps) {
             select: true,
         }}       
         slots={{
-            13: (data, row) => (generarAcciones(row))
+            11: (data, row) => (generarAcciones(row))
         }}
     >
         <thead>
             <tr>
-                <th className="text-center">Fecha</th>
                 <th className="text-center">Folio</th>
-                <th className="text-center">Estado</th>
+                <th className="text-center">Rubro</th>
+                <th className="text-center">Ejercicio Fiscal</th>
+                <th className="text-center">Asunto</th>
+                <th className="text-center">Entidad</th>
                 <th className="text-center">Municipio</th>
                 <th className="text-center">Promovente</th>
-                <th className="text-center">Contraparte</th>
-                <th className="text-center">Vertiente</th>
-                <th className="text-center">Problemática</th>
-                <th className="text-center">Superficie en Conflicto</th>
-                <th className="text-center">Número de Beneficiarios</th>
-                <th className="text-center">Régimen Social</th>
+                <th className="text-center">Nombre del Predio</th>
                 <th className="text-center">Estatus</th>
-                <th className="text-center">Organización Inv.</th>
+                <th className="text-center">Superficie Legal</th>
+                <th className="text-center">Superficie Medida</th>
                 <th className="text-center">Acciones</th>
             </tr>
         </thead>

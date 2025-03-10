@@ -104,7 +104,7 @@ export default function Registro() {
                             <form onSubmit={handleSubmit(registerConflicto)}  className='row needs-validation'>
                                 <div className='col-md-3'>
                                     <div className="form-group">
-                                        <label htmlFor="id-fecha" className='fw-bold'>Fecha:</label>
+                                        <label htmlFor="id-fecha" className='fw-bold'>Fecha de Incorporación:</label>
                                         <input id="id-fecha" type="date" className={`form-control input-solid ${errors.fecha ? 'is-invalid' : ''}`} 
                                             {...register('fecha')}
                                         />
@@ -153,8 +153,8 @@ export default function Registro() {
 
                                 <div className='col-md-3'>
                                     <div className="form-group">
-                                        <label htmlFor="id-vertiente" className='fw-bold'>Vertiente:</label>
-                                        <select id="id-vertiente"  className={`form-control ${errors.vertienteId ? 'is-invalid' : ''}`} 
+                                        <label htmlFor="id-vertiente" className='fw-bold'>Tipo de Conflicto:</label>
+                                        <select id="id-vertiente"  className={`form-control input-solid ${errors.vertienteId ? 'is-invalid' : ''}`} 
                                             {...register('vertienteId')}
                                         >
                                             <option value="">Seleccione...</option>
@@ -168,7 +168,31 @@ export default function Registro() {
                                     </div>
                                 </div>
 
-                                <div className='col-md-3'>
+                                <div className='col-md-6'>
+                                    <div className="form-group">
+                                        <label htmlFor="id-asunto" className='fw-bold'>Nombre del Asunto:</label>
+                                        <input id="id-asunto" type="text" className={`form-control input-solid ${errors.asunto ? 'is-invalid' : ''}`} 
+                                            {...register('asunto')}
+                                        />
+                                        {errors.asunto && (                                    
+                                            <ErrorForm>{errors.asunto?.message}</ErrorForm>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className='col-md-6'>
+                                    <div className="form-group">
+                                        <label htmlFor="id-predio" className='fw-bold'>Nombre del Predio:</label>
+                                        <input id="id-predio" type="text" className={`form-control input-solid ${errors.predio ? 'is-invalid' : ''}`} 
+                                            {...register('predio')}
+                                        />
+                                        {errors.predio && (                                    
+                                            <ErrorForm>{errors.predio?.message}</ErrorForm>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className='col-md-6'>
                                     <div className="form-group">
                                         <label htmlFor="id-promovente" className='fw-bold'>Promovente:</label>
                                         <input id="id-promovente" type="text" className={`form-control input-solid ${errors.promovente ? 'is-invalid' : ''}`} 
@@ -180,7 +204,7 @@ export default function Registro() {
                                     </div>
                                 </div>
 
-                                <div className='col-md-3'>
+                                <div className='col-md-6'>
                                     <div className="form-group">
                                         <label htmlFor="id-contra-parte" className='fw-bold'>Contraparte:</label>
                                         <input id="id-contra-parte" type="text" className={`form-control input-solid ${errors.contraparte ? 'is-invalid' : ''}`} 
@@ -192,7 +216,7 @@ export default function Registro() {
                                     </div>
                                 </div>
                                 
-                                <div className='col-md-3'>
+                                <div className='col-md-6'>
                                     <div className="form-group">
                                         <label htmlFor="id-superficie" className='fw-bold'>Superficie en Conflicto:</label>
                                         <div className='d-flex align-items-center'>
@@ -212,7 +236,7 @@ export default function Registro() {
                                     </div>
                                 </div>
 
-                                <div className='col-md-3'>
+                                <div className='col-md-6'>
                                     <div className="form-group">
                                         <label htmlFor="id-super-atendida" className='fw-bold'>Superficie Atendida:</label>                                        
                                         <div className='d-flex align-items-center'>
@@ -232,7 +256,7 @@ export default function Registro() {
                                     </div>
                                 </div>
 
-                                <div className='col-md-3'>
+                                <div className='col-md-2'>
                                     <div className="form-group">
                                         <label htmlFor="id-num-beneficiarios" className='fw-bold'>Número de Beneficiarios:</label>
                                         <input id="id-num-beneficiarios" type="number" className={`form-control input-solid ${errors.numBeneficiario ? 'is-invalid' : ''}`} 
@@ -244,9 +268,9 @@ export default function Registro() {
                                     </div>
                                 </div>
 
-                                <div className='col-md-3'>
+                                <div className='col-md-4'>
                                     <div className="form-group">
-                                        <label htmlFor="id-regimen" className='fw-bold'>Regimen Social:</label>
+                                        <label htmlFor="id-regimen" className='fw-bold'>Régimen Social:</label>
                                         <select id="id-regimen"  className={`form-control input-solid ${errors.regSocialId ? 'is-invalid' : ''}`} 
                                             {...register('regSocialId')}
                                         >
@@ -261,10 +285,46 @@ export default function Registro() {
                                     </div>
                                 </div>
 
+                                <div className='col-md-6'>
+                                    <div className="form-group">
+                                        <label htmlFor="id-nombre-regsoc" className='fw-bold'>Nombre del Régimen Social:</label>
+                                        <input id="id-nombre-regsoc" type="text" className={`form-control input-solid ${errors.nombreRegSoc ? 'is-invalid' : ''}`} 
+                                            {...register('nombreRegSoc')}
+                                        />
+                                        {errors.nombreRegSoc && (                                    
+                                            <ErrorForm>{errors.nombreRegSoc?.message}</ErrorForm>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className='col-md-2'>
+                                    <div className="form-group">
+                                        <label htmlFor="id-efiscal" className='fw-bold'>Ejercicio Fiscal:</label>
+                                        <input id="id-efiscal" type="number" className={`form-control input-solid ${errors.anioFiscal ? 'is-invalid' : ''}`} 
+                                            {...register('anioFiscal')}
+                                        />
+                                        {errors.anioFiscal && (                                    
+                                            <ErrorForm>{errors.anioFiscal?.message}</ErrorForm>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className='col-md-4'>
+                                    <div className="form-group">
+                                        <label htmlFor="id-pueblo-indigena" className='fw-bold'>Pueblo Indigena:</label>
+                                        <input id="id-pueblo-indigena" type="text" className={`form-control input-solid ${errors.puebloIndigena ? 'is-invalid' : ''}`} 
+                                            {...register('puebloIndigena')}
+                                        />
+                                        {errors.puebloIndigena && (                                    
+                                            <ErrorForm>{errors.puebloIndigena?.message}</ErrorForm>
+                                        )}
+                                    </div>
+                                </div>
+
                                 <div className='col-md-3'>
                                     <div className="form-group">
                                         <label htmlFor="id-estatus" className='fw-bold'>Estatus:</label>
-                                        <select id="id-estatus"  className={`form-control ${errors.estatusId ? 'is-invalid' : ''}`} 
+                                        <select id="id-estatus"  className={`form-control input-solid ${errors.estatusId ? 'is-invalid' : ''}`} 
                                             {...register('estatusId')}
                                         >
                                             <option value="">Seleccione...</option>
@@ -281,7 +341,7 @@ export default function Registro() {
                                 <div className='col-md-3'>
                                     <div className="form-group">
                                         <label htmlFor="id-org-involucrada" className='fw-bold'>Organización Involucrada:</label>
-                                        <select id="id-org-involucrada"  className={`form-control ${errors.orgInvolucradaId ? 'is-invalid' : ''}`} 
+                                        <select id="id-org-involucrada"  className={`form-control input-solid ${errors.orgInvolucradaId ? 'is-invalid' : ''}`} 
                                             {...register('orgInvolucradaId')}
                                         >
                                             <option value="">Seleccione...</option>
@@ -291,20 +351,6 @@ export default function Registro() {
                                         </select>
                                         {errors.orgInvolucradaId && (                                    
                                             <ErrorForm>{errors.orgInvolucradaId?.message}</ErrorForm>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div className='col-md-6'>
-                                    <div className="form-group">
-                                        <label htmlFor="id-sintesis-estatus" className='fw-bold'>Sintésis de Atención:</label>
-                                        <textarea 
-                                            id="id-sintesis-estatus" className={`form-control input-solid ${errors.sintEstatus ? 'is-invalid' : ''}`} 
-                                            {...register('sintEstatus')}
-                                            rows={3}
-                                        />
-                                        {errors.sintEstatus && (                                    
-                                            <ErrorForm>{errors.sintEstatus?.message}</ErrorForm>
                                         )}
                                     </div>
                                 </div>
@@ -321,6 +367,20 @@ export default function Registro() {
                                         />
                                     </div>
                                 </div>
+
+                                <div className='col-md-6'>
+                                    <div className="form-group">
+                                        <label htmlFor="id-sintesis-estatus" className='fw-bold'>Sintésis de Atención:</label>
+                                        <textarea 
+                                            id="id-sintesis-estatus" className={`form-control input-solid ${errors.sintEstatus ? 'is-invalid' : ''}`} 
+                                            {...register('sintEstatus')}
+                                            rows={3}
+                                        />
+                                        {errors.sintEstatus && (                                    
+                                            <ErrorForm>{errors.sintEstatus?.message}</ErrorForm>
+                                        )}
+                                    </div>
+                                </div>                                
 
                                 <div className="col-md-12">
                                     <div className="ml-md-auto mt-5 py-2 py-md-0 pull-right">

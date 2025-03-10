@@ -47,9 +47,9 @@ class ConflictoQueryBuilder
         return [
             'c.id', 'c.fecha', 'c.folio', 'c.municipio_id as munpioId', 'c.promovente', 'c.contraparte', 'c.vertiente_id as vertienteId', 
             'num_beneficiario as numBeneficiario', 'c.reg_soc_id as regSocialId', 'c.estatus_id as estatusId','sintesis_estatus as sintEstatus',
-            'c.problematica', 'c.ha', 'c.area', 'c.ca', 'c.haa', 'c.areaa', 'c.caa',
-            'c.org_inv_id as orgInvolucradaId', 'c.estatus', 'm.estado_id as edoId', 'm.municipio', 'e.estado', 'v.vertiente',
-            'rs.regimen', 'es.descripcion as descEstatus', 'org.nombre as orgInvolucrada'
+            'c.problematica', 'c.ha', 'c.area', 'c.ca', 'c.haa', 'c.areaa', 'c.caa', 'c.asunto', 'c.predio', 'c.anio_fiscal as anioFiscal', 
+            'c.pueblo_indigena as puebloIndigena', 'c.org_inv_id as orgInvolucradaId', 'c.estatus', 'm.estado_id as edoId', 'm.municipio', 
+            'e.estado', 'v.vertiente', 'v.acronimo as vertAcronimo', 'rs.regimen', 'es.descripcion as descEstatus', 'org.nombre as orgInvolucrada'
         ];
     }
 
