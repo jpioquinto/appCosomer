@@ -30,9 +30,9 @@ class ConflictoStore extends ValidaConflicto
         return $this->conflicto;
     }
 
-    public function getConflictos()
+    public function getConflictos(array $estatus = [])
     {
-        return QueryBuilder::obtenerListado();
+        return QueryBuilder::obtenerListado($estatus);
     }
 
     public function delete(int $id)
@@ -40,10 +40,14 @@ class ConflictoStore extends ValidaConflicto
         return Conflicto::where('id', $id)->update(['estatus'=>0, 'eliminado_el'=>'now()', 'eliminado_por'=>auth()->user()->id]);
     }
 
+    public function ChangeStatus(int $id, int $estatus)
+    {
+        return Conflicto::where('id', $id)->update(['estatus_id'=>$estatus]);
+    }
+
     protected function save(array $data, int $id = -1)
     {
         $campos = [
-            'fecha'=>$data['fecha'],
             'municipio_id'=>$data['munpioId'],
             'promovente'=>$data['promovente'],
             'contraparte'=>$data['contraparte'],
@@ -56,12 +60,19 @@ class ConflictoStore extends ValidaConflicto
             'caa'=>$data['caa'],
             #'sup_conflicto'=>sprintf("%s-%s-%s", $data['ha'], $data['area'], $data['ca']),
             #'sup_atendida'=>sprintf("%s-%s-%s", $data['haa'], $data['areaa'], $data['caa']),
-            'num_beneficiario'=>$data['numBeneficiario'],
             'reg_soc_id'=>$data['regSocialId'],
             'sintesis_estatus'=>$data['sintEstatus'],
             'org_inv_id'=>$data['orgInvolucradaId'],
             'problematica'=>$data['problematica'],
         ];
+
+        isset($data['numBeneficiario'])  ? $campos['num_beneficiario'] = $data['numBeneficiario'] : null;
+        isset($data['puebloIndigena'])   ? $campos['pueblo_indigena'] = $data['puebloIndigena'] : null;
+        isset($data['nombreRegSoc'])     ? $campos['nombre_reg_soc'] = $data['nombreRegSoc'] : null;
+        isset($data['anioFiscal'])       ? $campos['anio_fiscal'] = $data['anioFiscal'] : null;
+        isset($data['asunto'])           ? $campos['asunto'] = $data['asunto'] : null;
+        isset($data['predio'])           ? $campos['predio'] = $data['predio'] : null;
+        isset($data['fecha'])            ? $campos['fecha'] = $data['fecha'] : null;
        
         $id === -1 ? $campos['folio'] = $this->generaFolio() : null;
         $id === -1 ? $campos['estatus_id'] = $data['estatusId'] : null;

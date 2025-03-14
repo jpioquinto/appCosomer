@@ -1,54 +1,76 @@
 import React from 'react'
 
+import { useConflictStore } from '../../../store/conflict/conflictStore'
+
 export default function Seguimiento() {
+    const conflicto = useConflictStore(state => state.conflicto)
   return (
     <>      
-        <div className="page-inner page-inner-fill">
-            <div className="page-with-aside mail-wrapper bg-white">
-                <div className="page-aside">
-                    <div className="aside-header">
-                        <div className="title">Seguimiento</div>
-                        <div className="description">Documentación del Trámite</div>
-                        <a className="btn btn-primary toggle-email-nav" data-bs-toggle="collapse" href="#email-app-nav" role="button" aria-expanded="false" aria-controls="email-nav">
-                            <i className="icon-menu me-2"></i>
-                            Menu
-                        </a>
+        <div className="panel-header bg-primary-gradient">
+            <div className="page-inner py-5">
+                <div className="d-flex align-items-start align-items-md-start flex-md-row pt-2 pb-4">
+                    <div className='flex-fill'>
+                        <div className='d-flex justify-content-between'>
+                            <h3 className="text-white fw-bold mb-3 text-uppercase">{conflicto.vertiente}</h3>
+                            <h3 className="text-white fw-bold mb-3 text-uppercase">NOMBRE DEL PREDIO: {conflicto.predio}</h3>
+                            <h3 className="text-white fw-bold mb-3 text-uppercase">ESTATUS: {conflicto.descEstatus}</h3>
+                        </div>
+                        <h6 className="text-white op-7 mb-2">{conflicto.sintEstatus}</h6>
                     </div>
-                    <div className="aside-nav collapse" id="email-app-nav">
-                        <ul className="nav">
-                            <li className="active">
-                                <a href="#">
-                                    <i className="fas fa-clipboard-list"></i> Diagnóstico
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i className="fas fa-file-alt"></i> Cédula de incorporación
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i className="fas fa-folder-open"></i> Validación
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i className="fas fa-tags"></i> Firmas
-                                </a>
-                            </li>
-                        </ul>
+                    <div className="ms-md-auto ps-3 py-2 py-md-0">
+                        <a href="#" className="btn btn-secondary btn-round">Salir</a>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div className="page-inner mt--5 pt-0">
+            <div className="row">
+                <div className="col-md-12">
+                    <div className="card full-height">
+                        <div className="card-body">
 
-                <div className="page-content mail-content">
-                    <div className="inbox-head d-lg-flex d-block">
-                        <h3>Folio MX-CHP-0005</h3>
-                    </div>
-                    <div className="inbox-body">
+                            <div className="accordion" id="accordionConflicto">
+                                <div className="accordion-item">
+                                    <h2 className="accordion-header">
+                                        <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                            #1 RECEPCIÓN DE EXPEDIENTE INTEGRADO
+                                        </button>
+                                    </h2>
+                                    <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show">
+                                        <div className="accordion-body">
+                                            <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="accordion-item">
+                                    <h2 className="accordion-header">
+                                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                                            #2 AUTORIZACIÓN DE INCLUSIÓN AL UNIVERSO DE TRABAJO
+                                        </button>
+                                    </h2>
+                                    <div id="panelsStayOpen-collapseTwo" className="accordion-collapse collapse">
+                                        <div className="accordion-body">
+                                            <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="accordion-item">
+                                    <h2 className="accordion-header">
+                                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                                            #3 TRABAJOS TÉNICOS
+                                        </button>
+                                    </h2>
+                                    <div id="panelsStayOpen-collapseThree" className="accordion-collapse collapse">
+                                        <div className="accordion-body">
+                                            <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                        </div>
                     </div>
                 </div>
-
             </div>
         </div>        
     </>

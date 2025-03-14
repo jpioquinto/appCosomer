@@ -1,6 +1,6 @@
 import React, {MouseEvent} from 'react'
 
-import { deleteConflicto as deleteConflictoService } from '../../../services/ConflictoService'
+import { deleteConflicto as deleteConflictoService, changeStatusConflicto } from '../../../services/ConflictoService'
 import { useConflictStore } from '../../../store/conflict/conflictStore'
 import type { Acciones,Accion, Option } from '../../../types'
 import type { Registro } from '../../../types/conflicto'
@@ -26,13 +26,25 @@ const MySwal = withReactContent(Swal)
 export default function BtnAccion({acciones, conflicto}: AccionesProps) {
     const {modal, showModal, closeModal} = useModal();
 
-    const {setCurrentConflicto, deleteConflicto} = useConflictStore();
+    const {setCurrentConflicto, deleteConflicto, getEstatus, updateStatusConflicto} = useConflictStore();
 
     const eliminarConflicto = async (id: Registro['id']) => {
         const result = await deleteConflictoService({id});
             
         if (result.solicitud) {       
             deleteConflicto(id)
+            notificacion(result.message, 'success')            
+        } else {
+            notificacion(result.message, 'error')
+        }
+        Swal.close()
+    }
+
+    const cambiarConflicto = async (id: Registro['id'], estatus:Option) => {
+        const result = await changeStatusConflicto({id, estatus});
+            
+        if (result.solicitud) {       
+            updateStatusConflicto({id, estatus})
             notificacion(result.message, 'success')            
         } else {
             notificacion(result.message, 'error')
@@ -74,7 +86,7 @@ export default function BtnAccion({acciones, conflicto}: AccionesProps) {
             confirmButtonText: "Actualizar"
         }).then((result) => {
             if (result.isConfirmed) {
-                eliminarConflicto(conflicto.id)    
+                cambiarConflicto(conflicto.id, getEstatus())    
             }
         });
     }
@@ -87,6 +99,9 @@ export default function BtnAccion({acciones, conflicto}: AccionesProps) {
             case 3:
                 showModalEliminarConflicto(conflicto)
                 break;
+            case 11:
+                console.log('redireccionar...')
+                break;
             case 12:
                 showModalChangeEstatus(conflicto)
                 break;
@@ -98,7 +113,7 @@ export default function BtnAccion({acciones, conflicto}: AccionesProps) {
         const listado : JSX.Element[] = []
         acciones?.map(accion => {
             switch(accion.id) {
-                case 2: case 3: case 12:
+                case 2: case 3: case 11: case 12:
                     listado.push( 
                         <button 
                             key={accion.id}

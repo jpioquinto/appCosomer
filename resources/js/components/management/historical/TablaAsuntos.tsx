@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react'
+import React, {useRef, useEffect} from 'react'
 
 import DataTable, {DataTableRef} from 'datatables.net-react'
 import DataTablesCore from 'datatables.net'
@@ -22,7 +22,7 @@ type ConflictsProps = {
     conflictos:Registros
 }
 
-export default function TablaRegistro({conflictos}: ConflictsProps) {
+export default function TablaAsuntos({conflictos}: ConflictsProps) {
     const modulo = useModuloStore(state=>state.modulo);
 
     const {getEstatus, setOptionsEstatus} = useCatalogStore();

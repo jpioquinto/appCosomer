@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom'
 import { useConflictStore } from '../../../store/conflict/conflictStore'
 import { useCatalogStore } from '../../../store/catalogStore'
 import { useModuloStore } from '../../../store/modulo'
-import TablaRegistro from '../register/TablaRegistro'
+import TablaAsuntos from './TablaAsuntos'
 import ModalRegistro from '../register/ModalRegistro'
 import Breadcrumb from '../../partial/Breadcrumb'
 import useModal from '../../../hooks/useModal'
@@ -15,7 +15,7 @@ export default function Historico() {
 
     const {conflictos, keyTable, listConflicts, setKeyTable} = useConflictStore()
 
-    const {modal, triggerModal, closeModal} = useModal()
+    const {modal, closeModal} = useModal()
     
     const {listEstatus, getEstatus} = useCatalogStore()
 
@@ -41,7 +41,7 @@ export default function Historico() {
                         <h4 className="card-title">Listado de Asuntos</h4>
                     </div>
                     <div className="card-body">
-                        <TablaRegistro conflictos={conflictos} key={keyTable} />   
+                        <TablaAsuntos conflictos={conflictos} key={keyTable} />   
 
                         <ModalRegistro propModal={modal} close={closeModal}/>         
                     </div>

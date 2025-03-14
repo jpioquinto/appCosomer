@@ -5,9 +5,9 @@ use Illuminate\Support\Facades\DB;
 
 class ConflictoQueryBuilder
 {
-    public static function obtenerListado()
+    public static function obtenerListado(array $estatus = [])
     {
-        return DB::table('conflictos as c')
+        $consulta = DB::table('conflictos as c')
                 ->leftJoin('adm_municipios as m', 'm.id', '=', 'c.municipio_id')
                 ->leftJoin('adm_estados as e', 'e.id', '=', 'm.estado_id')
                 ->leftJoin('cat_vertientes as v', 'v.id', '=', 'c.vertiente_id')
@@ -19,9 +19,13 @@ class ConflictoQueryBuilder
                     )
                 ->where([
                     ['c.estatus', '!=', 0]
-                ])                   
-                ->orderBy('c.fecha', 'DESC')
-                ->get();
+                ]);
+        
+        if (count($estatus)>0) {
+            $consulta->whereIn('c.estatus_id', $estatus);
+        }                   
+        
+        return $consulta->orderBy('c.fecha', 'DESC')->get();
     }
 
     public static function obtenerConflicto(int $id)
@@ -48,8 +52,8 @@ class ConflictoQueryBuilder
             'c.id', 'c.fecha', 'c.folio', 'c.municipio_id as munpioId', 'c.promovente', 'c.contraparte', 'c.vertiente_id as vertienteId', 
             'num_beneficiario as numBeneficiario', 'c.reg_soc_id as regSocialId', 'c.estatus_id as estatusId','sintesis_estatus as sintEstatus',
             'c.problematica', 'c.ha', 'c.area', 'c.ca', 'c.haa', 'c.areaa', 'c.caa', 'c.asunto', 'c.predio', 'c.anio_fiscal as anioFiscal', 
-            'c.pueblo_indigena as puebloIndigena', 'c.org_inv_id as orgInvolucradaId', 'c.estatus', 'm.estado_id as edoId', 'm.municipio', 
-            'e.estado', 'v.vertiente', 'v.acronimo as vertAcronimo', 'rs.regimen', 'es.descripcion as descEstatus', 'org.nombre as orgInvolucrada'
+            'c.pueblo_indigena as puebloIndigena', 'c.nombre_reg_soc as nombreRegSoc', 'c.org_inv_id as orgInvolucradaId', 'c.estatus', 'm.estado_id as edoId',
+            'm.municipio', 'e.estado', 'v.vertiente', 'v.acronimo as vertAcronimo', 'rs.regimen', 'es.descripcion as descEstatus', 'org.nombre as orgInvolucrada'
         ];
     }
 

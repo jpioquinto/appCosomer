@@ -1,10 +1,10 @@
 import React, {MouseEvent} from 'react'
 
+import { useConflictStore } from '../../../store/conflict/conflictStore'
 import useSegundaModal from '../../../hooks/useSegundaModal'
-import { Acciones, Accion } from '../../../types'
 import { Registro } from '../../../types/conflicto'
+import { Acciones, Accion } from '../../../types'
 import useModal from '../../../hooks/useModal'
-import { redirect, useNavigate } from "react-router-dom";
 
 type AccionesProps= {
     acciones:Acciones,
@@ -18,11 +18,11 @@ type AccionProps= {
 }
 
 export default function BtnAccion({acciones, conflicto, prueba}: AccionesProps) {
-    const {modal, showModal, closeModal} = useModal();
+    const setCurrentConflicto = useConflictStore(state => state.setCurrentConflicto)
 
-    const {showSecondModal}  = useSegundaModal();
+    const {showSecondModal}  = useSegundaModal()
 
-    //const navigate = useNavigate();
+    const {showModal} = useModal()
 
     const showModalDiagnostico = (conflicto: Registro) => {
         showModal()
@@ -41,9 +41,8 @@ export default function BtnAccion({acciones, conflicto, prueba}: AccionesProps) 
                 showModalCedula(conflicto)
                 break;
             case 11:
-                console.log('redireccionar...')
+                setCurrentConflicto(conflicto)
                 prueba();
-                //return navigate('/registro');
                 break;
               default:break;
           }

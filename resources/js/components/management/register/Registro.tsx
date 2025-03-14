@@ -1,19 +1,19 @@
 import React, {useState, useEffect, ChangeEvent} from 'react'
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
-import { useEdoStore } from '../../../store/edoStore';
-import { useCatalogStore } from '../../../store/catalogStore';
-import type { Option } from '../../../types';
-import Select from 'react-select';
-import { DraftRegistro } from '../../../types/conflicto';
-import ErrorForm from '../../partial/ErrorForm';
-import { notificacion, isInteger} from '../../../utils';
+
 import { saveConflicto } from '../../../services/ConflictoService';
 import { useConflicto } from '../../../hooks/useConflicto';
+import { DraftRegistro } from '../../../types/conflicto';
+import { notificacion, isInteger} from '../../../utils';
+import { useEdoStore } from '../../../store/edoStore';
+import ErrorForm from '../../partial/ErrorForm';
+import type { Option } from '../../../types';
+import Select from 'react-select';
 
 export default function Registro() {
     const {currentMnpios, listEdos, getEdos, listMunpios} = useEdoStore();
@@ -384,10 +384,9 @@ export default function Registro() {
 
                                 <div className="col-md-12">
                                     <div className="ml-md-auto mt-5 py-2 py-md-0 pull-right">
-                                        <button type="submit" className="btn btn-primary btn-round me-2">
+                                        <button type="submit" className="btn btn-dark btn-round me-2">
                                             <i className="fa fa-save"/> Guardar
                                         </button>
-                                        <button className="btn btn-secondary btn-round">Salir</button>
                                     </div>
                                 </div>  
 

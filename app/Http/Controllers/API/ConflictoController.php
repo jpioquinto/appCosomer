@@ -9,7 +9,7 @@ use Exception;
 
 class ConflictoController extends Controller
 {
-    public function getConflictos()
+    public function getConflictos(Request $request)
     {
         try {            
             $conflicto = new ConflictoStore();                   
@@ -20,7 +20,7 @@ class ConflictoController extends Controller
         return response([
             'response'=>true,
             'message'=>'Listado de conflictos.',            
-            'listado'=>$conflicto->getConflictos(),
+            'listado'=>$conflicto->getConflictos($request->estatus ? explode(',', $request->estatus) : []),
         ], 200);
     }
 
@@ -58,6 +58,25 @@ class ConflictoController extends Controller
         return response([
             'solicitud'=>true,
             'message'=> 'Registro eliminado correctamente.',
+        ], 200);
+    }
+
+    public function changeStatus(Request $request)
+    {        
+        try {            
+            $conflicto = new ConflictoStore(); 
+
+            if (!$conflicto->ChangeStatus($request->id, $request->estatus)) {
+                throw new Exception('Operación fallida.');
+            }  
+                        
+        } catch (Exception $e) {                        
+            return response(['message'=>'Error al intentar cambiar el estatus del asunto. '.$e->getMessage()], 400);
+        }
+
+        return response([
+            'solicitud'=>true,
+            'message'=> 'Se ha cambiado el estatus del asunto correctamente.',
         ], 200);
     }
 }

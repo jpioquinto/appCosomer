@@ -1,9 +1,10 @@
 import { RegistrosSchema } from "../schema/conflicto-schema";
-import type { DraftRegistro, Registro } from "../types/conflicto";
+import { Option } from "../types";
+import type { DraftRegistro, Registro, EstatusParam } from "../types/conflicto";
 
-export async function listadoConflictos() {
+export async function listadoConflictos(estatus: Array<number> | undefined) {
     try {
-        const response =  await axios.get('api/conflict/listado-conflictos');  
+        const response =  await axios.get('api/conflict/listado-conflictos' + (estatus ? '/' + estatus.join(',') : ''));  
         if (response.status) {
             const result = RegistrosSchema.safeParse(response.data?.listado);            
             return result.success ? result.data : [];
@@ -36,6 +37,16 @@ export async function updateConflicto(data: Registro) {
 export async function deleteConflicto(data) {
     try {
         const response =  await axios.post('api/conflict/delete-conflicto', data);
+        
+        return response.data
+    } catch(error) {
+        return error      
+    } 
+}
+
+export async function changeStatusConflicto(data: EstatusParam) {
+    try {
+        const response =  await axios.post('api/conflict/change-estatus', {id:data.id, estatus:data.estatus.value});
         
         return response.data
     } catch(error) {

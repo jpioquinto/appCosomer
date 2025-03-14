@@ -28,20 +28,21 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/contact/subir-foto', [\App\Http\Controllers\API\ContactoController::class, 'subirFoto']); 
     Route::post('/contact/save-info', [\App\Http\Controllers\API\ContactoController::class, 'save']); 
     
-    Route::post('/conflict/save', [\App\Http\Controllers\API\ConflictoController::class, 'save']); 
+    Route::get('/conflict/listado-conflictos/{estatus?}', [\App\Http\Controllers\API\ConflictoController::class, 'getConflictos']); 
     Route::post('/conflict/delete-conflicto', [\App\Http\Controllers\API\ConflictoController::class, 'deleteConflicto']); 
-    Route::get('/conflict/listado-conflictos', [\App\Http\Controllers\API\ConflictoController::class, 'getConflictos']); 
+    Route::post('/conflict/change-estatus', [\App\Http\Controllers\API\ConflictoController::class, 'changeStatus']); 
+    Route::post('/conflict/save', [\App\Http\Controllers\API\ConflictoController::class, 'save']); 
     
-    Route::get('/edo/listado-estados', [\App\Http\Controllers\API\EntidadController::class, 'getEdos']);    
     Route::get('/edo/listado-munpios/{edoId}', [\App\Http\Controllers\API\EntidadController::class, 'getMunpios'])->where(['edoId'=>'[0-9]+']);    
-    Route::get('/ur/listado-ur', [\App\Http\Controllers\API\URController::class, 'getURs']);    
+    Route::get('/edo/listado-estados', [\App\Http\Controllers\API\EntidadController::class, 'getEdos']);    
     Route::post('/ur/delete-ur', [\App\Http\Controllers\API\URController::class, 'deleteUR']);    
-    Route::get('/perfil/listado-perfil', [\App\Http\Controllers\API\PerfilController::class, 'getPerfils']);    
+    Route::get('/ur/listado-ur', [\App\Http\Controllers\API\URController::class, 'getURs']);    
     Route::get('/perfil/arbol-permisos/{id?}', [\App\Http\Controllers\API\PerfilController::class, 'getArbolPermiso'])->where(['id'=>'[0-9]+']);  
+    Route::get('/perfil/listado-perfil', [\App\Http\Controllers\API\PerfilController::class, 'getPerfils']);    
     
-    Route::get('/catalog/listado-vertientes', [\App\Http\Controllers\API\CatalogoController::class, 'listarVertientes']); 
-    Route::get('/catalog/listado-unidades', [\App\Http\Controllers\API\CatalogoController::class, 'listarUnidades']); 
-    Route::get('/catalog/listado-regimenes', [\App\Http\Controllers\API\CatalogoController::class, 'listarRegimenes']); 
     Route::get('/catalog/listado-organizaciones', [\App\Http\Controllers\API\CatalogoController::class, 'listarOrganizaciones']); 
+    Route::get('/catalog/listado-vertientes', [\App\Http\Controllers\API\CatalogoController::class, 'listarVertientes']); 
+    Route::get('/catalog/listado-regimenes', [\App\Http\Controllers\API\CatalogoController::class, 'listarRegimenes']); 
+    Route::get('/catalog/listado-unidades', [\App\Http\Controllers\API\CatalogoController::class, 'listarUnidades']); 
     Route::get('/catalog/listado-estatus', [\App\Http\Controllers\API\CatalogoController::class, 'listarEstatus']); 
 });

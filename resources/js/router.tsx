@@ -41,7 +41,7 @@ export default function AppRouter() {
                     <Route path='/marco-juridico' element={<MarcoJuridico />} />                    
                     <Route path='/historico' element={<Historico />} />                    
                     <Route path='/registro' element={<Registro />} />                    
-                    <Route path='/tramite' element={<Tramite />} />                    
+                    <Route path='/asuntos-concluidos' element={<Tramite />} />                    
                     <Route path='/tramite/seguimiento' element={<Seguimiento />} />                    
                     <Route path='*' element={<NotFound />} />                    
                 </Route>  

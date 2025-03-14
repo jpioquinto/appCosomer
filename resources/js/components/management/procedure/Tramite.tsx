@@ -23,7 +23,7 @@ export default function Tramite() {
     const {keyTable, conflictos, listConflicts, setKeyTable} = useConflictStore()
 
     useEffect(() => {
-        listConflicts()
+        listConflicts([1,2])
         setModulo(location.state)
         setKeyTable(makeHash(12))
     }, [modulo])
