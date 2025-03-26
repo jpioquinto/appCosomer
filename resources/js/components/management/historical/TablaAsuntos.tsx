@@ -19,10 +19,11 @@ import type { Option } from '../../../types'
 DataTable.use(DT);
 
 type ConflictsProps = {
-    conflictos:Registros
+    conflictos:Registros,
+    seguimiento:() => void
 }
 
-export default function TablaAsuntos({conflictos}: ConflictsProps) {
+export default function TablaAsuntos({conflictos, seguimiento}: ConflictsProps) {
     const modulo = useModuloStore(state=>state.modulo);
 
     const {getEstatus, setOptionsEstatus} = useCatalogStore();
@@ -45,7 +46,7 @@ export default function TablaAsuntos({conflictos}: ConflictsProps) {
       ];
 
     const generarAcciones = (registro:Registro) => {            
-        return <BtnAccion acciones={modulo.acciones as Acciones} conflicto={registro} key={registro.id}/>     
+        return <BtnAccion acciones={modulo.acciones as Acciones} conflicto={registro} key={registro.id} seguimiento={seguimiento}/>     
     }
 
     const setTooltips = () => {

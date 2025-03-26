@@ -1,3 +1,4 @@
+import type { Acciones, Accion } from '../types'
 import { toast } from 'react-toastify'
 
 export const removeClase = (clases: string[], clase: string) : string => {
@@ -12,6 +13,12 @@ export const addClase = (clases:string[], clase:string): string => {
     }
     clases.push(clase);
     return clases.join(' ');
+}
+
+export const tienePermiso = (acciones: Acciones, permisoId:Accion['id']) => {
+    const permiso = acciones.filter(accion => accion.id === permisoId)
+
+    return permiso.length>0
 }
 
 export const notificacion = (message:string, $type:string, $time:number = 300) => {

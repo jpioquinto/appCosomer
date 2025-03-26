@@ -13,7 +13,8 @@ import withReactContent from 'sweetalert2-react-content'
 
 type AccionesProps= {
     acciones:Acciones,
-    conflicto:Registro
+    conflicto:Registro,
+    seguimiento:() => void
 }
 
 type AccionProps= {
@@ -23,8 +24,8 @@ type AccionProps= {
 
 const MySwal = withReactContent(Swal)
 
-export default function BtnAccion({acciones, conflicto}: AccionesProps) {
-    const {modal, showModal, closeModal} = useModal();
+export default function BtnAccion({acciones, conflicto, seguimiento}: AccionesProps) {
+    const {showModal} = useModal();
 
     const {setCurrentConflicto, deleteConflicto, getEstatus, updateStatusConflicto} = useConflictStore();
 
@@ -100,7 +101,8 @@ export default function BtnAccion({acciones, conflicto}: AccionesProps) {
                 showModalEliminarConflicto(conflicto)
                 break;
             case 11:
-                console.log('redireccionar...')
+                setCurrentConflicto(conflicto)
+                seguimiento()
                 break;
             case 12:
                 showModalChangeEstatus(conflicto)

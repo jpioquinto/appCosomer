@@ -1,4 +1,4 @@
-import { RegistrosSchema } from "../schema/conflicto-schema";
+import { RegistrosSchema, Etapas } from "../schema/conflicto-schema";
 import { Option } from "../types";
 import type { DraftRegistro, Registro, EstatusParam } from "../types/conflicto";
 
@@ -7,6 +7,18 @@ export async function listadoConflictos(estatus: Array<number> | undefined) {
         const response =  await axios.get('api/conflict/listado-conflictos' + (estatus ? '/' + estatus.join(',') : ''));  
         if (response.status) {
             const result = RegistrosSchema.safeParse(response.data?.listado);            
+            return result.success ? result.data : [];
+        }              
+    } catch(error) {
+        return []      
+    } 
+}
+
+export async function listadoEtapas(conflictoId: Registro['id']) {
+    try {
+        const response =  await axios.get('/api/conflict/listado-etapas' + '/' + conflictoId);  
+        if (response.status) {
+            const result = Etapas.safeParse(response.data?.listado);            
             return result.success ? result.data : [];
         }              
     } catch(error) {

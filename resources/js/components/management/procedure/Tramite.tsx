@@ -20,19 +20,20 @@ export default function Tramite() {
 
     const {modulo, setModulo} = useModuloStore()
 
-    const {keyTable, conflictos, listConflicts, setKeyTable} = useConflictStore()
+    const {keyTable, conflictos, listConflicts, listStages, setKeyTable} = useConflictStore()
 
     useEffect(() => {
         listConflicts([1,2])
+        listStages()
         setModulo(location.state)
         setKeyTable(makeHash(12))
     }, [modulo])
-    //const history  = useHistory()
+
     const navigate = useNavigate()
+
     const prueba = () => {
         console.log('hey chido...')
-        //history.push('/registro');
-        return navigate('/tramite/seguimiento')
+        return navigate('/seguimiento/asunto')
     }
 
   return (

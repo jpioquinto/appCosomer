@@ -30,6 +30,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::get('/conflict/listado-conflictos/{estatus?}', [\App\Http\Controllers\API\ConflictoController::class, 'getConflictos']); 
     Route::post('/conflict/delete-conflicto', [\App\Http\Controllers\API\ConflictoController::class, 'deleteConflicto']); 
+    Route::get('/conflict/listado-etapas/{conflictoId}', [\App\Http\Controllers\API\SeguimientoController::class, 'listarEtapas']);
     Route::post('/conflict/change-estatus', [\App\Http\Controllers\API\ConflictoController::class, 'changeStatus']); 
     Route::post('/conflict/save', [\App\Http\Controllers\API\ConflictoController::class, 'save']); 
     
@@ -44,5 +45,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/catalog/listado-vertientes', [\App\Http\Controllers\API\CatalogoController::class, 'listarVertientes']); 
     Route::get('/catalog/listado-regimenes', [\App\Http\Controllers\API\CatalogoController::class, 'listarRegimenes']); 
     Route::get('/catalog/listado-unidades', [\App\Http\Controllers\API\CatalogoController::class, 'listarUnidades']); 
-    Route::get('/catalog/listado-estatus', [\App\Http\Controllers\API\CatalogoController::class, 'listarEstatus']); 
+    Route::get('/catalog/listado-estatus', [\App\Http\Controllers\API\CatalogoController::class, 'listarEstatus']);          
 });

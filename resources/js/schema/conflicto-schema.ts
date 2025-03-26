@@ -1,5 +1,28 @@
 import { z } from 'zod'
 
+export const ValueCapture = z.object({
+        'value':z.string().or(z.number()).or(z.boolean()),
+        'docs':z.optional(z.string()).or( z.optional(z.array(z.string())) ),
+        'type':z.string()
+})
+
+export const Parametro = z.object({
+        'id':z.number(),
+        'etapaId':z.number(),
+        'parametro':z.string(),
+        'orden':z.number(),
+        'ponderacion':z.string(),
+        'calificable':z.number(),
+        'requiereDoc':z.number(),
+        'accion':z.optional(z.string()).nullable(),
+        'definicion':z.optional(z.string()).nullable(),
+        'premisaId':z.optional(z.string()).nullable(),
+        'captura':z.optional(ValueCapture).nullable(),
+        'validado':z.optional(z.number()).nullable(),
+})
+
+export const Parametros = z.array(Parametro)
+
 export const Etapa = z.object({
         id:z.number(),
         etapa:z.string(),
@@ -8,7 +31,7 @@ export const Etapa = z.object({
         estatus:z.number(),
         expanded:z.optional(z.boolean()).nullable(),
         collapse:z.optional(z.string()).nullable(),
-        style:z.optional(z.string()).nullable()
+        capturas:z.optional(Parametros).nullable()        
 })
 
 export const Etapas = z.array(Etapa)

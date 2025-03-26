@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { useConflictStore } from '../../../store/conflict/conflictStore'
 import { useCatalogStore } from '../../../store/catalogStore'
@@ -13,6 +13,8 @@ import { makeHash } from '../../../utils'
 export default function Historico() {
     const location = useLocation()
 
+    const navigate = useNavigate()
+
     const {conflictos, keyTable, listConflicts, setKeyTable} = useConflictStore()
 
     const {modal, closeModal} = useModal()
@@ -23,12 +25,14 @@ export default function Historico() {
 
     useEffect(() => {
         getEstatus().length == 0 ? listEstatus() : undefined
-        
         listConflicts()
         setModulo(location.state)
         setKeyTable(makeHash(12))
     }, [modulo])
 
+    const seguimiento = () => {
+        return navigate('/seguimiento/asunto')
+    }
   return (
    <div className="page-inner">
         <div className="page-header justify-content-between">
@@ -41,7 +45,7 @@ export default function Historico() {
                         <h4 className="card-title">Listado de Asuntos</h4>
                     </div>
                     <div className="card-body">
-                        <TablaAsuntos conflictos={conflictos} key={keyTable} />   
+                        <TablaAsuntos conflictos={conflictos} key={keyTable} seguimiento={seguimiento} />   
 
                         <ModalRegistro propModal={modal} close={closeModal}/>         
                     </div>

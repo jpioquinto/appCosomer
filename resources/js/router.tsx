@@ -14,7 +14,7 @@ import EditarPerfil from './components/users/EditarPerfil.tsx'
 import UR from './components/urs/UR.tsx'
 
 import MarcoJuridico from './components/management/legal/MarcoJuridico.tsx'
-import Seguimiento from './components/management/procedure/Seguimiento.tsx'
+import Seguimiento from './components/management/historical/Seguimiento.tsx'
 import Historico from './components/management/historical/Historico.tsx'
 import Solicitud from './components/management/request/Solicitud.tsx'
 import Registro from './components/management/register/Registro.tsx'
@@ -42,7 +42,7 @@ export default function AppRouter() {
                     <Route path='/historico' element={<Historico />} />                    
                     <Route path='/registro' element={<Registro />} />                    
                     <Route path='/asuntos-concluidos' element={<Tramite />} />                    
-                    <Route path='/tramite/seguimiento' element={<Seguimiento />} />                    
+                    <Route path='/seguimiento/asunto' element={<Seguimiento />} />                    
                     <Route path='*' element={<NotFound />} />                    
                 </Route>  
             </Routes>
