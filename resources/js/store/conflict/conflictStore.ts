@@ -27,6 +27,10 @@ type ConflictState = {
     updateStatusConflicto:(data: EstatusParam) => void,
     setKeyTable:(keyTable:string) => void
     updateCapturaEtapa:(etapaId: Etapa['id'], paramId: Captura['id'], captura: ValueCapture) => void,
+    deleteCapturaEtapa:(etapaId: Etapa['id'], paramId: Captura['id']) => void,
+    switchCapture:(etapaId: Etapa['id'], paramId: Captura['id']) => void,
+    initCapture:(etapaId: Etapa['id'], paramId: Captura['id']) => void,
+    finishCapture:(etapaId: Etapa['id'], paramId: Captura['id']) => void,
 }
 
 export const useConflictStore = create<ConflictState>((set, get) => ({
@@ -84,6 +88,45 @@ export const useConflictStore = create<ConflictState>((set, get) => ({
     updateEtapa:($etapa) => {
         const etapas = get().etapas.map(etapa => etapa.id === $etapa.id ? $etapa : etapa)
 
+        set({etapas})
+    },
+    switchCapture:(etapaId, paramId) => {
+        const etapas = get().etapas.map(etapa => {
+            if (etapa.id === etapaId) {
+                etapa.capturas?.map(parametro => {
+                    if (parametro.id === paramId) {
+                        parametro.capturando = !parametro.capturando
+                    }
+                    return parametro
+                })
+            }
+            return etapa
+        })
+
+        set({etapas})
+    },
+    initCapture:(etapaId, paramId) => {
+        get().switchCapture(etapaId, paramId)
+    },
+    finishCapture:(etapaId, paramId) => {
+        get().switchCapture(etapaId, paramId)
+    },
+    deleteCapturaEtapa:(etapaId, paramId) => {
+        
+        const etapas = get().etapas.map(etapa => {
+            if (etapa.id === etapaId) {
+                etapa.capturas?.map(parametro => {
+                    if (parametro.id === paramId) {
+                        parametro.captura = null
+                    }
+                    return parametro
+                })
+            }
+            return etapa
+        })
+        const captura = get().captura
+        captura.hasOwnProperty(paramId) ? delete captura[paramId] : undefined
+        set({captura})
         set({etapas})
     },
     updateCapturaEtapa:(etapaId, paramId, $captura) => {

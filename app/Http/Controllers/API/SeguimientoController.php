@@ -37,6 +37,7 @@ class SeguimientoController extends Controller
     {
         $capturas = [];
         foreach (EtapaQueryBuilder::obtenerCapturas($conflictoId) as $captura) {
+            $captura->capturando = false;
             $capturas[$captura->etapaId][] = $captura;
         }
 

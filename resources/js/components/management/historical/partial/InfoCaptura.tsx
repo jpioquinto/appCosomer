@@ -1,30 +1,36 @@
-import React, {MouseEvent} from 'react'
+import React, {MouseEvent, ChangeEvent, useState, useEffect} from 'react'
 
 import { useSeguimiento } from '../../../../hooks/useSeguimiento'
+import useReadFiles from '../../../../hooks/useReadFiles'
 import { Parametro } from '../../../../types/conflicto'
+import { notificacion } from '../../../../utils'
 
 type CaptureProps = {
     parametro: Parametro
 }
 
 export default function InfoCaptura({parametro}: CaptureProps) {
-    const {MySwal} = useSeguimiento();
+    const {config, estatus, setLimitSize, setReadFiles, setTotalFiles, onLoadStart, onLoadEnd, onProgress, onError} = useReadFiles();
 
-    const cerrarModal = () => MySwal.close();
+    const {cerrarModal, eliminarCaptura, initCapture} = useSeguimiento();
 
-    const clickCargarDoc = (e: MouseEvent<HTMLButtonElement>) => {
+    const [showInputFile, setShowInputFile] = useState<boolean>(false);
+
+
+    const clickShowCargarDoc = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        cerrarModal();
+        setShowInputFile(true);
     }
 
     const clickEditar = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         cerrarModal();
+        initCapture(parametro.etapaId, parametro.id);
     }
 
     const clickElimiinar = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        cerrarModal();
+        eliminarCaptura(parametro)
     }
 
     const clickCerrarModal = (e: MouseEvent<HTMLButtonElement>) => {
@@ -32,22 +38,95 @@ export default function InfoCaptura({parametro}: CaptureProps) {
         cerrarModal();
     }
 
+    const readFiles = (archivos: File[]) => {
+        for (let i = 0; i < archivos.length; i++) {
+            if (archivos[i].size > config.maxSize) {
+                notificacion(`El tamaño del archivo ${archivos[i].name} supera lo permitido ( ${config.limitMB} MB )`, 'error');
+                continue;
+            }
+            const reader = new FileReader();
+            
+            reader.onloadstart = onLoadStart;
+            reader.onloadend   = onLoadEnd;
+            reader.onprogress  = onProgress;
+            reader.onerror     = onError;
+
+            reader.readAsArrayBuffer(archivos[i]);
+       }
+    }
+
+    const handleFiles = (e: ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        
+        //setReadFiles();
+
+       const archivos =  e.target?.files ? e.target.files : [];
+
+       if (archivos.length == 0) {
+        return;
+       }
+      
+       setTotalFiles(archivos.length);
+
+       setTimeout(() => readFiles(archivos as File[]), 500)
+    
+        /*for (let i = 0; i < archivos.length; i++) {
+            if (archivos[i].size > config.maxSize) {
+                notificacion(`El tamaño del archivo ${archivos[i].name} supera lo permitido ( ${config.limitMB} MB )`, 'error');
+                continue;
+            }
+            const reader = new FileReader();
+            
+            reader.onloadstart = onLoadStart;
+            reader.onloadend   = onLoadEnd;
+            reader.onprogress  = onProgress;
+            reader.onerror     = onError;
+
+            reader.readAsArrayBuffer(archivos[i]);
+        }*/        
+    }
+
+    useEffect(() => {
+        setLimitSize(30)
+    }, [])
+
   return (
     <>
-        <div className='container'>
-            <p>¿Qué acción desea realizar?</p>
-        </div>
-        <div className='d-inline-flex justify-content-center'>
-            {parametro?.requiereDoc === 1 && (
-                <button type="button" className="btn btn-success btn-sm textl-white fw-semibold" onClick={clickCargarDoc}>Cargar documento</button>
-            )}
-            &nbsp; 
-           {parametro?.accion !== 'Afirmacion' && (
-                <button type="button" className="btn btn-info btn-sm textl-white fw-semibold" onClick={clickEditar}>Editar la captura</button>
-           )}
-        &nbsp;   
-        <button type="button" className="btn btn-warning btn-sm text-white fw-semibold" onClick={clickElimiinar}>Eliminar la captura</button>&nbsp; 
-        <button type="button" className="btn btn-secondary btn-sm fw-semibold" onClick={clickCerrarModal}><i className="fa fa-window-close"></i> Cerrar</button>
+        {(parametro.requiereDoc===1 && showInputFile) && (
+            <div className='container'>
+                <div className='form-group'>
+                    <label htmlFor="id-doc" className='fw-bold'>De click en Seleccionar archivo:</label>
+                    <input id="id-doc" type="file" className='form-control' accept='.pdf, .tiff, .tif' onChange={handleFiles} multiple/>
+                </div>
+                {estatus.reading && (
+                    <><label>Leyendo... {estatus.read} de {estatus.total}</label>
+                    <div className="progress my-2" role="progressbar" aria-label="Porcentaje de lectura" aria-valuenow={estatus.percent} aria-valuemin={0} aria-valuemax={100}>
+                        <div className="progress-bar progress-bar-striped progress-bar-animated" style={{width: `${estatus.percent}%`}}>{estatus.percent}%</div>
+                    </div></>
+                )}
+                
+                <div className='d-inline-flex justify-content-center'>
+                    <button type="button" className="btn btn-success btn-sm textl-white fw-semibold" onClick={clickShowCargarDoc}>Aceptar</button>&nbsp; 
+                    <button type="button" className="btn btn-secondary btn-sm fw-semibold" onClick={clickCerrarModal}><i className="fa fa-window-close"></i> Cerrar</button>
+                </div>
+            </div>
+        )}
+        <div className={`container ${showInputFile ? 'd-none' : ''}`}>
+            <div className='d-inline-flex'>
+                <p>¿Qué acción desea realizar?</p>
+            </div>
+            <div className='d-inline-flex justify-content-center'>
+                {parametro?.requiereDoc === 1 && (
+                    <button type="button" className="btn btn-success btn-sm textl-white fw-semibold" onClick={clickShowCargarDoc}>Cargar documento</button>
+                )}
+                &nbsp; 
+                {parametro?.accion !== 'Afirmacion' && (
+                    <button type="button" className="btn btn-info btn-sm textl-white fw-semibold" onClick={clickEditar}>Editar la captura</button>
+                )}
+                &nbsp;   
+                <button type="button" className="btn btn-warning btn-sm text-white fw-semibold" onClick={clickElimiinar}>Eliminar la captura</button>&nbsp; 
+                <button type="button" className="btn btn-secondary btn-sm fw-semibold" onClick={clickCerrarModal}><i className="fa fa-window-close"></i> Cerrar</button>
+            </div>
         </div>
     </>
   )

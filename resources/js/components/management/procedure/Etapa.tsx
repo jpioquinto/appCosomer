@@ -1,14 +1,15 @@
 import React, {MouseEvent, ChangeEvent} from 'react'
 
-import type { Parametros, Parametro, Etapa } from '../../../types/conflicto'
+import type { Parametros, Parametro as TypeParametro, Etapa as TypeEtapa } from '../../../types/conflicto'
 import { useSeguimiento } from '../../../hooks/useSeguimiento'
+import Parametro from './Parametro'
 import { makeHash } from '../../../utils'
 
 type EtapaProps = {
-    etapa:Etapa,
+    etapa:TypeEtapa,
     posicion:number,
-    clickParametro:(param: Parametro, e: ChangeEvent<HTMLInputElement>) => void,
-    clickElement:(etapa:Etapa) => void,
+    clickParametro:(param: TypeParametro, etapaId: TypeEtapa['id']) => void,
+    clickElement:(etapa:TypeEtapa) => void,
 }
 
 export default function Etapa({etapa, posicion, clickElement, clickParametro}: EtapaProps) {
@@ -17,18 +18,7 @@ export default function Etapa({etapa, posicion, clickElement, clickParametro}: E
         const listado : JSX.Element[] = []
 
         params.map(param => {
-            listado.push(
-                <div className="form-check">
-                    <input 
-                        className="form-check-input" type="checkbox" value="" id={`param-${param.id}`}
-                        checked={param.captura!=null}
-                        onChange={ (e: ChangeEvent<HTMLInputElement>) => {/*e.preventDefault();*/ clickParametro(param, etapa.id)} }
-                    />
-                    <label className="form-check-label" htmlFor={`param-${param.id}`}>
-                        {param.parametro}
-                    </label>
-                </div>
-            )
+            listado.push(<Parametro parametro={param} etapaId={etapa.id} clickParametro={clickParametro} key={`parametro-${param.id}`}/>)
         })
 
         return listado

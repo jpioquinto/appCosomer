@@ -18,6 +18,7 @@ export const Parametro = z.object({
         'definicion':z.optional(z.string()).nullable(),
         'premisaId':z.optional(z.string()).nullable(),
         'captura':z.optional(ValueCapture).nullable(),
+        'capturando':z.optional(z.boolean()).nullable(),
         'validado':z.optional(z.number()).nullable(),
 })
 

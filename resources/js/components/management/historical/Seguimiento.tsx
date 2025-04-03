@@ -8,34 +8,58 @@ import { useModuloStore } from '../../../store/modulo'
 import InfoCaptura from './partial/InfoCaptura'
 import type { Acciones } from '../../../types'
 import Etapa from '../procedure/Etapa'
+import { Parametros } from '../../../schema/conflicto-schema'
 
 export default function Seguimiento() {
-    const {conflicto, etapas, listStages, setCaptura, updateEtapa, updateCapturaEtapa} = useConflictStore()
+    const {conflicto, etapas, listStages, setCaptura, updateEtapa, updateCapturaEtapa, initCapture} = useConflictStore()
 
     const {clickBtnGuardar, MySwal} = useSeguimiento()
 
     const modulo = useModuloStore(state => state.modulo)
 
+    const accionAfirmacion = (parametro:Parametro, etapaId:TypeEtapa['id']) => {
+        if (!parametro?.captura) {
+            updateCapturaEtapa(etapaId, parametro.id, {value:true, type:'boolean'} as ValueCapture);
+            return;
+        }
+
+        MySwal.fire({
+            title:"Información capturada",
+            text: `¿Qué acción desea realizar?`,
+            icon: "warning",
+            html:<InfoCaptura parametro={parametro}/>,
+            showConfirmButton:false,
+            allowOutsideClick:false,
+            allowEscapeKey:false,
+        });
+    }
+
+    const accionInput = (parametro:Parametro, etapaId:TypeEtapa['id']) => {
+        if (!parametro?.captura) {            
+            initCapture(etapaId, parametro.id);
+            return;
+        }
+
+        MySwal.fire({
+            title:"Información capturada",
+            text: `¿Qué acción desea realizar?`,
+            icon: "warning",
+            html:<InfoCaptura parametro={parametro}/>,
+            showConfirmButton:false,
+            allowOutsideClick:false,
+            allowEscapeKey:false,
+        });
+    }
+
     const accionParametro = (parametro:Parametro, etapaId:TypeEtapa['id']) => {
         switch(parametro.accion) {
-            case 'Afirmacion': 
-                MySwal.fire({
-                    title:"Información capturada",
-                    text: `¿Qué acción desea realizar?`,
-                    icon: "warning",
-                    html:<InfoCaptura parametro={parametro}/>,
-                    showConfirmButton:false,
-                    allowOutsideClick:false,
-                    allowEscapeKey:false,
-                });
+            case 'Afirmacion':                 
                 console.log(parametro)
-              
-                updateCapturaEtapa(etapaId, parametro.id, {value:true, type:'boolean'} as ValueCapture)
+                accionAfirmacion(parametro, etapaId)              
             break;
-            case 'CantidadEntera': break;
-            case 'CantidadNumerica': break;
-            case 'Fecha': break;
-            case 'Moneda': break;
+            case 'CantidadEntera': case 'CantidadNumerica': case 'Fecha': case 'Moneda':
+                accionInput(parametro, etapaId)
+            break;
             default:break;
         }
     }
