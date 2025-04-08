@@ -1,24 +1,12 @@
 import { useState } from "react"
 import { notificacion } from "../utils"
-
-type TypeEstatus = {
-    read:number,
-    total:number,
-    reading:boolean,
-    percentRead:number,
-}
+import { useFileStore } from "../store/conflict/fileStore"
+import { Parametro } from "../types/conflicto"
 
 type TypeConfig = {
     limitMB:number,
     bytes:number,
     maxSize:number,
-}
-
-const initEstatus = {
-    read:0,
-    total:0,
-    reading:false,
-    percentRead:0,
 }
 
 const initConfig = {
@@ -27,26 +15,32 @@ const initConfig = {
     maxSize:5 * 1048576
 
 }
-export default function useReadFiles() {
-    //const [estatus, setEstatus] = useState<TypeEstatus>(initEstatus)
-
+export default function useReadFiles() {    
     const [config, setConfig] = useState<TypeConfig>(initConfig)
-    
-    let [total, setTotal] = useState<number>(0)
+
+    const {total, percent, setCancel, setPercent, setUpload, setSelectedFile, getSelectedFile, getPercent, setTotal, getTotal, getCancel} = useFileStore()    
 
     let [read, setRead] = useState<number>(0)
-
-    let [percent, setPercent] = useState<number>(0)
-
-    const [reading, setReading] = useState<boolean>(false)
+    
+    let [reading, setReading] = useState<boolean>(false)
     
     const setLimitSize = (size:number) => setConfig({...config, limitMB:size, maxSize: size * config.bytes})
 
     const setTotalFiles     = (total:number) => setTotal(total)
 
-    const setReadFiles = () => {
+    const calPercent = ($percent: number) => {
+        const $total   = getTotal() == 0 ? 1 : getTotal();
+
+        $percent /= $total; 
+
+        ($percent + getPercent()) > 100 ? setPercent( 100 ) : setPercent( Math.round($percent + getPercent()) )                               
+    }
+
+    const setPropertiesRead = () => {
+        setSelectedFile({parametroId:0, file:[]})
         setReading(false)
         setPercent(0)
+        setCancel(0)
         setTotal(0)
         setRead(0)
     }
@@ -73,36 +67,28 @@ export default function useReadFiles() {
             return;
         }
 
-        const $total   = total == 0 ? 1 : total;
-
-        const $percent = Math.round((e.loaded / e.total) * 100) / $total; 
-
-        if (($percent + percent) <= 100) {console.log(total)
-            const porc = $percent + percent
-            setPercent( porc )
-        }        
+        calPercent(Math.round((e.loaded / e.total) * 100))     
     }
 
     const onLoadStart = (e: ProgressEvent<FileReader>) => setReading(true)
 
     const onLoadEnd = (e: ProgressEvent<FileReader>) => {
-        setRead(++read)
-
-        if (total == read) {
-            
-            //setEstatus({...estatus, reading:false})
-        }
+        setRead(++read)        
+        if (getTotal() == (read + getCancel())) {
+            setTimeout(() => setReading(false), 500)            
+        }        
     }
 
     return { 
         config,
+        getSelectedFile,        
         estatus: {percent, read, reading, total},
-        setReadFiles,
+        reader:{onLoadStart, onProgress, onLoadEnd, onError},
+        setPropertiesRead,
+        setSelectedFile,
         setTotalFiles,
         setLimitSize,
-        onError,
-        onProgress,
-        onLoadStart,
-        onLoadEnd 
+        setCancel,        
+        setUpload
     }
 }

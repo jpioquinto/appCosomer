@@ -80,3 +80,7 @@ export function formatDateShort(dateStr: string) : string {
     let date = dateStr.split('-')
     return date.reverse().join('/')
 }
+
+export function clone(obj: object): object {
+    return JSON.parse(JSON.stringify(obj));
+}

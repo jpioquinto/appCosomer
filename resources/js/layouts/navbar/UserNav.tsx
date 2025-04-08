@@ -12,9 +12,9 @@ export default function UserNav() {
         </div>
         <div className="info">
             <a 
-                data-bs-toggle="collapse" 
+                data-bs-toggle='collapse' 
                 href='#config-user'
-                className={`${toggle.classToggle}`}
+                className={toggle.classToggle}
                 aria-expanded={`${toggle.aria}`}
                 onClick={handlerCollapse}
             >

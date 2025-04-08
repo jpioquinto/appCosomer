@@ -2,20 +2,25 @@ import React, {MouseEvent, ChangeEvent, useState, useEffect} from 'react'
 
 import { useSeguimiento } from '../../../../hooks/useSeguimiento'
 import useReadFiles from '../../../../hooks/useReadFiles'
-import { Parametro } from '../../../../types/conflicto'
-import { notificacion } from '../../../../utils'
+import { Parametro, TypeSelectedFile } from '../../../../types/conflicto'
+import { notificacion, clone } from '../../../../utils'
 
 type CaptureProps = {
     parametro: Parametro
 }
 
 export default function InfoCaptura({parametro}: CaptureProps) {
-    const {config, estatus, setLimitSize, setReadFiles, setTotalFiles, onLoadStart, onLoadEnd, onProgress, onError} = useReadFiles();
+    const {config, estatus, reader, setLimitSize, setPropertiesRead, setCancel, setTotalFiles, setUpload, setSelectedFile, getSelectedFile} = useReadFiles();
 
     const {cerrarModal, eliminarCaptura, initCapture} = useSeguimiento();
 
     const [showInputFile, setShowInputFile] = useState<boolean>(false);
 
+    const clickCargarDoc = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();//console.log(getSelectedFile())
+        setUpload(getSelectedFile().parametroId, getSelectedFile().file)
+        cerrarModal();
+    }
 
     const clickShowCargarDoc = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -39,26 +44,39 @@ export default function InfoCaptura({parametro}: CaptureProps) {
     }
 
     const readFiles = (archivos: File[]) => {
+        let $cancel = 0
         for (let i = 0; i < archivos.length; i++) {
+            
             if (archivos[i].size > config.maxSize) {
-                notificacion(`El tamaño del archivo ${archivos[i].name} supera lo permitido ( ${config.limitMB} MB )`, 'error');
+                setCancel(++$cancel)
+                notificacion(`El tamaño del archivo ${archivos[i].name} supera lo permitido ( ${config.limitMB} MB )`, 'error', 500);
                 continue;
             }
-            const reader = new FileReader();
-            
-            reader.onloadstart = onLoadStart;
-            reader.onloadend   = onLoadEnd;
-            reader.onprogress  = onProgress;
-            reader.onerror     = onError;
 
-            reader.readAsArrayBuffer(archivos[i]);
+            //let selectFile = getSelectedFile()
+            //selectFile.parametroId === parametro.id ? selectFile.file.push(archivos[i]) : selectFile = {parametroId:parametro.id, file:[archivos[i]]};                                  
+            
+            let $reader = new FileReader();
+            
+            $reader.onloadstart = reader.onLoadStart;
+            $reader.onloadend   = reader.onLoadEnd;
+            $reader.onprogress  = reader.onProgress;
+            $reader.onerror     = reader.onError;
+                              
+            $reader.readAsArrayBuffer(archivos[i]);
+            
+            setSelectedFile(
+                getSelectedFile().parametroId === parametro.id 
+                ? {parametroId:parametro.id, file:[...getSelectedFile().file, archivos[i]]} 
+                : {parametroId:parametro.id, file:[archivos[i]]}
+            );
        }
     }
 
     const handleFiles = (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         
-        //setReadFiles();
+        setPropertiesRead();
 
        const archivos =  e.target?.files ? e.target.files : [];
 
@@ -68,22 +86,7 @@ export default function InfoCaptura({parametro}: CaptureProps) {
       
        setTotalFiles(archivos.length);
 
-       setTimeout(() => readFiles(archivos as File[]), 500)
-    
-        /*for (let i = 0; i < archivos.length; i++) {
-            if (archivos[i].size > config.maxSize) {
-                notificacion(`El tamaño del archivo ${archivos[i].name} supera lo permitido ( ${config.limitMB} MB )`, 'error');
-                continue;
-            }
-            const reader = new FileReader();
-            
-            reader.onloadstart = onLoadStart;
-            reader.onloadend   = onLoadEnd;
-            reader.onprogress  = onProgress;
-            reader.onerror     = onError;
-
-            reader.readAsArrayBuffer(archivos[i]);
-        }*/        
+       setTimeout(() => readFiles(archivos as File[]), 150)     
     }
 
     useEffect(() => {
@@ -106,7 +109,7 @@ export default function InfoCaptura({parametro}: CaptureProps) {
                 )}
                 
                 <div className='d-inline-flex justify-content-center'>
-                    <button type="button" className="btn btn-success btn-sm textl-white fw-semibold" onClick={clickShowCargarDoc}>Aceptar</button>&nbsp; 
+                    <button type="button" className="btn btn-success btn-sm textl-white fw-semibold" onClick={clickCargarDoc}>Aceptar</button>&nbsp; 
                     <button type="button" className="btn btn-secondary btn-sm fw-semibold" onClick={clickCerrarModal}><i className="fa fa-window-close"></i> Cerrar</button>
                 </div>
             </div>

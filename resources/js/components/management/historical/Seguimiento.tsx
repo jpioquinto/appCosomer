@@ -8,7 +8,6 @@ import { useModuloStore } from '../../../store/modulo'
 import InfoCaptura from './partial/InfoCaptura'
 import type { Acciones } from '../../../types'
 import Etapa from '../procedure/Etapa'
-import { Parametros } from '../../../schema/conflicto-schema'
 
 export default function Seguimiento() {
     const {conflicto, etapas, listStages, setCaptura, updateEtapa, updateCapturaEtapa, initCapture} = useConflictStore()
@@ -18,9 +17,13 @@ export default function Seguimiento() {
     const modulo = useModuloStore(state => state.modulo)
 
     const accionAfirmacion = (parametro:Parametro, etapaId:TypeEtapa['id']) => {
-        if (!parametro?.captura) {
+        if (!parametro?.captura && parametro?.requiereDoc !== 1) {
             updateCapturaEtapa(etapaId, parametro.id, {value:true, type:'boolean'} as ValueCapture);
             return;
+        }
+
+        if (!parametro?.captura) {
+            updateCapturaEtapa(etapaId, parametro.id, {value:true, type:'boolean'} as ValueCapture);            
         }
 
         MySwal.fire({
@@ -117,7 +120,7 @@ export default function Seguimiento() {
                         <div className="card-body">                        
                             <div className="accordion" id="accordionConflicto">                                
                                 {
-                                    etapas.map((etapa:TypeEtapa, index: number) => <Etapa etapa={etapa} posicion={index+1} key={`etapa-${etapa.id}`} clickElement={clickElement} clickParametro={clickParametro}/>)
+                                    etapas.map((etapa:TypeEtapa, index: number) => <Etapa etapa={etapa} posicion={index+1} clickElement={clickElement} clickParametro={clickParametro} key={`stage-${etapa.id}`} />)
                                 }
                             </div>
 

@@ -8,8 +8,8 @@ import { makeHash } from '../../../utils'
 type EtapaProps = {
     etapa:TypeEtapa,
     posicion:number,
-    clickParametro:(param: TypeParametro, etapaId: TypeEtapa['id']) => void,
     clickElement:(etapa:TypeEtapa) => void,
+    clickParametro:(param: TypeParametro, etapaId: TypeEtapa['id']) => void,
 }
 
 export default function Etapa({etapa, posicion, clickElement, clickParametro}: EtapaProps) {
@@ -37,7 +37,6 @@ export default function Etapa({etapa, posicion, clickElement, clickParametro}: E
     }
 
   return (
-    <>
     <div className="accordion-item">
         <h2 className="accordion-header">
             <button 
@@ -60,7 +59,6 @@ export default function Etapa({etapa, posicion, clickElement, clickParametro}: E
                 </div>
             </div>
         </div>
-    </div>
-    </>
+    </div>    
   )
 }

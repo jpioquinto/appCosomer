@@ -23,3 +23,8 @@ export type EstatusParam = {
     id:Registro['id'],
     estatus:Option
 }
+
+export type TypeSelectedFile = {
+    parametroId:Parametro['id'],
+    file:File[]
+}

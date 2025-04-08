@@ -1,6 +1,7 @@
 import {MouseEvent} from 'react';
 
 import { useConflictStore } from "../store/conflict/conflictStore";
+import { useFileStore } from '../store/conflict/fileStore';
 import { Etapa, Parametro } from "../types/conflicto";
 
 import Swal from 'sweetalert2'
@@ -11,11 +12,13 @@ const MySwal = withReactContent(Swal)
 export function useSeguimiento() {
     const {captura, deleteCapturaEtapa, initCapture} = useConflictStore();
 
+    const {upload} = useFileStore();
+
     const cerrarModal = () => MySwal.close();
 
     const clickBtnGuardar = (e:MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-
+        console.log(upload)
         console.log(captura)
     }
 
