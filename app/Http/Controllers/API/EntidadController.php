@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Libraries\Store\EntidadStore;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Libraries\Store\EntidadStore;
+use Exception;
 
 
 class EntidadController extends Controller

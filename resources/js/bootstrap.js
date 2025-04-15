@@ -7,3 +7,5 @@ window.axios.defaults.withXSRFToken = true;
 
 /*window.axios.defaults.xsrfCookieName = "XSRF-TOKEN";
 window.axios.defaults.xsrfHeaderName = "X-XSRF-TOKEN";*/
+
+//export default  {axios: axiosPio}  = window;

@@ -1,6 +1,5 @@
-import { RegistrosSchema, Etapas } from "../schema/conflicto-schema";
-import { Option } from "../types";
-import type { DraftRegistro, Registro, EstatusParam, Parametro } from "../types/conflicto";
+import { RegistrosSchema, Etapas, ResponseLoadFile } from "../schema/conflicto-schema";
+import type { DraftCaptura, DraftRegistro, Registro, EstatusParam, Parametro } from "../types/conflicto";
 
 export async function listadoConflictos(estatus: Array<number> | undefined) {
     try {
@@ -66,15 +65,32 @@ export async function changeStatusConflicto(data: EstatusParam) {
     } 
 }
 
-export async function cargarEvidencia(conflictoId: Registro['id'], parametroId: Parametro['id'], archivo: File) {
+export async function uploadDoc(conflictoId: Registro['id'], parametroId: Parametro['id'], archivo: File) {
     try {
         const formData = new FormData();
-        formData.append('archivos', archivo);
+        formData.append('archivo', archivo);
         formData.append('conflictoId', conflictoId.toString());
         formData.append('parametroId', parametroId.toString());
-        const response =  await axios.post('api/contact/subir-foto', formData);  
+
+        const response =  await axios.post('/api/conflict/upload-evidence', formData);
+          
+        if (response.hasOwnProperty('solicitud')) {
+            const result = ResponseLoadFile.safeParse(response.data);            
+            return result.success ? result.data : {};
+        }
         return response.data;           
     } catch(error) {
         return error;      
     } 
+}
+
+export async function saveStage(data: DraftCaptura) {
+    try {
+        const response =  await axios.post('/api/conflict/save-stage', data);
+        
+        return response.data;
+    } catch(error) {
+        return error      
+    } 
+
 }

@@ -10,7 +10,7 @@ type TypeConfig = {
 }
 
 const initConfig = {
-    limitMB:5,
+    limitMB:import.meta?.env?.VITE_MAX_ZIZE_FILE || 30,
     bytes:1048576,
     maxSize:5 * 1048576
 

@@ -3,6 +3,7 @@
 namespace App\Http\Libraries\Store;
 
 use App\Http\Libraries\Validations\ValidaUR;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,12 +29,17 @@ class URStore extends ValidaUR
 
     public function getUR()
     {
-        return $this->ur;        
+        return $this->ur ?? null;        
     }
 
     public function getURs()
     {           
         return URQueryBuilder::obtenerListado();
+    }
+
+    public function getDirectory()
+    {
+        return $this->ur['carpeta'] ?? '';
     }
 
     public function deleteUR(int $id)
@@ -48,6 +54,15 @@ class URStore extends ValidaUR
         }
 
         return $update;
+    }
+
+    public function makeDirectory(string $folder)
+    {
+        if (Storage::disk('public')->directoryExists("docs/{$folder}")) {
+            return true;
+        }
+
+        return Storage::disk('public')->makeDirectory("docs/{$folder}");
     }
 
     protected function save(array $data, int $id = -1)
@@ -68,12 +83,12 @@ class URStore extends ValidaUR
         return $ur ? URQueryBuilder::obtenerUR($ur->id) : $ur;
     }
 
-    protected function fillFields(array $data, bool $update)
+    protected function fillFields(array $data, bool $update): Array
     {
         if (!$update) {
             return [
                 'sigla'=>mb_strtoupper($data['sigla']),
-                'carpeta'=>mb_strtoupper($data['sigla']),            
+                'carpeta'=>$this->directoryUR(mb_strtoupper($data['sigla'])),            
                 'creado_por'=>$data['user']            
             ];
         }
@@ -83,5 +98,10 @@ class URStore extends ValidaUR
             'actualizado_el'=>'now()',           
             'actualizado_por'=>$data['user']            
         ];
+    }
+
+    protected function directoryUR(string $folder): string
+    {
+        return Storage::disk('public')->directoryExists("docs/{$folder}") ? $folder.date('YmdHis') : $folder;
     }
 }

@@ -9,7 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 use Illuminate\Database\Eloquent\Relations\{HasOne, BelongsTo};
 
-use App\Models\Admin\{Perfil, Contacto};
+use App\Models\Admin\{Perfil, Contacto, UnidadResponsable};
 
 class User extends Authenticatable
 {
@@ -58,5 +58,10 @@ class User extends Authenticatable
     public function contacto(): HasOne
     {
         return $this->hasOne(Contacto::class, 'usuario_id')->withDefault();
+    }
+
+    public function ur(): BelongsTo
+    {
+        return $this->BelongsTo(UnidadResponsable::class)->withDefault();
     }
 }

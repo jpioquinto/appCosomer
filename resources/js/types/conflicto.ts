@@ -1,7 +1,7 @@
 import z from 'zod'
 import { Option } from '.'
 
-import { RegistroSchema, RegistrosSchema, Etapas, Etapa, Parametros, Parametro, ValueCapture } from '../schema/conflicto-schema'
+import { RegistroSchema, RegistrosSchema, Etapas, Etapa, Parametros, Parametro, ValueCapture, ResponseLoadFile } from '../schema/conflicto-schema'
 
 export type Registro  = z.infer<typeof RegistroSchema>
 
@@ -19,6 +19,8 @@ export type Parametro  = z.infer<typeof Parametro>
 
 export type ValueCapture = z.infer<typeof ValueCapture>
 
+export type ResponseLoadFile = z.infer<typeof ResponseLoadFile>
+
 export type EstatusParam = {
     id:Registro['id'],
     estatus:Option
@@ -27,4 +29,9 @@ export type EstatusParam = {
 export type TypeSelectedFile = {
     parametroId:Parametro['id'],
     file:File[]
+}
+
+export type DraftCaptura = {
+    conflictoId:Registro['id'],
+    capturas:string
 }

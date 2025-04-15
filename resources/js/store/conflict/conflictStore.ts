@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { Registro, Registros, EstatusParam, Etapas, Etapa, Captura, ValueCapture } from '../../types/conflicto'
+import { Registro, Registros, EstatusParam, Etapas, Etapa, Parametro, ValueCapture } from '../../types/conflicto'
 import { listadoConflictos, listadoEtapas } from '../../services/ConflictoService'
 import { makeHash } from '../../utils'
 import { Option } from '../../types'
@@ -12,6 +12,8 @@ type ConflictState = {
     etapas:Etapas,
     etapa:Etapa,
     captura:object,
+    parametro:Parametro,
+    resetCaptura:($captura:object) => void,
     setCaptura:($captura:object) => void,
     setEstatus:(estatus:Option) => void,
     getEstatus:() => Option,
@@ -25,22 +27,27 @@ type ConflictState = {
     listConflicts:(estatus?: Array<number> | undefined) => Promise<void>,
     listStages:(id: Registro['id']) => Promise<void>,
     updateStatusConflicto:(data: EstatusParam) => void,
-    setKeyTable:(keyTable:string) => void
-    updateCapturaEtapa:(etapaId: Etapa['id'], paramId: Captura['id'], captura: ValueCapture) => void,
-    deleteCapturaEtapa:(etapaId: Etapa['id'], paramId: Captura['id']) => void,
-    switchCapture:(etapaId: Etapa['id'], paramId: Captura['id']) => void,
-    initCapture:(etapaId: Etapa['id'], paramId: Captura['id']) => void,
-    finishCapture:(etapaId: Etapa['id'], paramId: Captura['id']) => void,
+    setKeyTable:(keyTable:string) => void,
+    setParametro:(parametro: Parametro) => void,
+    updateCapturaEtapa:(etapaId: Etapa['id'], paramId: Parametro['id'], captura: ValueCapture) => void,
+    deleteCapturaEtapa:(etapaId: Etapa['id'], paramId: Parametro['id']) => void,
+    updateEvidenceCapture:(paramId: Parametro['id'], $path:string) => void,
+    switchCapture:(etapaId: Etapa['id'], paramId: Parametro['id']) => void,
+    finishCapture:(etapaId: Etapa['id'], paramId: Parametro['id']) => void,
+    initCapture:(etapaId: Etapa['id'], paramId: Parametro['id']) => void,
 }
 
 export const useConflictStore = create<ConflictState>((set, get) => ({
     conflictos:[],
     conflicto:{} as Registro,
+    parametro:{} as Parametro,
     estatus:{value:0, label:''},
     keyTable:makeHash(12),
     etapas:[],
     etapa:{} as Etapa,
     captura: {},
+    setParametro:(parametro:Parametro) => set({parametro}),
+    resetCaptura:(captura) => set({captura}),
     setEstatus:(estatus) => set({estatus}),
     getEstatus:() => get().estatus,
     setCurrentEtapa:(etapa) => set({etapa}),
@@ -149,5 +156,24 @@ export const useConflictStore = create<ConflictState>((set, get) => ({
     updateCaptura:(newCaptura) => {
         const captura = {...get().captura, newCaptura}
         set({captura})
+    },
+    updateEvidenceCapture:(paramId, $path) => {
+        const etapas = get().etapas.map(etapa => {            
+            etapa.capturas?.map(captura => {
+                if (captura.id !== paramId) {
+                    return true
+                }
+                captura?.captura?.docs?.push($path)  //here              
+                return captura
+            })            
+            return etapa
+        })
+
+        const captura = get().captura
+        !captura[paramId].hasOwnProperty('docs') ? captura[paramId]['docs'] = [] : undefined
+        captura[paramId].docs = [...captura[paramId].docs, $path]
+
+        set({captura})
+        set({etapas})
     }
 }))

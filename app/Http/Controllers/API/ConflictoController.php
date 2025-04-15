@@ -23,7 +23,7 @@ class ConflictoController extends Controller
             'listado'=>$conflicto->getConflictos($request->estatus ? explode(',', $request->estatus) : []),
         ], 200);
     }
-
+    
     public function save(Request $request)
     {        
         try {            

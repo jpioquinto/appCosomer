@@ -1,20 +1,24 @@
-import React, {useEffect, ChangeEvent} from 'react'
+import React, {useEffect, useMemo} from 'react'
 
 import type { Etapa as TypeEtapa, Parametro, ValueCapture } from '../../../types/conflicto'
 import { useConflictStore } from '../../../store/conflict/conflictStore'
 import { useSeguimiento } from '../../../hooks/useSeguimiento'
+import ModalEvidencia from '../procedure/ModalEvidencia'
 import { tienePermiso, makeHash } from '../../../utils'
 import { useModuloStore } from '../../../store/modulo'
 import InfoCaptura from './partial/InfoCaptura'
 import type { Acciones } from '../../../types'
 import Etapa from '../procedure/Etapa'
+import useModal from '../../../hooks/useModal'
 
 export default function Seguimiento() {
-    const {conflicto, etapas, listStages, setCaptura, updateEtapa, updateCapturaEtapa, initCapture} = useConflictStore()
+    const {conflicto, etapas, captura, listStages, updateEtapa, updateCapturaEtapa, initCapture} = useConflictStore()
 
-    const {clickBtnGuardar, MySwal} = useSeguimiento()
+    const {clickBtnGuardar, MySwal, reset} = useSeguimiento()
 
     const modulo = useModuloStore(state => state.modulo)
+
+    const {modal, closeModal} = useModal()
 
     const accionAfirmacion = (parametro:Parametro, etapaId:TypeEtapa['id']) => {
         if (!parametro?.captura && parametro?.requiereDoc !== 1) {
@@ -57,7 +61,7 @@ export default function Seguimiento() {
     const accionParametro = (parametro:Parametro, etapaId:TypeEtapa['id']) => {
         switch(parametro.accion) {
             case 'Afirmacion':                 
-                console.log(parametro)
+                //console.log(parametro)
                 accionAfirmacion(parametro, etapaId)              
             break;
             case 'CantidadEntera': case 'CantidadNumerica': case 'Fecha': case 'Moneda':
@@ -77,9 +81,11 @@ export default function Seguimiento() {
         accionParametro(parametro, etapaId)
     }
 
+    const isEmptyCapture = useMemo(() => Object.keys(captura).length == 0, [captura])
+
     useEffect(() => {
-        setCaptura({})
-        listStages(conflicto.id)
+        reset()
+        listStages(conflicto.id)        
     }, [modulo])
 
   return (
@@ -110,7 +116,7 @@ export default function Seguimiento() {
                             <div className='row'>
                                 <div className="col-md-12">
                                     <div className="ml-md-auto mt-2 py-2 py-md-0 pull-right">
-                                        <button className="btn btn-primary btn-round me-2" onClick={clickBtnGuardar}>
+                                        <button className="btn btn-primary btn-round me-2" onClick={clickBtnGuardar} disabled={isEmptyCapture}>
                                             <i className="fa fa-save"/> Guardar
                                         </button>
                                     </div>
@@ -128,7 +134,8 @@ export default function Seguimiento() {
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>   
+        <ModalEvidencia propModal={modal} close={closeModal}/>     
     </>
   )
 }

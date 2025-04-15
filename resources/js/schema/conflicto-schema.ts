@@ -1,8 +1,16 @@
 import { z } from 'zod'
 
+export const ResponseLoadFile = z.object({
+        'solicitud':z.boolean(),
+        'message':z.string(),
+        'path':z.optional(z.string()).nullable(),
+        'url':z.optional(z.string()).nullable()
+})
+
 export const ValueCapture = z.object({
         'value':z.string().or(z.number()).or(z.boolean()),
-        'docs':z.optional(z.string()).or( z.optional(z.array(z.string())) ),
+        'docs':z.optional(z.array(z.string())),
+        'id':z.optional(z.number()),
         'type':z.string()
 })
 
@@ -19,6 +27,7 @@ export const Parametro = z.object({
         'premisaId':z.optional(z.string()).nullable(),
         'captura':z.optional(ValueCapture).nullable(),
         'capturando':z.optional(z.boolean()).nullable(),
+        'capturaId':z.optional(z.number()).nullable(),
         'validado':z.optional(z.number()).nullable(),
 })
 

@@ -51,10 +51,7 @@ export default function InfoCaptura({parametro}: CaptureProps) {
                 setCancel(++$cancel)
                 notificacion(`El tamaño del archivo ${archivos[i].name} supera lo permitido ( ${config.limitMB} MB )`, 'error', 500);
                 continue;
-            }
-
-            //let selectFile = getSelectedFile()
-            //selectFile.parametroId === parametro.id ? selectFile.file.push(archivos[i]) : selectFile = {parametroId:parametro.id, file:[archivos[i]]};                                  
+            }                                 
             
             let $reader = new FileReader();
             

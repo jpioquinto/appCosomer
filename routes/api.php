@@ -32,6 +32,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/conflict/delete-conflicto', [\App\Http\Controllers\API\ConflictoController::class, 'deleteConflicto']); 
     Route::get('/conflict/listado-etapas/{conflictoId}', [\App\Http\Controllers\API\SeguimientoController::class, 'listarEtapas']);
     Route::post('/conflict/change-estatus', [\App\Http\Controllers\API\ConflictoController::class, 'changeStatus']); 
+    Route::post('/conflict/upload-evidence', [\App\Http\Controllers\API\CapturaController::class, 'upload']); 
+    Route::post('/conflict/save-stage', [\App\Http\Controllers\API\CapturaController::class, 'save']); 
     Route::post('/conflict/save', [\App\Http\Controllers\API\ConflictoController::class, 'save']); 
     
     Route::get('/edo/listado-munpios/{edoId}', [\App\Http\Controllers\API\EntidadController::class, 'getMunpios'])->where(['edoId'=>'[0-9]+']);    

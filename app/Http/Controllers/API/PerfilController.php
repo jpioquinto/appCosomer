@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Libraries\Permissions\Tree\ArbolPermiso;
 use App\Http\Libraries\Store\PerfilStore;
 use App\Http\Controllers\Controller;
+use Exception;
 
 class PerfilController extends Controller
 {

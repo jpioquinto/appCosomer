@@ -1,8 +1,9 @@
 import React, {ChangeEvent, MouseEvent, KeyboardEvent, useMemo, useState} from 'react'
 
 import { Etapa, Parametro as TypeParametro, ValueCapture } from '../../../types/conflicto'
-import { useConflictStore } from '../../../store/conflict/conflictStore'
 import { formatCurrency, formatDateShort, formatNumeric } from '../../../utils'
+import { useConflictStore } from '../../../store/conflict/conflictStore'
+import useModal from '../../../hooks/useModal'
 
 type ParametroProps = {
     parametro: TypeParametro,
@@ -11,9 +12,13 @@ type ParametroProps = {
 }
 
 export default function Parametro({parametro, etapaId, clickParametro}: ParametroProps) {
-    const {updateCapturaEtapa, finishCapture} = useConflictStore()
+    const {updateCapturaEtapa, finishCapture, setParametro} = useConflictStore()
+
+    const {showModal} = useModal()
 
     const [capture, setCaptura] = useState<string|number>(parametro.captura?.value.toString() || '')
+
+    const showIconDoc = useMemo(() => parametro?.captura?.docs ? parametro.captura.docs.length>0 : false, [parametro.captura?.docs])
     
     const showCapture = useMemo(() => ['CantidadNumerica', 'CantidadEntera', 'Fecha', 'Moneda'].includes(parametro.accion!) && parametro.captura, 
                                 [parametro.captura])
@@ -70,6 +75,12 @@ export default function Parametro({parametro, etapaId, clickParametro}: Parametr
         finish()
     }
 
+    const clickIconPDF = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        setParametro(parametro)
+        showModal()
+    }
+
   return (
     <>
       <div className="form-check">
@@ -83,6 +94,11 @@ export default function Parametro({parametro, etapaId, clickParametro}: Parametr
             </label>
             {showCapture && (
                 <span className="badge text-bg-success">{captureFormat}</span>
+            )}
+            {showIconDoc && (
+                <button className="btn btn-default btn-xs" onClick={clickIconPDF}>
+                    <img src={`${import.meta.env.VITE_APP_URL}/assets/images/icons/svg/file_pdf.svg`} style={{width:'24px', height:'24px'}}/>
+                </button>
             )}
         </div>
         {showInputCapture && (

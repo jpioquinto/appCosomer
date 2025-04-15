@@ -1,3 +1,9 @@
+<?php
+#use Illuminate\Support\Facades\Storage;
+#Storage::disk('public')->makeDirectory('docs/OR-CAMP');
+#Storage::disk('public')->deleteDirectory('Docs');
+
+?>
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>

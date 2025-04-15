@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Exception;
 
 use App\Models\Conflicto\{Etapa, EtapaQueryBuilder};
 
@@ -36,11 +37,23 @@ class SeguimientoController extends Controller
     protected function listarParametros(int $conflictoId)
     {
         $capturas = [];
-        foreach (EtapaQueryBuilder::obtenerCapturas($conflictoId) as $captura) {
-            $captura->capturando = false;
+        foreach (EtapaQueryBuilder::obtenerCapturas($conflictoId) as $captura) {            
+            $captura->captura ? $captura->captura = $this->procesarCaptura($captura) : null;
+            $captura->capturando = false;            
             $capturas[$captura->etapaId][] = $captura;
         }
 
         return $capturas;
+    }
+
+    protected function procesarCaptura($registro)
+    {
+        $registro->captura = json_decode($registro->captura, true);
+
+        if (is_numeric($registro->capturaId) && $registro->capturaId>0) {
+            $registro->captura['id'] = $registro->capturaId;
+        }
+
+        return $registro->captura;
     }
 }

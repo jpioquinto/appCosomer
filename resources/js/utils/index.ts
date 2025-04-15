@@ -1,6 +1,8 @@
 import type { Acciones, Accion } from '../types'
 import { toast } from 'react-toastify'
 
+export const baseURL = () => import.meta.env.VITE_APP_URL ? import.meta.env.VITE_APP_URL : ''
+
 export const removeClase = (clases: string[], clase: string) : string => {
     const resulado = clases.filter($clase => $clase!==clase);
 
