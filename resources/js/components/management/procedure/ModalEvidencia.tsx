@@ -1,4 +1,4 @@
-import React, {MouseEvent, useState, useMemo} from 'react'
+import React, {MouseEvent, useState, useEffect} from 'react'
 
 import { baseURL, makeHash } from '../../../utils'
 import type { PropsModal } from '../../../types'
@@ -12,15 +12,16 @@ type Modaltype = {
 export default function ModalEvidencia({propModal, close}: Modaltype) {
     const parametro = useConflictStore(state => state.parametro)
 
-    const [currentIndex, setCurrentIndex] = useState<number>(0)
+    const [currentIndex, setCurrentIndex] = useState<number>(-1)
 
-    //const [itemSelected, setItemSelected] = useState<string>('')
-
-    const itemSelected = useMemo(() => parametro.captura?.docs ? parametro.captura.docs[currentIndex] + `?hash=${makeHash(5)}` : '' ,[currentIndex])
+    const [itemSelected, setItemSelected] = useState<string>('')
 
     const clickItem = (index:number) => {
         setCurrentIndex(index)
+        setItemSelected((parametro.captura?.docs && parametro.captura?.docs.length > 0) ? parametro.captura.docs[currentIndex] + `?hash=${makeHash(5)}` : 'not-found')
     }
+
+    useEffect(() => clickItem(0),[parametro])
   return (
     <div
         className={`modal fade ${propModal.clase}`}         
@@ -39,7 +40,7 @@ export default function ModalEvidencia({propModal, close}: Modaltype) {
                             <div className='row ps-3'>
                                 {
                                     parametro.captura?.docs && parametro.captura?.docs.map((doc, index) => (
-                                        <div className={`col-md-4 item ${currentIndex === index ? 'selected' : ''}`}>
+                                        <div className={`col-md-4 item ${currentIndex === index ? 'selected' : ''}`} key={index + '-' + makeHash(4)}>
                                             <div className='corner'></div>
                                             <div className='check'></div>
                                             <div className='item-body'>

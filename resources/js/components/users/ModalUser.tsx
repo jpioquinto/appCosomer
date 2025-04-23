@@ -125,8 +125,8 @@ export default function ModalUser({propModal, close}: Modaltype) {
                         </div>                    
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={close}><i className="fa fa-window-close"></i> Cerrar</button>
                         <button type="submit" className="btn btn-primary"><i className="fa fa-save"></i> Crear</button>
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={close}><i className="fa fa-window-close"></i> Cerrar</button>
                     </div>
                 </form>
             </div>

@@ -35,6 +35,12 @@ export type Option = {
     sigla?:string | undefined | null
 }
 
+export type OptionParent = {
+    value:number,
+    label:string,
+    nodo?:number
+}
+
 export type Users = z.infer<typeof UsuariosSchema>
 
 export type User = z.infer<typeof UsuarioSchema>

@@ -35,3 +35,12 @@ export type DraftCaptura = {
     conflictoId:Registro['id'],
     capturas:string
 }
+
+export type FilterReport = {
+    entidades?:string,
+    munpios?:string,
+    vertiente?:string,
+    anio?:string,
+    estatus?:string,
+    texto?:string
+}

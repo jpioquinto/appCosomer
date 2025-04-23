@@ -2,10 +2,9 @@ import { URsSchema } from "../schema/ur-schema";
 
 export async function listadoURs() {
     try {
-        const response =  await axios.get('api/ur/listado-ur');  
-        if (response.solicitud) {
-            const result = URsSchema.safeParse(response.data?.listado);
-            
+        const response =  await axios.get('api/ur/listado-ur');         
+        if (response.data.solicitud) {
+            const result = URsSchema.safeParse(response.data?.listado);            
             return result.success ? result.data : []
         }              
     } catch(error) {

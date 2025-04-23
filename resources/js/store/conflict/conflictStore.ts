@@ -171,7 +171,7 @@ export const useConflictStore = create<ConflictState>((set, get) => ({
 
         const captura = get().captura
         !captura[paramId].hasOwnProperty('docs') ? captura[paramId]['docs'] = [] : undefined
-        captura[paramId].docs = [...captura[paramId].docs, $path]
+        captura[paramId].docs = [...captura[paramId].docs.filter(path => path!==$path), $path]
 
         set({captura})
         set({etapas})

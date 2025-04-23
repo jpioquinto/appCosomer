@@ -14,7 +14,7 @@ class CatalogoController extends Controller
         return response([
             'solicitud'=>true,
             'message'=>'Listado de vertientes.',            
-            'listado'=>Vertiente::where('estatus', 1)->get(),
+            'listado'=>Vertiente::where('estatus', 1)->orderBy('acronimo', 'ASC')->get(),
         ], 200);
     }
 

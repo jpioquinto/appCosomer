@@ -3,6 +3,7 @@ import { array, z } from 'zod'
 export const VertienteSchema = z.object({
     id:z.number(),
     vertiente:z.string(),
+    acronimo:z.optional(z.string()).nullable(),
     estatus:z.number()
 })
 

@@ -28,6 +28,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/contact/subir-foto', [\App\Http\Controllers\API\ContactoController::class, 'subirFoto']); 
     Route::post('/contact/save-info', [\App\Http\Controllers\API\ContactoController::class, 'save']); 
     
+    Route::post('/conflict/report/listado-conflictos', [\App\Http\Controllers\API\ReporteController::class, 'getConflictos']); 
     Route::get('/conflict/listado-conflictos/{estatus?}', [\App\Http\Controllers\API\ConflictoController::class, 'getConflictos']); 
     Route::post('/conflict/delete-conflicto', [\App\Http\Controllers\API\ConflictoController::class, 'deleteConflicto']); 
     Route::get('/conflict/listado-etapas/{conflictoId}', [\App\Http\Controllers\API\SeguimientoController::class, 'listarEtapas']);

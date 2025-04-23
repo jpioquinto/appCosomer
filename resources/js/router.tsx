@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import WebFont from 'webfontloader'
 
-import React, {useEffect} from 'react'
+import React, {lazy, Suspense} from 'react'
 
 import Layout from './layouts/Layout'
 import Index from './pages/Index'
@@ -15,11 +15,13 @@ import UR from './components/urs/UR.tsx'
 
 import MarcoJuridico from './components/management/legal/MarcoJuridico.tsx'
 import Seguimiento from './components/management/historical/Seguimiento.tsx'
-import Historico from './components/management/historical/Historico.tsx'
+const Historico = lazy(() => import('./components/management/historical/Historico.tsx'))
 import Solicitud from './components/management/request/Solicitud.tsx'
 import Registro from './components/management/register/Registro.tsx'
-import Tramite from './components/management/procedure/Tramite.tsx'
+const Tramite = lazy(() => import('./components/management/procedure/Tramite.tsx')) 
+import Reporte from './components/management/report/Reporte.tsx'
 import Modulo from './components/module/Modulo.tsx'
+import Loading from './components/Loading.tsx'
 
 import NotFound from './components/NotFound.tsx'
 
@@ -39,10 +41,11 @@ export default function AppRouter() {
                     <Route path='/urs' element={<UR />} />                    
                     <Route path='/control-de-gestion' element={<Solicitud />} />                    
                     <Route path='/marco-juridico' element={<MarcoJuridico />} />                    
-                    <Route path='/historico' element={<Historico />} />                    
+                    <Route path='/historico' element={<Suspense fallback={<Loading />}><Historico /></Suspense>} />                    
                     <Route path='/registro' element={<Registro />} />                    
-                    <Route path='/asuntos-concluidos' element={<Tramite />} />                    
+                    <Route path='/asuntos-concluidos' element={<Suspense fallback={<Loading />}><Tramite /></Suspense>} />                    
                     <Route path='/seguimiento/asunto' element={<Seguimiento />} />                    
+                    <Route path='/reportes' element={<Reporte />} />                    
                     <Route path='*' element={<NotFound />} />                    
                 </Route>  
             </Routes>
