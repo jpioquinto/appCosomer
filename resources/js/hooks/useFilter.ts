@@ -29,6 +29,16 @@ export function useFilter() {
     const {listConflicts} = useReportStore() 
 
     const {catalog} = useConflicto() 
+
+    const [munpiosSelected, setMunpiosSelected] = useState<number[]>([])
+
+    const [statusSelected, setStatusSelected] = useState<number[]>([])
+
+    const [slopeSelected, setSlopeSelected] = useState<string[]>([])    
+
+    const [entySelected, setEntySelected] = useState<number[]>([])
+    
+    const [query, setQuery] = useState<string>('')
     
     const createOption = (label: string) => ({
         label,
@@ -90,10 +100,48 @@ export function useFilter() {
         
         switch(actionMeta.action) {
             case 'select-option':
-                listMunpios(actionMeta.option?.value!)
+                listMunpios(actionMeta.option?.value!)     
+                !entySelected.includes(actionMeta.option?.value!) ? setEntySelected([...entySelected, actionMeta.option?.value!]) : undefined           
             break
             case 'remove-value':
                 removeMunpios(actionMeta.removedValue.value)
+                setEntySelected([...entySelected.filter(enty => enty !== actionMeta.removedValue.value)])
+            break
+            default:break
+        }
+    }
+
+    const selectMunpio = (newValue: MultiValue<TypeOption>, actionMeta: ActionMeta<TypeOption>) => {
+        switch(actionMeta.action) {
+            case 'select-option':                    
+                !munpiosSelected.includes(actionMeta.option?.value!) ? setMunpiosSelected([...munpiosSelected, actionMeta.option?.value!]) : undefined           
+            break
+            case 'remove-value':                
+            setMunpiosSelected([...munpiosSelected.filter(munpio => munpio !== actionMeta.removedValue.value)])
+            break
+            default:break
+        }
+    }
+
+    const selectSlope = (newValue: MultiValue<TypeOption>, actionMeta: ActionMeta<TypeOption>) => {
+        switch(actionMeta.action) {
+            case 'select-option':                    
+                !slopeSelected.includes(actionMeta.option?.value.toString()!) ? setSlopeSelected([...slopeSelected, actionMeta.option?.value.toString()!]) : undefined           
+            break
+            case 'remove-value':                
+            setSlopeSelected([...slopeSelected.filter(slope => slope !== actionMeta.removedValue.value.toString())])
+            break
+            default:break
+        }
+    }
+
+    const selectStatus = (newValue: MultiValue<TypeOption>, actionMeta: ActionMeta<TypeOption>) => {
+        switch(actionMeta.action) {
+            case 'select-option':                    
+                !statusSelected.includes(actionMeta.option?.value!) ? setStatusSelected([...statusSelected, actionMeta.option?.value!]) : undefined           
+            break
+            case 'remove-value':                
+            setStatusSelected([...statusSelected.filter(status => status !== actionMeta.removedValue.value)])
             break
             default:break
         }
@@ -101,11 +149,8 @@ export function useFilter() {
 
     const clickConsultar = (e: MouseEvent<HTMLElement>) => {
         e.preventDefault()
-        console.log(optionsEdos)
-        console.log(optionsMunpios)
-        console.log(optionsVertientes)
-        console.log(value)
-        console.log(optionsStatus)
+        console.log(entySelected)
+        
         //listConflicts()
     }
 
@@ -122,8 +167,8 @@ export function useFilter() {
 
     return {
         options: {optionsEdos, optionsVertientes, optionsStatus},
-        events: {selectEnty, clickConsultar},
+        events: {selectEnty, selectMunpio, selectSlope, selectStatus, clickConsultar},
+        yearConfig:{setInputValue, setValue, handleKeyDown, value, inputValue},
         data: {optionsMunpios},
-        yearConfig:{setInputValue, setValue, handleKeyDown, value, inputValue}
     }
 }

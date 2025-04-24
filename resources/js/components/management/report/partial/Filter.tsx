@@ -36,6 +36,7 @@ export default function Filter() {
                             className="basic-multi-select"
                             classNamePrefix="select"
                             options={data.optionsMunpios}
+                            onChange={events.selectMunpio}
                         />
                     </div>
                 </div>
@@ -48,6 +49,7 @@ export default function Filter() {
                             name="colors"                    
                             className="basic-multi-select"
                             classNamePrefix="select"
+                            onChange={events.selectSlope}
                         />
                     </div>
                 </div>
@@ -77,6 +79,7 @@ export default function Filter() {
                             name="colors"                    
                             className="basic-multi-select"
                             classNamePrefix="select"
+                            onChange={events.selectStatus}
                         />
                     </div>
                 </div>
