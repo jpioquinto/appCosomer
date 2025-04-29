@@ -37,6 +37,7 @@ export default function Filter() {
                             classNamePrefix="select"
                             options={data.optionsMunpios}
                             onChange={events.selectMunpio}
+                            value={options.optionsMunpiosSelected}
                         />
                     </div>
                 </div>
@@ -87,7 +88,7 @@ export default function Filter() {
                     <div className='d-flex align-items-end'>
                         <div className="form-group pe-1 w-75">
                             <label htmlFor="id-search" className='fw-semibold'>Buscar</label>
-                            <input type='text' className='form-control' id='id-search'/>                      
+                            <input type='text' className='form-control' id='id-search' onChange={events.changeInputCapture}/>                      
                         </div>
                         <div className="form-group ps-0 mb-1">
                             <button type="button" className="btn btn-black btn-sm fw-semibold" onClick={events.clickConsultar}>

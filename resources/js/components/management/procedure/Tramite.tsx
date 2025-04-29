@@ -40,7 +40,6 @@ export default function Tramite() {
      <div className="page-inner">
         <div className="page-header justify-content-between">
             <Breadcrumb nombre={`${modulo.descripcion}`} id={modulo.id} />
-            <button onClick={prueba}>Prueba</button>
         </div> 
         <div className="row">
             <div className="col-md-12">

@@ -16,10 +16,11 @@ export default function ItemNav({item, nodoPadre, nivel}: ItemProps) {
 
     return (
         <li 
-            className={ nodoPadre 
-                        ? ( nivel==0 ? toggle.classItemPadre + ` ${item.activo} submenu` : `${item.activo} submenu`) 
-                        : `${toggle.classItem} ${item.activo}`
-                    } 
+            className={
+                nodoPadre 
+                ? (nivel==0 ? `${toggle.classItemPadre} ${item.activo} submenu` : `${item.activo} submenu`) 
+                : (nivel==0 ? `${toggle.classItemPadre} ${item.activo}` : `${toggle.classItem} ${item.activo}`)
+            } 
             key={"modulo-"+item.id}
             onClick={(e: MouseEvent<HTMLElement>) => {e.stopPropagation(); clickElemen(item, nodoPadre);}}            
         >

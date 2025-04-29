@@ -18,6 +18,9 @@ export const addClase = (clases:string[], clase:string): string => {
 }
 
 export const tienePermiso = (acciones: Acciones, permisoId:Accion['id']) => {
+    if (!acciones) {
+        acciones = []
+    }
     const permiso = acciones.filter(accion => accion.id === permisoId)
 
     return permiso.length>0

@@ -1,19 +1,22 @@
-import {useEffect, useState, MouseEvent, KeyboardEventHandler}  from 'react'
+import {useEffect, useState, MouseEvent, ChangeEvent, KeyboardEventHandler}  from 'react'
 import {MultiValue, ActionMeta} from 'react-select'
 
 import { useEdoStore } from "../store/edoStore"
 import { useConflicto } from "./useConflicto"
 import type { Option as TypeOption, OptionParent} from "../types"
 import { useReportStore } from '../store/conflict/reportStore'
+import { useFilterStore } from '../store/conflict/filterStore'
+import { FilterReport } from '../types/conflicto'
+import { number } from 'zod'
 
 interface OptionAnio {
     readonly label: string,
-    readonly value: string,
+    readonly value: number,
 }
 
-export function useFilter() {    
+export function useFilter() { 
     const [optionsVertientes, setOptionsVertientes] = useState<TypeOption[]>([])
-
+    
     const [optionsMunpios, setOptionsMunpios] = useState<OptionParent[]>([])
         
     const [optionsStatus, setOptionsStatus] = useState<TypeOption[]>([])
@@ -30,11 +33,11 @@ export function useFilter() {
 
     const {catalog} = useConflicto() 
 
-    const [munpiosSelected, setMunpiosSelected] = useState<number[]>([])
+    const {optionsMunpiosSelected, setParams, setOptionsMunpiosSelected, getOptionsMunpiosSelected} = useFilterStore()
 
     const [statusSelected, setStatusSelected] = useState<number[]>([])
 
-    const [slopeSelected, setSlopeSelected] = useState<string[]>([])    
+    const [slopeSelected, setSlopeSelected] = useState<number[]>([])    
 
     const [entySelected, setEntySelected] = useState<number[]>([])
     
@@ -42,7 +45,7 @@ export function useFilter() {
     
     const createOption = (label: string) => ({
         label,
-        value: label,
+        value: +label,
     })
 
     const handleKeyDown: KeyboardEventHandler = (event) => {
@@ -91,13 +94,24 @@ export function useFilter() {
         return $options
     }
 
+    const getValues = (data: OptionParent[]) => {
+        let values:number[] = [];
+        data.forEach(item => !values.includes(item.value) ? values = [...values, item.value] : undefined)
+
+        return values
+    }
+
+    const removeMunpioSelected = (municipios: OptionParent[]) => { 
+        municipios.forEach(municipio => setOptionsMunpiosSelected( getOptionsMunpiosSelected().filter(munpio => munpio.value !== municipio.value) ) )
+    }
+
     const removeMunpios = (edoId:number) => {
+        removeMunpioSelected([...optionsMunpios.filter(municipio => municipio.nodo===edoId)])
+        
         setOptionsMunpios([...optionsMunpios.filter(municipio => municipio.nodo!==edoId)])
     }
 
-
-    const selectEnty = (newValue: MultiValue<TypeOption>, actionMeta: ActionMeta<TypeOption>) => {//console.log(actionMeta)
-        
+    const selectEnty = (newValue: MultiValue<TypeOption>, actionMeta: ActionMeta<TypeOption>) => {//console.log(actionMeta)        
         switch(actionMeta.action) {
             case 'select-option':
                 listMunpios(actionMeta.option?.value!)     
@@ -114,10 +128,10 @@ export function useFilter() {
     const selectMunpio = (newValue: MultiValue<TypeOption>, actionMeta: ActionMeta<TypeOption>) => {
         switch(actionMeta.action) {
             case 'select-option':                    
-                !munpiosSelected.includes(actionMeta.option?.value!) ? setMunpiosSelected([...munpiosSelected, actionMeta.option?.value!]) : undefined           
+                setOptionsMunpiosSelected([...getOptionsMunpiosSelected().filter(municipio => municipio.value !== actionMeta.option?.value!), actionMeta.option as OptionParent])          
             break
-            case 'remove-value':                
-            setMunpiosSelected([...munpiosSelected.filter(munpio => munpio !== actionMeta.removedValue.value)])
+            case 'remove-value':    
+                setOptionsMunpiosSelected([...getOptionsMunpiosSelected().filter(municipio => municipio.value !== actionMeta.removedValue.value)])          
             break
             default:break
         }
@@ -126,10 +140,10 @@ export function useFilter() {
     const selectSlope = (newValue: MultiValue<TypeOption>, actionMeta: ActionMeta<TypeOption>) => {
         switch(actionMeta.action) {
             case 'select-option':                    
-                !slopeSelected.includes(actionMeta.option?.value.toString()!) ? setSlopeSelected([...slopeSelected, actionMeta.option?.value.toString()!]) : undefined           
+                !slopeSelected.includes(actionMeta.option?.value!) ? setSlopeSelected([...slopeSelected, actionMeta.option?.value!]) : undefined           
             break
             case 'remove-value':                
-            setSlopeSelected([...slopeSelected.filter(slope => slope !== actionMeta.removedValue.value.toString())])
+                setSlopeSelected([...slopeSelected.filter(slope => slope !== actionMeta.removedValue.value)])
             break
             default:break
         }
@@ -141,17 +155,43 @@ export function useFilter() {
                 !statusSelected.includes(actionMeta.option?.value!) ? setStatusSelected([...statusSelected, actionMeta.option?.value!]) : undefined           
             break
             case 'remove-value':                
-            setStatusSelected([...statusSelected.filter(status => status !== actionMeta.removedValue.value)])
+                setStatusSelected([...statusSelected.filter(status => status !== actionMeta.removedValue.value)])
             break
             default:break
         }
     }
 
+    const changeInputCapture = (e: ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault()
+        setQuery(e.target.value)
+    }
+
     const clickConsultar = (e: MouseEvent<HTMLElement>) => {
         e.preventDefault()
-        console.log(entySelected)
+
+        let params = {} as FilterReport
+
+        (entySelected.length > 0  && getOptionsMunpiosSelected().length == 0)
+        ? params['entidades'] = entySelected.join(',') : undefined
+
+        getOptionsMunpiosSelected().length > 0
+        ? params['munpios'] = getValues(getOptionsMunpiosSelected()).join(',') : undefined
+
+        slopeSelected.length > 0
+        ? params['vertiente'] = slopeSelected.join(',') : undefined
+
+        value.length > 0
+        ? params['anio'] = getValues(value as OptionParent[]).join(',') : undefined
+
+        statusSelected.length > 0
+        ? params['estatus'] = statusSelected.join(',') : undefined
+
+        query.trim() != '' ? params['texto'] = query.trim() : undefined
+
+        //console.log(params)
+        setParams(params)
         
-        //listConflicts()
+        listConflicts(params)
     }
 
     useEffect(() => {
@@ -166,8 +206,8 @@ export function useFilter() {
     } , [currentMnpios]) 
 
     return {
-        options: {optionsEdos, optionsVertientes, optionsStatus},
-        events: {selectEnty, selectMunpio, selectSlope, selectStatus, clickConsultar},
+        options: {optionsEdos, optionsVertientes, optionsStatus, optionsMunpiosSelected},
+        events: {selectEnty, selectMunpio, selectSlope, selectStatus, clickConsultar, changeInputCapture},
         yearConfig:{setInputValue, setValue, handleKeyDown, value, inputValue},
         data: {optionsMunpios},
     }
