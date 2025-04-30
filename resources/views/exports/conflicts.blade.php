@@ -1,19 +1,30 @@
 <table>
     <thead>
         <tr>
-            <th>Folio</th>
-            <th>Rubro</th>
-            <th>Ejercicio Fiscal</th>
-            <th>Asunto</th>
-            <th>Entidad</th>
-            <th>Municipio</th>
-            <th>Promovente</th>
-            <th>Contraparte</th>
-            <th>Nombre del Predio</th>
-            <th>Estatus</th>
-            <th>Superficie Legal</th>
-            <th>Superficie Medida</th>
-        </tr>
+            <th colspan="12" style="text-align: center;background:#CCC;font-weight:bold;">Datos Generales</th>
+            @foreach($stages as $stage)
+                <th colspan="{{count($stage['parametros'])}}" style="text-align: center;background:#CCC;font-weight:bold;">{{$stage['etapa']}}</th>
+            @endforeach
+        </tr>        
+        <tr>
+            <th style="text-align: center;background:#CCC;font-weight:bold;">Folio</th>
+            <th style="text-align: center;background:#CCC;font-weight:bold;">Rubro</th>
+            <th style="text-align: center;background:#CCC;font-weight:bold;">Ejercicio Fiscal</th>
+            <th style="text-align: center;background:#CCC;font-weight:bold;">Asunto</th>
+            <th style="text-align: center;background:#CCC;font-weight:bold;">Entidad</th>
+            <th style="text-align: center;background:#CCC;font-weight:bold;">Municipio</th>
+            <th style="text-align: center;background:#CCC;font-weight:bold;">Promovente</th>
+            <th style="text-align: center;background:#CCC;font-weight:bold;">Contraparte</th>
+            <th style="text-align: center;background:#CCC;font-weight:bold;">Nombre del Predio</th>
+            <th style="text-align: center;background:#CCC;font-weight:bold;">Estatus</th>
+            <th style="text-align: center;background:#CCC;font-weight:bold;">Superficie Legal</th>
+            <th style="text-align: center;background:#CCC;font-weight:bold;">Superficie Medida</th>
+            @foreach($stages as $stage)
+                @foreach($stage['parametros']->sortBy('orden') as $param)
+                    <th style="text-align: center;background:#CCC;font-weight:bold;">{{$param['parametro']}}</th>
+                @endforeach
+            @endforeach
+        </tr>        
     </thead>
     <tbody>
         @foreach($conflicts as $conflict)
@@ -29,7 +40,17 @@
                 <td>{{ $conflict->predio }}</td>
                 <td>{{ $conflict->descEstatus }}</td>
                 <td>{{ $conflict->supconflicto }}</td>
-                <td>{{ $conflict->supatendida }}</td>
+                <td>{{ $conflict->supatendida }}</td> 
+                @foreach($conflict->parametros as $param)
+                    @php
+                        $param->captura ? $param->captura = json_decode($param->captura) : null;
+                    @endphp
+                    <td>
+                        @if ($param->captura)
+                            {{$param->captura->type === 'boolean' ? 'SI' : $param->captura->value}}
+                        @endif
+                    </td>
+                @endforeach
             </tr>
         @endforeach
     </tbody>

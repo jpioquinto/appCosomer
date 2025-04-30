@@ -3,6 +3,7 @@
 namespace App\Models\Conflicto;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class Etapa extends Model
@@ -14,4 +15,9 @@ class Etapa extends Model
     protected $guarded = ['id'];
 
     protected $table = 'etapas';
+
+    public function parametros(): HasMany
+    {
+        return $this->hasMany(Parametro::class);
+    }
 }

@@ -8,6 +8,7 @@ type ReportState = {
     conflicts: Registros,
     keyTable:string,
     url:string|null,
+    getUrl:() => string|null,
     setUrl:(url:string|null) => void,
     setKeyTable:(keyTable:string) => void,
     getConflicts:() => Registros,
@@ -17,7 +18,8 @@ type ReportState = {
 export const useReportStore = create<ReportState>((set, get) => ({
     conflicts:[],
     keyTable:makeHash(6),
-    url:'',
+    url:null,
+    getUrl:() => get().url,
     setUrl:(url) => set({url}),
     getConflicts:() => get().conflicts,
     setKeyTable:(keyTable) => set({keyTable}),

@@ -9,23 +9,21 @@ import TablaReportes from './TablaReportes'
 import Filter from './partial/Filter'
 
 export default function Reporte() {
-  const {keyTable, isEmpty, url, loadCatalog, getConflicts, clickDescargar} = useReport()
+  const {key, isEmpty, url, setKeyElement, loadCatalog, getConflicts, clickDescargar} = useReport()
   
-  const [keyFilter, setKeyFilter] = useState(makeHash(6))
-
   const {modulo, setModulo} = useModuloStore()
 
   const location = useLocation()
 
   useEffect(() => {
     loadCatalog()
-    setKeyFilter(makeHash(6))
+    setKeyElement(makeHash(6))
   }, [])
 
-  useEffect(() => {
-    setKeyFilter(makeHash(6))
+  useEffect(() => {    
     setModulo(location.state) 
-    loadCatalog()   
+    loadCatalog() 
+    setKeyElement(makeHash(6))  
   }, [modulo])
 
   return (
@@ -43,7 +41,7 @@ export default function Reporte() {
       <div className="page-inner mt--5 pt-0">
         <div className="card full-height">          
           <div className="card-body">
-            <Filter key={keyFilter}/>            
+            <Filter key={key.keyElement}/>            
             <div className='container-fluid'>
               {
                   tienePermiso(modulo?.acciones as Acciones, 14) && !isEmpty && (
@@ -61,7 +59,7 @@ export default function Reporte() {
                       </div>
                     </div>)
               }
-              <TablaReportes conflicts={getConflicts()} key={keyTable} />
+              <TablaReportes conflicts={getConflicts()} key={key.keyTable} />
             </div>
           </div>
         </div>

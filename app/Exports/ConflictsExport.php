@@ -2,13 +2,13 @@
 
 namespace App\Exports;
 
-use App\Models\Conflicto\{ConflictoQueryBuilder AS QueryBuilder};
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromView;
+use App\Models\Conflicto\{ConflictoQueryBuilder AS QueryBuilder, Etapa, EtapaQueryBuilder};
+use Maatwebsite\Excel\Concerns\{Exportable, FromView, WithColumnWidths, WithProperties};
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\View\View;
 
-class ConflictsExport implements FromView
+class ConflictsExport implements FromView, WithProperties, WithColumnWidths
 {
     use Exportable;
 
@@ -22,6 +22,36 @@ class ConflictsExport implements FromView
     {
         $this->setParams($params);
         $this->setUrlReport(null);
+    }
+
+    public function columnWidths(): array
+    {
+        return [
+            'A' => 17,
+            'C' => 16,            
+            'D' => 55,            
+            'E' => 30,            
+            'F' => 30,
+            'H' => 30,
+            'I' => 30,
+            'K' => 16,
+            'L' => 17,            
+        ];
+    }
+
+    public function properties(): array
+    {
+        return [
+            'creator'        => 'APP - PADCA',
+            'lastModifiedBy' => 'Aplicativo',
+            'title'          => 'Reporte de conflictos del Programa',
+            'description'    => 'Reporte de conflictos del Programa',
+            'subject'        => 'PADCA',
+            'keywords'       => 'PADCA,DGCAM,SOAIP,SEDATU',
+            'category'       => 'Conflictos',
+            'manager'        => 'DGCAM',
+            'company'        => 'SOAIP, DGCAM',
+        ];
     }
 
     public function setName($name)
@@ -55,9 +85,10 @@ class ConflictsExport implements FromView
     }
 
     public function view(): View
-    {
+    {#print_r($this->agregarCapturas(QueryBuilder::listarConflictos($this->getParams())));exit;
         return view('exports.conflicts', [
-            'conflicts' => QueryBuilder::listarConflictos($this->getParams())
+            'conflicts' => $this->agregarCapturas(QueryBuilder::listarConflictos($this->getParams())),
+            'stages'=>Etapa::with(['parametros'])->get()
         ]);
     }
 
@@ -76,5 +107,16 @@ class ConflictsExport implements FromView
         $this->setUrlReport(Storage::disk('public')->url( $this->getName() ) .  '?hash=' . mt_rand());
 
         return true; 
+    }
+
+    protected function agregarCapturas($conflictos)
+    {
+        $registros = [];
+        foreach ($conflictos as $index => $conflicto) {
+            $conflicto->parametros = EtapaQueryBuilder::obtenerCapturas($conflicto->id);
+            $registros[] = $conflicto;            
+        }
+        
+        return $registros;
     }
 }

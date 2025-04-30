@@ -7,7 +7,7 @@ import type { Option as TypeOption, OptionParent} from "../types"
 import { useReportStore } from '../store/conflict/reportStore'
 import { useFilterStore } from '../store/conflict/filterStore'
 import { FilterReport } from '../types/conflicto'
-import { number } from 'zod'
+import { makeHash } from '../utils'
 
 interface OptionAnio {
     readonly label: string,
@@ -197,7 +197,7 @@ export function useFilter() {
     useEffect(() => {
         setOptionsEdos(generateOptionEdos())
         setOptionsStatus(generateOptionStatus())    
-        setOptionsVertientes(generateOptionVertientes())    
+        setOptionsVertientes(generateOptionVertientes())            
     }, [])
 
     useEffect(() => {
