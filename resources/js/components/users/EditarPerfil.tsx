@@ -5,14 +5,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import Select from 'react-select'
 
-import { useAuthStore } from '../../store/auth'
-import { useEdoStore } from '../../store/edoStore'
-import { useContactStore } from '../../store/contactStore'
-import { Contact, Option} from '../../types'
-import ErrorForm from '../partial/ErrorForm'
-import FotoPerfil from './FotoPerfil'
 import { saveContacto } from '../../services/ContactSevice'
+import { useContactStore } from '../../store/contactStore'
+import { useEdoStore } from '../../store/edoStore'
+import { useAuthStore } from '../../store/auth'
+import ErrorForm from '../partial/ErrorForm'
+import { Contact, Option} from '../../types'
 import { notificacion } from '../../utils'
+import FotoPerfil from './FotoPerfil'
 
 
 export default function EditarPerfil() {

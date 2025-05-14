@@ -9,6 +9,7 @@ import { notificacion } from '../utils';
 
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { useModalStore } from '../store/modal';
 
 const MySwal = withReactContent(Swal)
 
@@ -17,8 +18,9 @@ export function useSeguimiento() {
 
     const {captura, conflicto, updateEvidenceCapture, resetCaptura, deleteCapturaEtapa, initCapture} = useConflictStore();
 
-
     const {setIntervalId, getIntervalId} = useConfigStore();
+
+    const {keyModal, setKeyModal} = useModalStore();
 
     const cerrarModal = () => MySwal.close();
 
@@ -92,9 +94,11 @@ export function useSeguimiento() {
     return {
         clickBtnGuardar,
         eliminarCaptura,
+        setKeyModal,
         cerrarModal,
         initCapture,
         reset,
+        keyModal,
         MySwal
     }
 }

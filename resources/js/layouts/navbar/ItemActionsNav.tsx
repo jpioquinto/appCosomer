@@ -2,13 +2,6 @@ import React from 'react'
 
 import { useItemActionsNav } from '../../hooks/useItemActionsNav'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { far } from '@fortawesome/free-regular-svg-icons'
-
-library.add(fas, far)
-
 export default function ItemActionsNav() {
     const {toggle, handlerToggle} = useItemActionsNav();
   return (
@@ -27,7 +20,7 @@ export default function ItemActionsNav() {
                         <a className="col-6 col-md-4 p-0" href="#">
                             <div className="quick-actions-item">
                                 <div className="avatar-item bg-danger rounded-circle">
-                                    <FontAwesomeIcon icon="far fa-calendar-alt" />
+                                    <i className="far fa-calendar-alt" />
                                 </div>
                                 <span className="text">Calendar</span>
                             </div>
@@ -35,7 +28,7 @@ export default function ItemActionsNav() {
                         <a className="col-6 col-md-4 p-0" href="#">
                             <div className="quick-actions-item">
                                 <div className="avatar-item bg-warning rounded-circle">
-                                    <FontAwesomeIcon icon="fas fa-map" />
+                                    <i className="fas fa-map" />
                                 </div>
                                 <span className="text">Maps</span>
                             </div>
@@ -43,7 +36,7 @@ export default function ItemActionsNav() {
                         <a className="col-6 col-md-4 p-0" href="#">
                             <div className="quick-actions-item">
                                 <div className="avatar-item bg-info rounded-circle">
-                                    <FontAwesomeIcon icon="fas fa-file-excel" />
+                                    <i className="fas fa-file-excel" />
                                 </div>
                                 <span className="text">Reports</span>
                             </div>
@@ -51,7 +44,7 @@ export default function ItemActionsNav() {
                         <a className="col-6 col-md-4 p-0" href="#">
                             <div className="quick-actions-item">
                                 <div className="avatar-item bg-success rounded-circle">
-                                    <FontAwesomeIcon icon="fas fa-envelope" />
+                                    <i className="fas fa-envelope" />
                                 </div>
                                 <span className="text">Emails</span>
                             </div>
@@ -59,7 +52,7 @@ export default function ItemActionsNav() {
                         <a className="col-6 col-md-4 p-0" href="#">
                             <div className="quick-actions-item">
                                 <div className="avatar-item bg-primary rounded-circle">
-                                    <FontAwesomeIcon icon="fas fa-file-invoice-dollar" />
+                                    <i className="fas fa-file-invoice-dollar" />
                                 </div>
                                 <span className="text">Invoice</span>
                             </div>
@@ -67,7 +60,7 @@ export default function ItemActionsNav() {
                         <a className="col-6 col-md-4 p-0" href="#">
                             <div className="quick-actions-item">
                                 <div className="avatar-item bg-secondary rounded-circle">
-                                    <FontAwesomeIcon icon="fas fa-credit-card" />
+                                    <i className="fas fa-credit-card" />
                                 </div>
                                 <span className="text">Payments</span>
                             </div>

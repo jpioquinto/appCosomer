@@ -4,8 +4,9 @@ import type { PropsModal } from '../../types'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import ErrorForm from '../partial/ErrorForm'
+
 import {saveUser} from '../../services/UserService'
+import ErrorForm from '../partial/ErrorForm'
 import useModal from '../../hooks/useModal'
 import {notificacion} from '../../utils'
 

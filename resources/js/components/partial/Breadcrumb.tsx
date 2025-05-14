@@ -2,7 +2,7 @@ import { useNavBarStore } from '../../store/navbar'
 
 import type { Menu } from '../../types'
 
-import React from 'react'
+import React, { type JSX } from 'react';
 
 type ModuloProps = {
     nombre:string,

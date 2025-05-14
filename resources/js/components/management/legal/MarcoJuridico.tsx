@@ -21,99 +21,109 @@ export default function MarcoJuridico() {
                             <div className='row'>
                                                            
                                 <div className='col-md-3'>
-                                    <div className="card card-stats card-secondary card-round">
-                                        <div className="card-body">
-                                            <div className="row">
-                                                <div className="col-3">
-                                                    <div className="icon-big text-center">
-                                                        <i className="fas fa-gavel"></i>
+                                    <a href='https://www.diputados.gob.mx/LeyesBiblio/pdf/CPEUM.pdf' target='_blank'>
+                                        <div className="card card-stats card-secondary card-round">
+                                            <div className="card-body">
+                                                <div className="row">
+                                                    <div className="col-3">
+                                                        <div className="icon-big text-center">
+                                                            <i className="fas fa-gavel"></i>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="col-9 col-stats">
-                                                    <div className="numbers">
-                                                        <p className="card-category">Constitución Política de los Estados Unidos Mexicanos</p>                                                        
+                                                    <div className="col-9 col-stats">
+                                                        <div className="numbers">
+                                                            <p className="card-category">Constitución Política de los Estados Unidos Mexicanos</p>                                                        
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div> 
 
                                 <div className='col-md-3'>
-                                    <div className="card card-stats card-secondary card-round">
-                                        <div className="card-body">
-                                            <div className="row">
-                                                <div className="col-3">
-                                                    <div className="icon-big text-center">
-                                                        <i className="fas fa-balance-scale"></i>
+                                    <a href='https://www.dof.gob.mx/nota_detalle.php?codigo=5747317&fecha=17/01/2025#gsc.tab=0' target='_blank'>
+                                        <div className="card card-stats card-secondary card-round">
+                                            <div className="card-body">
+                                                <div className="row">
+                                                    <div className="col-3">
+                                                        <div className="icon-big text-center">
+                                                            <i className="fas fa-balance-scale"></i>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="col-9 col-stats">
-                                                    <div className="numbers">
-                                                        <p className="card-category">Reglamento Interior de la Secretaría de Desarrollo Agrario, Territorial y Urbano
-                                                        </p>                                                        
+                                                    <div className="col-9 col-stats">
+                                                        <div className="numbers">
+                                                            <p className="card-category">Reglamento Interior de la Secretaría de Desarrollo Agrario, Territorial y Urbano
+                                                            </p>                                                        
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
 
                                 <div className='col-md-3'>
-                                    <div className="card card-stats card-secondary card-round">
-                                        <div className="card-body">
-                                            <div className="row">
-                                                <div className="col-3">
-                                                    <div className="icon-big text-center">
-                                                        <i className="fas fa-balance-scale"></i>
+                                    <a href='https://dof.gob.mx/nota_detalle.php?codigo=5750677&fecha=28/02/2025&print=true' target='_blank'>
+                                        <div className="card card-stats card-secondary card-round">
+                                            <div className="card-body">
+                                                <div className="row">
+                                                    <div className="col-3">
+                                                        <div className="icon-big text-center">
+                                                            <i className="fas fa-balance-scale"></i>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="col-9 col-stats">
-                                                    <div className="numbers">
-                                                        <p className="card-category">Lineamentos de Operación del Programa de Atención a Conflictos Agrarios</p>                                                        
+                                                    <div className="col-9 col-stats">
+                                                        <div className="numbers">
+                                                            <p className="card-category">Lineamentos de Operación del Programa de Atención a Conflictos Agrarios</p>                                                        
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
 
                                 <div className='col-md-3'>
-                                    <div className="card card-stats card-secondary card-round">
-                                        <div className="card-body">
-                                            <div className="row">
-                                                <div className="col-3">
-                                                    <div className="icon-big text-center">
-                                                        <i className="fas fa-book-open"></i>
+                                    <a href='https://www.diputados.gob.mx/LeyesBiblio/pdf/CPEUM.pdf' target='_blank'>
+                                        <div className="card card-stats card-secondary card-round">
+                                            <div className="card-body">
+                                                <div className="row">
+                                                    <div className="col-3">
+                                                        <div className="icon-big text-center">
+                                                            <i className="fas fa-book-open"></i>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="col-9 col-stats">
-                                                    <div className="numbers">
-                                                        <p className="card-category">Manual de Operación del Programa de Atención a Conflictos Sociales en el Medio Rural</p>                                                        
+                                                    <div className="col-9 col-stats">
+                                                        <div className="numbers">
+                                                            <p className="card-category">Manual de Operación del Programa de Atención a Conflictos Sociales en el Medio Rural</p>                                                        
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
 
                                 <div className='col-md-3'>
-                                    <div className="card card-stats card-secondary card-round">
-                                        <div className="card-body">
-                                            <div className="row">
-                                                <div className="col-3">
-                                                    <div className="icon-big text-center">
-                                                        <i className="fas fa-gavel"></i>
+                                    <a href='https://www.diputados.gob.mx/LeyesBiblio/pdf/LAgra.pdf' target='_blank'>
+                                        <div className="card card-stats card-secondary card-round">
+                                            <div className="card-body">
+                                                <div className="row">
+                                                    <div className="col-3">
+                                                        <div className="icon-big text-center">
+                                                            <i className="fas fa-gavel"></i>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="col-9 col-stats">
-                                                    <div className="numbers">
-                                                        <p className="card-category">Ley Agraria</p>                                                        
+                                                    <div className="col-9 col-stats">
+                                                        <div className="numbers">
+                                                            <p className="card-category">Ley Agraria</p>                                                        
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
 
                             </div>

@@ -15,7 +15,7 @@ class ConflictoQueryBuilder
                 ->leftJoin('cat_estatus as es', 'es.id', '=', 'c.estatus_id')
                 ->leftJoin('cat_organizaciones as org', 'org.id', '=', 'c.org_inv_id')
                 ->select(
-                    array_merge(self::campos(), [DB::Raw("CONCAT(c.ha, '-', c.area, '-', c.ca) as supConflicto, CONCAT(c.haa, '-', c.areaa, '-', c.caa) as supAtendida")]) 
+                    array_merge(self::campos(), [DB::Raw("CONCAT(c.ha, '-', c.area, '-', c.ca) as supConflicto, CONCAT(c.ha, '-', c.area, '-', c.ca) as supAtendida")]) 
                     )
                 ->where([
                     ['c.estatus', '!=', 0]
@@ -54,7 +54,7 @@ class ConflictoQueryBuilder
                 ->leftJoin('cat_estatus as es', 'es.id', '=', 'c.estatus_id')
                 ->leftJoin('cat_organizaciones as org', 'org.id', '=', 'c.org_inv_id')
                 ->select(
-                    array_merge(self::campos(), [DB::Raw("CONCAT(c.ha, '-', c.area, '-', c.ca) as supConflicto, CONCAT(c.haa, '-', c.areaa, '-', c.caa) as supAtendida")]) 
+                    array_merge(self::campos(), [DB::Raw("CONCAT(c.ha, '-', c.area, '-', c.ca) as supConflicto, CONCAT(c.ha, '-', c.area, '-', c.ca) as supAtendida")]) 
                     )
                 ->where([
                     ['c.estatus', '!=', 0]
@@ -77,7 +77,7 @@ class ConflictoQueryBuilder
                 ->leftJoin('cat_estatus as es', 'es.id', '=', 'c.estatus_id')
                 ->leftJoin('cat_organizaciones as org', 'org.id', '=', 'c.org_inv_id')
                 ->select(
-                    array_merge(self::campos(), [DB::Raw("CONCAT(c.ha, '-', c.area, '-', c.ca) as supConflicto, CONCAT(c.haa, '-', c.areaa, '-', c.caa) as supAtendida")]) 
+                    array_merge(self::campos(), [DB::Raw("CONCAT(c.ha, '-', c.area, '-', c.ca) as supConflicto, CONCAT(c.ha, '-', c.area, '-', c.ca) as supAtendida")]) 
                 )
                 ->where([
                     ['c.id', '=', $id],
@@ -89,8 +89,8 @@ class ConflictoQueryBuilder
     {
         return [
             'c.id', 'c.fecha', 'c.folio', 'c.municipio_id as munpioId', 'c.promovente', 'c.contraparte', 'c.vertiente_id as vertienteId', 
-            'num_beneficiario as numBeneficiario', 'c.reg_soc_id as regSocialId', 'c.estatus_id as estatusId','sintesis_estatus as sintEstatus',
-            'c.problematica', 'c.ha', 'c.area', 'c.ca', 'c.haa', 'c.areaa', 'c.caa', 'c.asunto', 'c.predio', 'c.anio_fiscal as anioFiscal', 
+            'num_beneficiario as numBeneficiario', 'c.reg_soc_id as regSocialId', 'c.estatus_id as estatusId','c.observaciones',
+            'c.problematica', 'c.ha', 'c.area', 'c.ca', 'c.asunto', 'c.predio', 'c.anio_fiscal as anioFiscal', 
             'c.pueblo_indigena as puebloIndigena', 'c.nombre_reg_soc as nombreRegSoc', 'c.org_inv_id as orgInvolucradaId', 'c.estatus', 'm.estado_id as edoId',
             'm.municipio', 'e.estado', 'v.vertiente', 'v.acronimo as vertAcronimo', 'rs.regimen', 'es.descripcion as descEstatus', 'org.nombre as orgInvolucrada'
         ];

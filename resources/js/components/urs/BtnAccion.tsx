@@ -1,10 +1,11 @@
-import React, {MouseEvent} from 'react'
+import React, { MouseEvent, type JSX } from 'react';
+
 import type { Acciones, User, Accion, URSchema } from '../../types'
-import useModal from '../../hooks/useModal'
-import { useURStore } from '../../store/urStore'
-import Swal from 'sweetalert2'
-import { notificacion } from '../../utils'
 import { deleteUR as _deleteUR } from '../../services/UrService'
+import { useURStore } from '../../store/urStore'
+import useModal from '../../hooks/useModal'
+import { notificacion } from '../../utils'
+import Swal from 'sweetalert2'
 
 type AccionesProps= {
     acciones:Acciones,

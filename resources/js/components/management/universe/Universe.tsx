@@ -4,13 +4,13 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useConflictStore } from '../../../store/conflict/conflictStore'
 import { useCatalogStore } from '../../../store/catalogStore'
 import { useModuloStore } from '../../../store/modulo'
-import TablaAsuntos from './TablaAsuntos'
 import ModalRegistro from '../register/ModalRegistro'
 import Breadcrumb from '../../partial/Breadcrumb'
 import useModal from '../../../hooks/useModal'
+import TablaAsuntos from './TablaAsuntos'
 import { makeHash } from '../../../utils'
 
-export default function Historico() {
+export default function Universe() {
     const location = useLocation()
 
     const navigate = useNavigate()

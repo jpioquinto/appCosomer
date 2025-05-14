@@ -1,9 +1,9 @@
 import React, {MouseEvent, ChangeEvent, useState, useEffect} from 'react'
 
+import { Parametro, TypeSelectedFile } from '../../../../types/conflicto'
 import { useSeguimiento } from '../../../../hooks/useSeguimiento'
 import useReadFiles from '../../../../hooks/useReadFiles'
-import { Parametro, TypeSelectedFile } from '../../../../types/conflicto'
-import { notificacion, clone } from '../../../../utils'
+import { notificacion, clone, makeHash } from '../../../../utils'
 
 type CaptureProps = {
     parametro: Parametro
@@ -12,7 +12,7 @@ type CaptureProps = {
 export default function InfoCaptura({parametro}: CaptureProps) {
     const {config, estatus, reader, setLimitSize, setPropertiesRead, setCancel, setTotalFiles, setUpload, setSelectedFile, getSelectedFile} = useReadFiles();
 
-    const {cerrarModal, eliminarCaptura, initCapture} = useSeguimiento();
+    const {cerrarModal, eliminarCaptura, initCapture, MySwal} = useSeguimiento();
 
     const [showInputFile, setShowInputFile] = useState<boolean>(false);
 
@@ -29,8 +29,12 @@ export default function InfoCaptura({parametro}: CaptureProps) {
 
     const clickEditar = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        cerrarModal();
+        if (parametro.accion !== 'Afirmacion') {
+            cerrarModal();
+        }
+        
         initCapture(parametro.etapaId, parametro.id);
+        MySwal.update({icon:'warning'});
     }
 
     const clickElimiinar = (e: MouseEvent<HTMLButtonElement>) => {
@@ -120,7 +124,7 @@ export default function InfoCaptura({parametro}: CaptureProps) {
                     <button type="button" className="btn btn-success btn-sm textl-white fw-semibold" onClick={clickShowCargarDoc}>Cargar documento</button>
                 )}
                 &nbsp; 
-                {parametro?.accion !== 'Afirmacion' && (
+                {parametro?.accion !== 'Afirmacion1' && (
                     <button type="button" className="btn btn-info btn-sm textl-white fw-semibold" onClick={clickEditar}>Editar la captura</button>
                 )}
                 &nbsp;   

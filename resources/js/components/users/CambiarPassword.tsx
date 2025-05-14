@@ -3,11 +3,12 @@ import React, {MouseEvent} from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import ErrorForm from '../partial/ErrorForm'
-import { User } from '../../types'
-import { notificacion } from '../../utils'
-import { savePasswd } from '../../services/UserService'
+
 import useAccionUsuario from '../../hooks/useAccionUsuario'
+import { savePasswd } from '../../services/UserService'
+import ErrorForm from '../partial/ErrorForm'
+import { notificacion } from '../../utils'
+import { User } from '../../types'
 
 type PropTypeModal = {
     user:User

@@ -1,10 +1,10 @@
-import React, {MouseEvent} from 'react'
+import React, { MouseEvent, type JSX } from 'react';
 
 import { deleteConflicto as deleteConflictoService, changeStatusConflicto } from '../../../services/ConflictoService'
 import { useConflictStore } from '../../../store/conflict/conflictStore'
 import type { Acciones,Accion, Option } from '../../../types'
 import type { Registro } from '../../../types/conflicto'
-import CambiarEstatus from '../historical/CambiarEstatus'
+import CambiarEstatus from '../universe/CambiarEstatus'
 import useModal from '../../../hooks/useModal'
 import { notificacion } from '../../../utils'
 

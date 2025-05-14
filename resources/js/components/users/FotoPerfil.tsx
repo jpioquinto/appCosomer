@@ -1,7 +1,9 @@
 import React, {ChangeEvent, MouseEvent, useState} from 'react'
-import { notificacion } from '../../utils'
+
 import { cargarFoto } from '../../services/ContactSevice'
 import { useUserNav } from '../../hooks/useUserNav'
+import { notificacion } from '../../utils'
+
 export default function FotoPerfil() {
     const {getFoto, setFoto} = useUserNav()
 

@@ -1,13 +1,16 @@
 import React, {useState, ChangeEvent, FormEvent, MouseEvent, useEffect} from 'react'
 import { useNavigate } from "react-router-dom"
+
 import { ToastContainer, toast } from 'react-toastify'
-import { useAuthStore } from '../store/auth'
 import { useLoadingStore } from '../store/loading'
+import { useAuthStore } from '../store/auth'
 import Loading from './Loading'
 
 import 'react-toastify/dist/ReactToastify.css'
 import './../../css/app/plugins.min.css'
 import './../../css/app/kaiadmin.min.css'
+import { baseURL } from '../utils'
+import $axios from '../utils/axios'
 
 type FormProps = {
     nickname:string,
@@ -36,7 +39,7 @@ export default function Login() {
     useEffect(() => {
         if (localStorage.getItem('accessAuth')) {
             const data = JSON.parse(localStorage.getItem('accessAuth')!); 
-            axios.defaults.headers.common['Authorization'] = 'Bearer '+ data.token;  
+            $axios.defaults.headers.common['Authorization'] = 'Bearer '+ data.token;  
             setDataAuthenticate(data.user, data.contact, data.token);    
             navigate('/inicio');      
         }   
@@ -51,7 +54,7 @@ export default function Login() {
     };
 
     const handleSuccessLogin = response => {
-        axios.defaults.headers.common['Authorization'] = 'Bearer '+ response.data.token;
+        $axios.defaults.headers.common['Authorization'] = 'Bearer '+ response.data.token;
         localStorage.setItem('accessAuth', JSON.stringify({
             contact:response.data.contact,
             token:response.data.token,
@@ -91,8 +94,8 @@ export default function Login() {
         setIsLoading(true);
         loadShow();
 
-        axios.get('/sanctum/csrf-cookie').then(response => {
-            axios.post('api/login', credenciales)
+        $axios.get('/sanctum/csrf-cookie').then(response => {
+            $axios.post('api/login', credenciales)
             .then(handleSuccessLogin)
             .catch(handleErrorsLogin);
         });
@@ -116,7 +119,7 @@ export default function Login() {
             <div className="wrapper wrapper-login wrapper-login-full p-0">                
                 <div className="login-aside w-50 d-flex flex-column align-items-center justify-content-center text-center bg-secondary-gradient">
                     <div className="mb-3 p-3 rounded">
-                        <img src={`${import.meta.env.VITE_APP_URL}/assets/images/logos/desarrollo_territorial.png`} className="img-fluid" width={'75%'} alt="Logo Desarrollo Territorial" />
+                        <img src={`${baseURL()}/assets/images/logos/desarrollo_territorial.png`} className="img-fluid" width={'75%'} alt="Logo Desarrollo Territorial" />
                     </div>
                     <p className="fs-5 fw-bolder text-white op-9">Dirección General de Concertación Agraria y Mediación</p>
                 </div>
@@ -160,7 +163,7 @@ export default function Login() {
                                             type="checkbox" 
                                             className="form-check-input" 
                                             id="rememberme" 
-                                            value={credenciales.rememberme}
+                                            value={credenciales.rememberme.toString()}
                                             checked={credenciales.rememberme}
                                             onChange={handleChangeRemember}
                                         />

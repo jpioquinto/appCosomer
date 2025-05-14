@@ -1,14 +1,15 @@
 import React, {useState, useEffect} from 'react'
-import Breadcrumb from "../partial/Breadcrumb"
 import {useLocation} from "react-router-dom"
-import useModal from '../../hooks/useModal'
-import ModalUser from './ModalUser'
-import TablaUsuarios from './TablaUsuarios'
-import { useUserStore } from '../../store/user';
+
 import { useModuloStore } from '../../store/modulo'
-import { useURStore } from '../../store/urStore'
 import { usePerfilStore } from '../../store/perfil'
+import { useURStore } from '../../store/urStore'
+import { useUserStore } from '../../store/user'
+import Breadcrumb from "../partial/Breadcrumb"
+import useModal from '../../hooks/useModal'
+import TablaUsuarios from './TablaUsuarios'
 import { makeHash } from '../../utils'
+import ModalUser from './ModalUser'
 
 export default function Usuario() {
     const location = useLocation();

@@ -1,7 +1,8 @@
-import React, { MouseEvent } from 'react'
-import type { Acciones, Accion } from '../../types'
+import React, { MouseEvent, type JSX } from 'react';
+
 import { changeStatusModulo } from '../../services/ModuloService'
 import type { RegistroModulo } from '../../schema/modulo-schema'
+import type { Acciones, Accion } from '../../types'
 import { useModuloStore } from '../../store/modulo'
 import useModal from '../../hooks/useModal'
 import { notificacion } from '../../utils'

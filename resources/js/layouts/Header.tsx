@@ -1,8 +1,10 @@
 import React from 'react'
+
 import ItemActionsNav from './navbar/ItemActionsNav'
 import { useSidebar } from '../hooks/useSidebar'
 import ItemUserNav from './navbar/ItemUserNav'
 import { Link } from 'react-router-dom'
+import { baseURL } from '../utils'
 
 export default function Header() {
     const {clickSideNavToggler, clickTopBar, clickToggleSidebar} = useSidebar();
@@ -12,7 +14,7 @@ export default function Header() {
                 
                 <div className="logo-header" data-background-color="blue">
                     <Link to="/" className="logo">
-                        <img src={`${import.meta.env.VITE_APP_URL}/assets/images/logos/logo.svg`} alt="navbar brand" className="navbar-brand" height="20" />
+                        <img src={`${baseURL()}/assets/images/logos/logo.svg`} alt="navbar brand" className="navbar-brand" height="20" />
                     </Link>
                     <button className="navbar-toggler sidenav-toggler ms-auto" type="button" onClick={clickSideNavToggler} data-bs-toggle="collapse" data-bs-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon">

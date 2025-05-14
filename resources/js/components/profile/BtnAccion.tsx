@@ -1,7 +1,8 @@
-import React, {MouseEvent} from 'react'
+import React, { MouseEvent, type JSX } from 'react';
+
 import type { Acciones, Accion, PerfilSchema } from '../../types'
-import useModal from '../../hooks/useModal'
 import { usePerfilStore } from '../../store/perfil'
+import useModal from '../../hooks/useModal'
 
 type AccionesProps= {
     acciones:Acciones,

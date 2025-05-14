@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react'
+import React, {useEffect, useMemo, StrictMode} from 'react'
 
 import type { Etapa as TypeEtapa, Parametro, ValueCapture } from '../../../types/conflicto'
 import { useConflictStore } from '../../../store/conflict/conflictStore'
@@ -8,8 +8,9 @@ import { tienePermiso, makeHash } from '../../../utils'
 import { useModuloStore } from '../../../store/modulo'
 import InfoCaptura from './partial/InfoCaptura'
 import type { Acciones } from '../../../types'
-import Etapa from '../procedure/Etapa'
 import useModal from '../../../hooks/useModal'
+import Afirmacion from './partial/Afirmacion'
+import Etapa from './partial/Etapa'
 
 export default function Seguimiento() {
     const {conflicto, etapas, captura, listStages, updateEtapa, updateCapturaEtapa, initCapture} = useConflictStore()
@@ -21,20 +22,20 @@ export default function Seguimiento() {
     const {modal, closeModal} = useModal()
 
     const accionAfirmacion = (parametro:Parametro, etapaId:TypeEtapa['id']) => {
-        if (!parametro?.captura && parametro?.requiereDoc !== 1) {
+        /*if (!parametro?.captura && parametro?.requiereDoc !== 1) {
             updateCapturaEtapa(etapaId, parametro.id, {value:true, type:'boolean'} as ValueCapture);
             return;
         }
 
         if (!parametro?.captura) {
             updateCapturaEtapa(etapaId, parametro.id, {value:true, type:'boolean'} as ValueCapture);            
-        }
+        }*/
 
         MySwal.fire({
-            title:"Información capturada",
+            title:"Elija una opción",
             text: `¿Qué acción desea realizar?`,
-            icon: "warning",
-            html:<InfoCaptura parametro={parametro}/>,
+            icon: "info",
+            html:<Afirmacion parametro={parametro}/>,
             showConfirmButton:false,
             allowOutsideClick:false,
             allowEscapeKey:false,
@@ -99,7 +100,7 @@ export default function Seguimiento() {
                             <h3 className="text-white fw-bold mb-3 text-uppercase">NOMBRE DEL PREDIO: {conflicto.predio}</h3>
                             <h3 className="text-white fw-bold mb-3 text-uppercase">ESTATUS: {conflicto.descEstatus}</h3>
                         </div>
-                        <h6 className="text-white op-7 mb-2">{conflicto.sintEstatus}</h6>
+                        <h6 className="text-white op-7 mb-2">{conflicto.observaciones}</h6>
                     </div>
                     <div className="ms-md-auto ps-3 py-2 py-md-0">
                         <a href="#" className="btn btn-secondary btn-round">Salir</a>

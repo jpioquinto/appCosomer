@@ -6,9 +6,9 @@ import DT from 'datatables.net-bs5'
 import 'datatables.net-select-bs5'
 import 'datatables.net-responsive-bs5'
 
+import { useCatalogStore } from '../../../store/catalogStore'
 import languaje from '../../../data/Spanish_Mexico.json'
 import { Registros } from '../../../types/conflicto'
-import { useCatalogStore } from '../../../store/catalogStore'
 
 DataTable.use(DT);
 

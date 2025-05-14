@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
+import { baseURL } from '../utils'
+
 export default function Footer() {
     let fechaActual = new Date();
     
-    const [anio, setAnio] = useState<int>(fechaActual.getFullYear())
+    const [anio, setAnio] = useState<number>(fechaActual.getFullYear())
 
     return (
         <footer className="footer">
@@ -11,7 +13,7 @@ export default function Footer() {
                     <ul className="nav">
                         <li className="nav-item">
                             <a className="nav-link" href="https://www.gob.mx/sedatu" target='_blank'>
-                                <img src={`${import.meta.env.VITE_APP_URL}/assets/images/logos/logo.svg`} alt="navbar brand" className="navbar-brand logo-sidebar" />
+                                <img src={`${baseURL()}/assets/images/logos/logo.svg`} alt="navbar brand" className="navbar-brand logo-sidebar" />
                             </a>
                         </li>
                     </ul>

@@ -1,9 +1,10 @@
-import { PerfilsSchema, ArbolPermiso } from "../schema/perfil-schema";
-import type { PerfilSchema } from "../types";
+import { PerfilsSchema, ArbolPermiso } from "../schema/perfil-schema"
+import type { PerfilSchema } from "../types"
+import $axios from '../utils/axios'
 
 export async function listadoPerfiles() {
     try {
-        const response =  await axios.get('api/perfil/listado-perfil');  
+        const response =  await $axios.get('api/perfil/listado-perfil');  
         if (response.status) {
             const result = PerfilsSchema.safeParse(response.data?.listado);
             
@@ -17,7 +18,7 @@ export async function listadoPerfiles() {
 
 export async function listadoPermisos(id: PerfilSchema['id'] | undefined) {
     try {
-        const response =  await axios.get('api/perfil/arbol-permisos/'+id);  
+        const response =  await $axios.get('api/perfil/arbol-permisos/'+id);  
         if (response.status) {
             const result = ArbolPermiso.safeParse(response.data?.listado);
             //console.log(result)

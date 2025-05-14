@@ -1,27 +1,33 @@
 <table>
     <thead>
         <tr>
-            <th colspan="12" style="text-align: center;background:#CCC;font-weight:bold;">Datos Generales</th>
+            <th colspan="12" height="50" style="text-align: center;background:#000000;color:#FFFFFF;font-size:10pt;font-weight:bold;vertical-align:middle;">DATOS GENERALES</th>
             @foreach($stages as $stage)
-                <th colspan="{{count($stage['parametros'])}}" style="text-align: center;background:#CCC;font-weight:bold;">{{$stage['etapa']}}</th>
+                @php
+                    $bg = isset($background[$stage['id']]) ? 'background:' . $background[$stage['id']]['stage'] : ''; 
+                @endphp
+                <th colspan="{{count($stage['parametros'])}}" style="text-align: center;color:#FFFFFF;font-size:10pt;font-weight:bold;vertical-align:middle;{{$bg}}">{{mb_strtoupper($stage['etapa'])}}</th>
             @endforeach
         </tr>        
         <tr>
-            <th style="text-align: center;background:#CCC;font-weight:bold;">Folio</th>
-            <th style="text-align: center;background:#CCC;font-weight:bold;">Rubro</th>
-            <th style="text-align: center;background:#CCC;font-weight:bold;">Ejercicio Fiscal</th>
-            <th style="text-align: center;background:#CCC;font-weight:bold;">Asunto</th>
-            <th style="text-align: center;background:#CCC;font-weight:bold;">Entidad</th>
-            <th style="text-align: center;background:#CCC;font-weight:bold;">Municipio</th>
-            <th style="text-align: center;background:#CCC;font-weight:bold;">Promovente</th>
-            <th style="text-align: center;background:#CCC;font-weight:bold;">Contraparte</th>
-            <th style="text-align: center;background:#CCC;font-weight:bold;">Nombre del Predio</th>
-            <th style="text-align: center;background:#CCC;font-weight:bold;">Estatus</th>
-            <th style="text-align: center;background:#CCC;font-weight:bold;">Superficie Legal</th>
-            <th style="text-align: center;background:#CCC;font-weight:bold;">Superficie Medida</th>
+            <th height="50" style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:200;vertical-align:middle;">Folio</th>
+            <th style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;">Rubro</th>
+            <th style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;">Ejercicio Fiscal</th>
+            <th style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;">Asunto</th>
+            <th style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;">Entidad</th>
+            <th style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;">Municipio</th>
+            <th style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;">Promovente</th>
+            <th style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;">Contraparte</th>
+            <th style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;">Nombre del Predio</th>
+            <th style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;">Estatus</th>
+            <th style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;">Superficie Legal</th>
+            <th style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;">Superficie Medida</th>
             @foreach($stages as $stage)
+                @php
+                    $bg = isset($background[$stage['id']]) ? 'background:' . $background[$stage['id']]['param'] : ''; 
+                @endphp
                 @foreach($stage['parametros']->sortBy('orden') as $param)
-                    <th style="text-align: center;background:#CCC;font-weight:bold;">{{$param['parametro']}}</th>
+                    <th style="text-align: center;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;{{$bg}}">{{$param['parametro']}}</th>
                 @endforeach
             @endforeach
         </tr>        

@@ -8,7 +8,7 @@ export const ResponseLoadFile = z.object({
 })
 
 export const ValueCapture = z.object({
-        'value':z.string().or(z.number()).or(z.boolean()),
+        'value':z.string().or(z.number()).or(z.array(z.string())).or(z.array(z.number())),
         'docs':z.optional(z.array(z.string())),
         'id':z.optional(z.number()),
         'type':z.string()
@@ -27,6 +27,7 @@ export const Parametro = z.object({
         'premisaId':z.optional(z.string()).nullable(),
         'captura':z.optional(ValueCapture).nullable(),
         'capturando':z.optional(z.boolean()).nullable(),
+        'multipleCap':z.optional(z.number()).nullable(),
         'capturaId':z.optional(z.number()).nullable(),
         'validado':z.optional(z.number()).nullable(),
 })
@@ -59,14 +60,14 @@ export const RegistroSchema = z.object({
         vertienteId:z.optional(z.number()).nullable(),
         puebloIndigena:z.optional(z.string()).nullable(),
         nombreRegSoc:z.optional(z.string()).nullable(),
-        anioFiscal:z.optional(z.number()).nullable(),
+        anioFiscal:z.optional(z.string()).nullable(),
         supconflicto:z.optional(z.string()).nullable(),
         supatendida:z.optional(z.string()).nullable(),
         numBeneficiario:z.optional(z.number()).nullable(),
         regSocialId:z.optional(z.number()).nullable(),
         estatus:z.number(),
         estatusId:z.optional(z.number()).nullable(),
-        sintEstatus:z.optional(z.string()).nullable(),
+        observaciones:z.optional(z.string()).nullable(),
         orgInvolucradaId:z.optional(z.number()).nullable(),
         problematica:z.optional(z.string()).nullable(),
         municipio:z.optional(z.string()).nullable(),

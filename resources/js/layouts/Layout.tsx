@@ -1,10 +1,10 @@
 import React, { useEffect } from "react"
-import { Outlet } from "react-router-dom"
-import { useAuthStore } from '../store/auth'
-import { useNavigate } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
+
 import { ToastContainer, toast } from 'react-toastify'
 import { useLoadingStore } from "../store/loading"
 import { useConfigStore } from "../store/config"
+import { useAuthStore } from '../store/auth'
 
 import Sidebar from "./Sidebar"
 import Header from "./Header"
@@ -13,6 +13,7 @@ import Footer from "./Footer"
 import { useSidebarStore } from '../store/sidebar'
 import { useNavBarStore } from '../store/navbar'
 import Loading from "../components/Loading"
+import $axios from "../utils/axios"
 
 import 'animate.css'
 
@@ -31,7 +32,7 @@ export default function Layout() {
     const navigate = useNavigate();
 
     const activarInterceptor = () => {
-        const interceptor = axios.interceptors.request.use((config) => {
+        const interceptor = $axios.interceptors.request.use((config) => {
             setIsLoading(true); loadShow();
             return config;
         }, (error) => {
@@ -39,7 +40,7 @@ export default function Layout() {
             return Promise.reject(error);
         });
 
-        axios.interceptors.response.use((response) => {
+        $axios.interceptors.response.use((response) => {
             setIsLoading(false); loadHidden();
             return response;
         }, function(error) {

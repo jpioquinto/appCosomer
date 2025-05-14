@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { LoadingProps } from '../types'
 import React from 'react'
 
@@ -11,7 +10,7 @@ export default function Spinner({texto, omitCancel}: LoadingProps) {
             <div className="bounce1"></div>
             <div className="bounce2"></div>
             <div className="bounce3"></div><br />
-            {omitCancel ? '' : (<a className="btn btn-danger"><FontAwesomeIcon icon={'fas fa-circle-xmark'} /> Cancelar</a>)}
+            {omitCancel ? '' : (<a className="btn btn-danger"><i className={'fas fa-times-circle'} /> Cancelar</a>)}
         </div>
     )
 }

@@ -1,9 +1,10 @@
-import { UsuariosSchema } from "../schema/usuario-schema";
+import { UsuariosSchema } from "../schema/usuario-schema"
+import $axios from '../utils/axios'
 
 
 export async function saveUser(data) {
     try {
-        const response =  await axios.post('api/user/save', data);
+        const response =  await $axios.post('api/user/save', data);
         
         return response.data
     } catch(error) {
@@ -13,7 +14,7 @@ export async function saveUser(data) {
 
 export async function savePasswd(data) {
     try {
-        const response =  await axios.post('api/user/save-passwd', data);
+        const response =  await $axios.post('api/user/save-passwd', data);
         
         return response.data
     } catch(error) {
@@ -23,7 +24,7 @@ export async function savePasswd(data) {
 
 export async function logout() {
     try {
-        const response =  await axios.post('api/user/logout');
+        const response =  await $axios.post('api/user/logout');
         return await response.data;
         //return response.data
     } catch(error) {
@@ -33,7 +34,7 @@ export async function logout() {
 
 export async function listadoUsuarios() {
     try {
-        const response =  await axios.get('api/user/listado-user');  
+        const response =  await $axios.get('api/user/listado-user');  
         if (response.status) {
             const result = UsuariosSchema.safeParse(response.data?.listado);
             
@@ -46,7 +47,7 @@ export async function listadoUsuarios() {
 
 export async function changeStatus(data) {
     try {
-        const response =  await axios.post('api/user/change-status', data);
+        const response =  await $axios.post('api/user/change-status', data);
         
         return response.data
     } catch(error) {
@@ -56,7 +57,7 @@ export async function changeStatus(data) {
 
 export async function changeUR(data) {
     try {
-        const response =  await axios.post('api/user/change-ur', data);
+        const response =  await $axios.post('api/user/change-ur', data);
         
         return response.data
     } catch(error) {
@@ -66,7 +67,7 @@ export async function changeUR(data) {
 
 export async function changePerfil(data) {
     try {
-        const response =  await axios.post('api/user/change-perfil', data);
+        const response =  await $axios.post('api/user/change-perfil', data);
         
         return response.data
     } catch(error) {

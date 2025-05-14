@@ -1,11 +1,12 @@
 import { useAuthStore } from "../store/auth";
 import {useState, MouseEvent} from 'react'
 import { logout } from "../services/UserService";
-import { notificacion } from "../utils";
+import { notificacion, isNumeric } from "../utils";
 import { useNavigate } from "react-router-dom";
 
 import { useConfigStore } from "../store/config";
 import { Contact, UserAuth } from "../types";
+import $axios from "../utils/axios";
 
 type Toggle = {
     aria:boolean,
@@ -38,8 +39,8 @@ export function useItemUserNav() {
         setToggle(initState);
     }
 
-    const desactivarInterceptor = () => {
-        axios.interceptors.request.eject(getInterceptor());
+    const desactivarInterceptor = () => {        
+        $axios.interceptors.request.eject(getInterceptor());
     }
 
     const cerrarSession = async () => {
@@ -48,7 +49,7 @@ export function useItemUserNav() {
             if (result?.solicitud) {
                 notificacion(result.message, 'success');
 
-                axios.defaults.headers.common['Authorization'] = '';
+                $axios.defaults.headers.common['Authorization'] = '';
                 localStorage.removeItem('accessAuth');
                 
                 desactivarInterceptor();

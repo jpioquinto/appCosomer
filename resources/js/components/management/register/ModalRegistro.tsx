@@ -11,15 +11,14 @@ import Select from 'react-select'
 
 import { updateConflicto as updateConflictoService} from '../../../services/ConflictoService'
 import { useConflictStore } from '../../../store/conflict/conflictStore'
-import { useConflicto } from '../../../hooks/useConflicto'
 import { DraftRegistro, Registro } from '../../../types/conflicto'
+import { RegistroSchema } from '../../../schema/conflicto-schema'
+import { useConflicto } from '../../../hooks/useConflicto'
 import { isInteger, notificacion } from '../../../utils'
 import { useEdoStore } from '../../../store/edoStore'
 import ErrorForm from '../../partial/ErrorForm'
 import useModal from '../../../hooks/useModal'
-import { RegistroSchema } from '../../../schema/conflicto-schema'
 import { makeHash } from '../../../utils'
-
 
 type Modaltype = {
     propModal:PropsModal,
@@ -31,7 +30,7 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
     const {currentMnpios, listEdos, getEdos, listMunpios} = useEdoStore();
     const {conflicto, updateConflicto, setKeyTable} = useConflictStore();
 
-    const [problematica, setProblematica] = useState<string>(conflicto ? conflicto.problematica : '');
+    const [problematica, setProblematica] = useState<string>(conflicto ? conflicto.problematica! : '');
 
     const {catalog, form, config} = useConflicto();
 

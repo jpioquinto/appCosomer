@@ -3,12 +3,13 @@
 namespace App\Exports;
 
 use App\Models\Conflicto\{ConflictoQueryBuilder AS QueryBuilder, Etapa, EtapaQueryBuilder};
-use Maatwebsite\Excel\Concerns\{Exportable, FromView, WithColumnWidths, WithProperties};
+use Maatwebsite\Excel\Concerns\{Exportable, FromView, WithColumnWidths, WithProperties, WithStyles};
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\View\View;
 
-class ConflictsExport implements FromView, WithProperties, WithColumnWidths
+class ConflictsExport implements FromView, WithProperties, WithColumnWidths, WithStyles
 {
     use Exportable;
 
@@ -18,25 +19,51 @@ class ConflictsExport implements FromView, WithProperties, WithColumnWidths
 
     protected $name;
 
+    protected $stages;
+
     public function __construct(array $params = [])
     {
+        $this->setStages(Etapa::with(['parametros'])->get());
         $this->setParams($params);
         $this->setUrlReport(null);
     }
 
-    public function columnWidths(): array
+    public function setStages($stages)
+    {
+        $this->stages = $stages;
+    }
+
+    public function getStages()
+    {
+        return $this->stages;
+    }
+
+    public function sizeColumns($start = 'A', $itera = 1, $pad = 'A')
+    {
+        $columns = [];
+        foreach ($this->getStages() as $stage) {
+            foreach ($stage['parametros'] as $param) {
+                $columns[str_pad($start, $itera, $pad, STR_PAD_LEFT )] = 20;
+                if ($start === 'Z') {
+                    $start = 'A'; $itera++;                                   
+                }
+                $start++;
+            }
+        }
+
+        return $columns;
+    }
+
+    public function defaultColumns(): array
     {
         return [
-            'A' => 17,
-            'C' => 16,            
-            'D' => 55,            
-            'E' => 30,            
-            'F' => 30,
-            'H' => 30,
-            'I' => 30,
-            'K' => 16,
-            'L' => 17,            
+            'A' => 17, 'C' => 16, 'D' => 55, 'E' => 30, 'F' => 30, 'H' => 30, 'I' => 30, 'K' => 16, 'L' => 17,            
         ];
+    }
+
+    public function columnWidths(): array
+    {
+        return array_merge($this->defaultColumns(), $this->sizeColumns('M'));
     }
 
     public function properties(): array
@@ -52,6 +79,34 @@ class ConflictsExport implements FromView, WithProperties, WithColumnWidths
             'manager'        => 'DGCAM',
             'company'        => 'SOAIP, DGCAM',
         ];
+    }
+
+    public function background()
+    {
+        return [
+            1=>['stage'=>'#600f2f', 'param'=>'#9a2045'],
+            2=>['stage'=>'#042d27', 'param'=>'#145b4d'],
+            3=>['stage'=>'#a4802c', 'param'=>'#e6d293'],
+            4=>['stage'=>'#0d0d0d', 'param'=>'#808080'],
+            5=>['stage'=>'#600f2f', 'param'=>'#9a2045'],
+            6=>['stage'=>'#042d27', 'param'=>'#145b4d'],
+            7=>['stage'=>'#a4802c', 'param'=>'#e6d293'],
+            8=>['stage'=>'#0d0d0d', 'param'=>'#808080'],
+            9=>['stage'=>'#600f2f', 'param'=>'#9a2045'],
+            10=>['stage'=>'#042d27', 'param'=>'#145b4d'],
+            11=>['stage'=>'#a4802c', 'param'=>'#e6d293'],
+            12=>['stage'=>'#0d0d0d', 'param'=>'#808080'],
+            13=>['stage'=>'#600f2f', 'param'=>'#9a2045'],
+            14=>['stage'=>'#042d27', 'param'=>'#145b4d'],
+            15=>['stage'=>'#a4802c', 'param'=>'#e6d293'],
+            16=>['stage'=>'#0d0d0d', 'param'=>'#808080'],           
+        ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        $sheet->getStyle('M2:AS2')->getAlignment()->setWrapText(true);
+        #$sheet->getColumnDimension('M')->setWidth(30);
     }
 
     public function setName($name)
@@ -88,7 +143,8 @@ class ConflictsExport implements FromView, WithProperties, WithColumnWidths
     {#print_r($this->agregarCapturas(QueryBuilder::listarConflictos($this->getParams())));exit;
         return view('exports.conflicts', [
             'conflicts' => $this->agregarCapturas(QueryBuilder::listarConflictos($this->getParams())),
-            'stages'=>Etapa::with(['parametros'])->get()
+            'background'=>$this->background(),
+            'stages'=>$this->getStages(),
         ]);
     }
 

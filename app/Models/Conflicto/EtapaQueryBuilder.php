@@ -24,7 +24,7 @@ class EtapaQueryBuilder
     {
         return [
             'p.id', 'p.etapa_id as etapaId', 'p.parametro', 'p.orden', 'p.ponderacion', 'p.calificable', 'p.requiere_doc as requiereDoc', 'p.accion',
-            'p.definicion', 'p.premisa_id as premisaId', 'i.id as capturaId', 'i.dato as captura', 'i.validado' 
+            'p.definicion', 'p.premisa_id as premisaId', 'p.multiple_cap as multipleCap',  'i.id as capturaId', 'i.dato as captura', 'i.validado' 
         ];
     }
 }

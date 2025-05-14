@@ -1,8 +1,9 @@
 import { EstatusSchema, OrganizacionesSchema, RegimenesSchema, UnidadesSchema, VertientesSchema } from "../schema/catalog-schema";
+import $axios from '../utils/axios'
 
 export async function listadoVertientes() {
     try {
-        const response =  await axios.get('api/catalog/listado-vertientes');  
+        const response =  await $axios.get('api/catalog/listado-vertientes');  
         if (response.status==200) {
             const result = VertientesSchema.safeParse(response.data?.listado);
             
@@ -17,7 +18,7 @@ export async function listadoVertientes() {
 
 export async function listadoUnidades() {
     try {
-        const response =  await axios.get('api/catalog/listado-unidades');  
+        const response =  await $axios.get('api/catalog/listado-unidades');  
         if (response.status==200) {
             const result = UnidadesSchema.safeParse(response.data?.listado);
             
@@ -32,7 +33,7 @@ export async function listadoUnidades() {
 
 export async function listadoRegimenes() {
     try {
-        const response =  await axios.get('api/catalog/listado-regimenes');  
+        const response =  await $axios.get('api/catalog/listado-regimenes');  
         if (response.status==200) {
             const result = RegimenesSchema.safeParse(response.data?.listado);
             
@@ -47,7 +48,7 @@ export async function listadoRegimenes() {
 
 export async function listadoOrganizaciones() {
     try {
-        const response =  await axios.get('api/catalog/listado-organizaciones');  
+        const response =  await $axios.get('api/catalog/listado-organizaciones');  
         if (response.status==200) {
             const result = OrganizacionesSchema.safeParse(response.data?.listado);
             
@@ -62,7 +63,7 @@ export async function listadoOrganizaciones() {
 
 export async function listadoEstatus() {
     try {
-        const response =  await axios.get('api/catalog/listado-estatus');  
+        const response =  await $axios.get('api/catalog/listado-estatus');  
         if (response.status==200) {
             const result = EstatusSchema.safeParse(response.data?.listado);
             

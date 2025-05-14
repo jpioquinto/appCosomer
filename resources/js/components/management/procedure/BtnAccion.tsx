@@ -1,4 +1,4 @@
-import React, {MouseEvent} from 'react'
+import React, { MouseEvent, type JSX } from 'react';
 
 import { useConflictStore } from '../../../store/conflict/conflictStore'
 import useSegundaModal from '../../../hooks/useSegundaModal'

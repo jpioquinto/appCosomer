@@ -18,7 +18,7 @@ class ConflictoController extends Controller
         }
 
         return response([
-            'response'=>true,
+            'solicitud'=>true,
             'message'=>'Listado de conflictos.',            
             'listado'=>$conflicto->getConflictos($request->estatus ? explode(',', $request->estatus) : []),
         ], 200);

@@ -6,6 +6,7 @@ import { useNavBarStore } from '../store/navbar'
 import { Link } from 'react-router-dom'
 import UserNav from './navbar/UserNav'
 import Nav from './navbar/Nav'
+import { baseURL } from '../utils'
 
 export default function Sidebar() {
 
@@ -18,7 +19,7 @@ export default function Sidebar() {
 			<div className="sidebar-logo">				
 				<div className="logo-header" data-background-color="blue">
 					<Link to="/" className="logo">
-						<img src={`${import.meta.env.VITE_APP_URL}/assets/images/logos/logo.svg`} alt="navbar brand" className="navbar-brand logo-sidebar" />
+						<img src={`${baseURL()}/assets/images/logos/logo.svg`} alt="navbar brand" className="navbar-brand logo-sidebar" />
 					</Link>
 					<div className="nav-toggle">
 						<button className={classToggle} onClick={clickToggleSidebar}>

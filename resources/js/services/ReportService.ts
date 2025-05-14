@@ -1,9 +1,10 @@
+import { RegistrosSchema } from "../schema/conflicto-schema"
 import { FilterReport } from "../types/conflicto"
-import { RegistrosSchema } from "../schema/conflicto-schema";
+import $axios from '../utils/axios'
 
 export async function reportListConflicts(data: FilterReport) {
     try {
-        const response =  await axios.post('api/conflict/report/listado-conflictos', data);  
+        const response =  await $axios.post('api/conflict/report/listado-conflictos', data);  
         if (response.data.solicitud) {
             const result = RegistrosSchema.safeParse(response.data?.listado);            
             return result.success ? result.data : [];
@@ -16,7 +17,7 @@ export async function reportListConflicts(data: FilterReport) {
 
 export async function downloadReport(data: FilterReport) {
     try {
-        const response =  await axios.post('api/conflict/report/excel', data);  
+        const response =  await $axios.post('api/conflict/report/excel', data);  
         return response.data;                   
     } catch(error) {
         return {solicitud:false, message:'Falló la operación de Descarga.'};     

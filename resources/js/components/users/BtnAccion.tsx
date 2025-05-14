@@ -1,10 +1,11 @@
-import React, {MouseEvent}  from 'react'
+import React, { MouseEvent, type JSX } from 'react';
+
 import type { Acciones, User, Accion } from '../../types'
 import useAccionUsuario from '../../hooks/useAccionUsuario'
-import CambiarUR from './CambiarUR'
-import CambiarPerfil from './CambiarPerfil'
 import CambiarPassword from './CambiarPassword'
 import { useUserStore } from '../../store/user'
+import CambiarPerfil from './CambiarPerfil'
+import CambiarUR from './CambiarUR'
 
 type AccionesProps= {
     acciones:Acciones,

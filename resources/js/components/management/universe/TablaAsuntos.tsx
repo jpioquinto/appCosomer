@@ -6,13 +6,13 @@ import DT from 'datatables.net-bs5'
 import 'datatables.net-select-bs5'
 import 'datatables.net-responsive-bs5'
 
-import languaje from '../../../data/Spanish_Mexico.json'
 import { Registro, Registros } from '../../../types/conflicto'
 import { useCatalogStore } from '../../../store/catalogStore'
-import type { Acciones } from '../../../types'
+import languaje from '../../../data/Spanish_Mexico.json'
 import { useModuloStore } from '../../../store/modulo'
-import BtnAccion from './BtnAccion'
+import type { Acciones } from '../../../types'
 import * as bootstrap from 'bootstrap'
+import BtnAccion from './BtnAccion'
 
 import type { Option } from '../../../types'
 
@@ -105,11 +105,11 @@ export default function TablaAsuntos({conflictos, seguimiento}: ConflictsProps) 
                 <th className="text-center">Asunto</th>
                 <th className="text-center">Entidad</th>
                 <th className="text-center">Municipio</th>
-                <th className="text-center">Promovente</th>
+                <th className="text-center">Posesionario</th>
                 <th className="text-center">Nombre del Predio</th>
                 <th className="text-center">Estatus</th>
-                <th className="text-center">Superficie Legal</th>
-                <th className="text-center">Superficie Medida</th>
+                <th className="text-center">Superficie en Conflicto</th>
+                <th className="text-center">Superficie Real Medida</th>
                 <th className="text-center">Acciones</th>
             </tr>
         </thead>

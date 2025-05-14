@@ -1,9 +1,10 @@
-import { EdosSchema, MunpiosSchema } from "../schema/edo-schema";
-import { MunpioSchema } from "../types";
+import { EdosSchema, MunpiosSchema } from "../schema/edo-schema"
+import { MunpioSchema } from "../types"
+import $axios from '../utils/axios'
 
 export async function listadoEdos() {
     try {
-        const response =  await axios.get('api/edo/listado-estados');  
+        const response =  await $axios.get('api/edo/listado-estados');  
         if (response.status) {
             const result = EdosSchema.safeParse(response.data?.listado);
             
@@ -16,7 +17,7 @@ export async function listadoEdos() {
 
 export async function listadoMunpio(edoId: MunpioSchema['estado_id']) {
     try {
-        const response =  await axios.get('api/edo/listado-munpios/' + edoId);  
+        const response =  await $axios.get('api/edo/listado-munpios/' + edoId);  
         if (response.status) {
             const result = MunpiosSchema.safeParse(response.data?.listado);
             

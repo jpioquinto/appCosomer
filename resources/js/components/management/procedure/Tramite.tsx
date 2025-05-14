@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+
 import { useConflictStore } from '../../../store/conflict/conflictStore'
 import useSegundaModal from '../../../hooks/useSegundaModal'
 import { useModuloStore } from '../../../store/modulo'
@@ -24,7 +25,7 @@ export default function Tramite() {
 
     useEffect(() => {
         listConflicts([1,2])
-        listStages()
+        //listStages()
         setModulo(location.state)
         setKeyTable(makeHash(12))
     }, [modulo])
