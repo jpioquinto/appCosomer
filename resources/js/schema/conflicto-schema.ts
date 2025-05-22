@@ -25,6 +25,7 @@ export const Parametro = z.object({
         'accion':z.optional(z.string()).nullable(),
         'definicion':z.optional(z.string()).nullable(),
         'premisaId':z.optional(z.string()).nullable(),
+        'keyParam':z.optional(z.string()).nullable(),
         'captura':z.optional(ValueCapture).nullable(),
         'capturando':z.optional(z.boolean()).nullable(),
         'multipleCap':z.optional(z.number()).nullable(),

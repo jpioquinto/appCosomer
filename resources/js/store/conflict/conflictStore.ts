@@ -103,6 +103,7 @@ export const useConflictStore = create<ConflictState>((set, get) => ({
                 etapa.capturas?.map(parametro => {
                     if (parametro.id === paramId) {
                         parametro.capturando = !parametro.capturando
+                       // parametro.keyParam = `param-${parametro.id}` + makeHash(5) // remove
                     }
                     return parametro
                 })
@@ -125,6 +126,8 @@ export const useConflictStore = create<ConflictState>((set, get) => ({
                 etapa.capturas?.map(parametro => {
                     if (parametro.id === paramId) {
                         parametro.captura = null
+                        parametro.capturando = false
+                        parametro.keyParam = `param-${parametro.id}` + makeHash(5) 
                     }
                     return parametro
                 })
@@ -142,7 +145,8 @@ export const useConflictStore = create<ConflictState>((set, get) => ({
             if (etapa.id === etapaId) {
                 etapa.capturas?.map(captura => {
                     if (captura.id === paramId) {
-                        captura.captura = $captura
+                        captura.captura  = $captura
+                        captura.keyParam = `param-${captura.id}` + makeHash(5) 
                     }
                     return captura
                 })

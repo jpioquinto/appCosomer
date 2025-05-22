@@ -17,10 +17,10 @@ export default function Parametros({params, etapaId, clickParametro}: ParamsProp
       {
         totalColumn>1 
         ? (<>
-                <div className='col-md-6'>{params.slice(0, elemColumn).map(param => <Parametro parametro={param} etapaId={etapaId} clickParametro={clickParametro} key={`parametro-${param.id}`}/>)}</div>
-                <div className='col-md-6'>{params.slice(elemColumn, params.length).map(param => <Parametro parametro={param} etapaId={etapaId} clickParametro={clickParametro} key={`parametro-${param.id}`}/>)}</div>
+                <div className='col-md-6'>{params.slice(0, elemColumn).map(param => <Parametro parametro={param} etapaId={etapaId} clickParametro={clickParametro} key={param.keyParam}/>)}</div>
+                <div className='col-md-6'>{params.slice(elemColumn, params.length).map(param => <Parametro parametro={param} etapaId={etapaId} clickParametro={clickParametro} key={param.keyParam}/>)}</div>
             </>) 
-        : (<div className='col-md-12'>{params.map(param => <Parametro parametro={param} etapaId={etapaId} clickParametro={clickParametro} key={`parametro-${param.id}`}/>)}</div>)
+        : (<div className='col-md-12'>{params.map(param => <Parametro parametro={param} etapaId={etapaId} clickParametro={clickParametro} key={param.keyParam}/>)}</div>)
       }
     </div>
   )

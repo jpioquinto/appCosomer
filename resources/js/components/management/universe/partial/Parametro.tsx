@@ -1,9 +1,11 @@
 import React, {ChangeEvent, MouseEvent, KeyboardEvent, useMemo, useState, useEffect} from 'react'
 
-import { Etapa, Parametro as TypeParametro, ValueCapture } from '../../../../types/conflicto'
-import { formatCurrency, formatDateShort, formatNumeric, baseURL } from '../../../../utils'
+import { Etapa, Parametro as TypeParametro, ValueCapture, InputType } from '../../../../types/conflicto'
+import { formatCurrency, formatDateShort, formatNumeric, baseURL, isNumeric } from '../../../../utils'
 import { useConflictStore } from '../../../../store/conflict/conflictStore'
+import { useCapture } from '../../../../hooks/useCapture'
 import useModal from '../../../../hooks/useModal'
+import InputCapture from './InputCapture'
 
 type ParametroProps = {
     parametro: TypeParametro,
@@ -14,9 +16,11 @@ type ParametroProps = {
 export default function Parametro({parametro, etapaId, clickParametro}: ParametroProps) {
     const {updateCapturaEtapa, finishCapture, setParametro} = useConflictStore()
 
+    const {format, state} = useCapture()
+
     const {showModal} = useModal()
-    //useEffect(() => console.log(parametro.captura), [])
-    const [capture, setCaptura] = useState<string|number|string[]|number[]>(parametro.captura?.value!)
+    
+    const [capture, setCaptura] = useState<string|number|(number | string)[]>(parametro.captura?.value!)    
 
     const showIconDoc = useMemo(() => parametro?.captura?.docs ? parametro.captura.docs.length>0 : false, [parametro.captura?.docs])
     
@@ -26,40 +30,17 @@ export default function Parametro({parametro, etapaId, clickParametro}: Parametr
     const showInputCapture = useMemo(() => ['CantidadNumerica', 'CantidadEntera', 'Fecha', 'Moneda', 'Texto'].includes(parametro.accion!) && parametro.capturando, 
                                 [parametro.capturando])
 
-    const applyFormatNumeric = ($capture: string[]|number[]): string[] => {        
-        let listado: string[] = []
-        $capture.forEach($value => listado = [...listado, formatNumeric(+$value)])
+    const showBtnAction = useMemo(() => parametro.multipleCap===1 && capture !== 'N/A', [capture])
 
-        return listado
-    }
-
-    const applyFormatCurrency = ($capture: string[]|number[]): string[] => {
-        let listado: string[] = []
-        $capture.forEach($value => listado = [...listado, formatCurrency(+$value)])
-
-        return listado
-    }
-
-    const applyFormatDateShort = ($capture: string[]|number[]): string[] => {
-        let listado: string[] = []
-        $capture.forEach($value => listado = [...listado, formatDateShort($value.toString())])
-
-        return listado
-    }
-    
     const isArray = useMemo(() => parametro.multipleCap===1 && Array.isArray(capture), [capture])
     
     const inputType  = useMemo(() => {                            
-                            let tipo = ['CantidadNumerica', 'CantidadEntera', 'Moneda'].includes(parametro.accion!) ? 'number' : 'string'
+                            let tipo = ['CantidadNumerica', 'CantidadEntera', 'Moneda'].includes(parametro.accion!) ? 'number' : 'text'
 
                             if (['Fecha'].includes(parametro.accion!)) {
                                 tipo = 'date'
                             }
 
-                            if (parametro.multipleCap === 1) {
-                                return 'array'
-                            }
-                            
                             return tipo
                         } , [parametro.accion])
     
@@ -68,22 +49,22 @@ export default function Parametro({parametro, etapaId, clickParametro}: Parametr
             return capture
         }
 
-        let $capture: string[]|number[] = Array.isArray(capture) ? capture : []
+        let $capture: (number | string)[] = Array.isArray(capture) ? capture : []
 
         if (parametro.captura?.type==='array') {
-            console.log(isArray ? applyFormatDateShort($capture).join(',')  : formatDateShort(capture.toString()) )    
+            console.log(isArray ? format.applyFormatDateShort($capture).join(',')  : formatDateShort(capture.toString()) )    
         }
 
         if (['CantidadNumerica', 'CantidadEntera'].includes(parametro.accion!)) {
-            return isArray ? applyFormatNumeric($capture).join('\t') : formatNumeric(+capture) 
+            return isArray ? format.applyFormatNumeric($capture).join('\t') : formatNumeric(+capture) 
         }   
 
         if (['Moneda'].includes(parametro.accion!)) {
-            return isArray ? applyFormatCurrency($capture).join('\t')  : formatCurrency(+capture)
+            return isArray ? format.applyFormatCurrency($capture).join('\t')  : formatCurrency(+capture)
         }
 
         if (['Fecha'].includes(parametro.accion!)) {
-            return isArray ? applyFormatDateShort($capture).join(',\t')  : formatDateShort(capture.toString())           
+            return isArray ? format.applyFormatDateShort($capture).join(',\t')  : formatDateShort(capture.toString())           
         }
 
         return capture
@@ -94,29 +75,75 @@ export default function Parametro({parametro, etapaId, clickParametro}: Parametr
             return 'text-bg-warning'
         }
 
-        if (capture==='No' && parametro.accion === 'Afirmacion') {
+        if (capture==='NO' && parametro.accion === 'Afirmacion') {
             return 'text-bg-danger'
         }
 
         return 'text-bg-success'
     }, [capture])
+
+    const getCapture = (): string|number|(number | string)[] => capture
+
+    const updateCapture = (value: string, index:number) => {
+        //console.log(value)
+
+        let $capture: (number | string)[]= Array.isArray(capture) ? capture : []
+
+        if (capture && !Array.isArray(capture)) {
+            $capture = [(inputType === 'number' && capture !== 'N/A') ? +capture : capture]
+        }
+
+        state.updateValueInput(value, index, inputType)
+
+        if (parametro.multipleCap === 1) {
+            let dato = (inputType === 'number' && value && value !== 'N/A') ? +value : value 
+            
+            index < $capture.length
+            ? setCaptura($capture.map(($value:string|number, $index: number) => $index===index ? dato : $value))
+            : setCaptura([...$capture, dato]);
+
+            (index === $capture.length - 1)
+            ? state.setDisabledBtnAdd(inputType === 'number' ? !isNumeric(value) : value.trim() === '')
+            : undefined
+
+             return
+        }
+
+        setCaptura((inputType === 'number' && value && value !== 'N/A') ? +value : value)
+    }
         
-    const finish = () => {
+    const finish = () => {console.log(getCapture())
         let value = capture || ''
-        value = inputType === 'number' && value ? +value : value
-        updateCapturaEtapa(etapaId, parametro.id, {value: inputType !== 'number' ? capture : +capture, type: inputType} as ValueCapture);
+
+        if (!isArray) {
+            value = (inputType === 'number' && value && value !== 'N/A') ? +value : value
+            updateCapturaEtapa(
+                etapaId, parametro.id,
+                {value, type: (value === 'N/A' || inputType === 'text') ? 'string' : inputType} as ValueCapture
+            )
+        }
+
+        isArray ? updateCapturaEtapa(etapaId, parametro.id, {value: capture, type: 'array'} as ValueCapture) : undefined
+        
         finishCapture(etapaId, parametro.id)
     }
+    
+    const clickRemoveInput = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        if (state.inputCapture.length > 1) {
+            Array.isArray(capture) 
+            ? (state.inputCapture.length === capture.length ? setCaptura(capture.filter((value, index) => index !== (capture.length - 1))) : undefined)
+            : undefined
 
-    const handlerKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            finish()
+            state.setInputCapture( state.inputCapture.filter((input, index) => index !== (state.inputCapture.length - 1)) )
         }
     }
 
-    const changeInputCapture = (e: ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault()      
-        setCaptura(e.target.value)
+    const clickAddInput = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        const inputCapture = [...state.inputCapture, {inputType: inputType, value: ''}]
+        state.setDisabledBtnAdd(true)
+        state.setInputCapture(inputCapture)
     }
 
     const clickFinishCapture = (e: MouseEvent<HTMLButtonElement>) => {
@@ -130,10 +157,32 @@ export default function Parametro({parametro, etapaId, clickParametro}: Parametr
         showModal()
     }
 
-    const selectOption = (e: ChangeEvent<HTMLInputElement>) =>{ 
+    const selectOption = (e: ChangeEvent<HTMLInputElement>) =>{ console.log(e.target?.value.toString())
         setCaptura(e.target?.value.toString())
-        finish()
+        state.setInputCapture([])
+        //finish()
+        updateCapturaEtapa(etapaId, parametro.id, {value: e.target?.value.toString(), type: 'string'} as ValueCapture)        
+        finishCapture(etapaId, parametro.id)
     }
+
+    useEffect(() => {
+        let $capture: (number | string)[] = Array.isArray(capture) ? capture : []
+
+        if (capture && !Array.isArray(capture)) {
+            $capture = [capture.toString()]
+        }
+
+        state.setInputCapture(state.getValuesInput($capture, inputType))
+
+        if (isArray) {
+            $capture.length > 0 ? state.setDisabledBtnAdd(inputType === 'number' ? !isNumeric($capture[$capture.length - 1].toString()) : $capture[$capture.length - 1].toString().trim() === '') : undefined
+        }
+
+        if ($capture.length == 0) {
+            state.setInputCapture([...state.inputCapture, {inputType: inputType, value: ''}])
+        }
+
+    }, [])
 
   return (
     <>
@@ -156,19 +205,33 @@ export default function Parametro({parametro, etapaId, clickParametro}: Parametr
             )}
         </div>
         {showInputCapture && (
-            <>
-            <div className="d-inline-flex">
-                <input type={inputType} className='form-control' value={capture.toString()} autoFocus onChange={changeInputCapture} onKeyDown={handlerKeyDown} />
-                <button className='btn btn-success btn-xs ms-1' onClick={clickFinishCapture}>Aceptar</button>
+            <div className='ps-3 bg-light'>
+            <div className="d-inline-flex align-items-end">
+                <div className='input-capture'>
+                    {state.inputCapture && state.inputCapture.map(($capture, index) => <InputCapture inputType={$capture.inputType} value={$capture.value} index={index} update={updateCapture} endCapture={finish} key={`input-capt-${index}`} />)}
+                </div>
+                {
+                    capture !== 'N/A' && (
+                        <button className='btn btn-success btn-xs ms-1 mb-1' onClick={clickFinishCapture}>Aceptar</button>
+                    )
+                }
+                {
+                    showBtnAction && (<>
+                    <button className={`btn btn-primary btn-xs ms-1 mb-1 ${state.disabledBtnAdd ? 'disabled' : '' }`} onClick={clickAddInput}><i className="fas fa-plus"></i></button>
+                    <button className={`btn btn-danger btn-xs ms-1 mb-1 ${state.inputCapture.length > 1 ? '' : 'd-none'}`} onClick={clickRemoveInput}><i className="fas fa-minus"></i></button>
+                    </>)
+                }
+                
             </div>            
             <div className="form-check text-start">
                 <input className="form-check-input" type="checkbox" name="afirmacion" id="afirmaNA"  value={'N/A'} checked={capture==='N/A'} onChange={selectOption}/>
                 <label className="form-check-label pt-1 fw-semibold" htmlFor="afirmaNA">
                     NO APLICA
                 </label>
-            </div>            
-            </>
-        )}
+            </div>  
+            {JSON.stringify(state.inputCapture)}                  
+            </div>
+        )}            
     </>
   )
 }

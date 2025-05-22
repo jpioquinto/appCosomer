@@ -1,9 +1,6 @@
-import React, { MouseEvent, ChangeEvent, type JSX } from 'react';
+import React, { MouseEvent } from 'react';
 
-import type { Parametros as TypeParametros, Parametro as TypeParametro, Etapa as TypeEtapa } from '../../../../types/conflicto'
-import { useSeguimiento } from '../../../../hooks/useSeguimiento'
-import { makeHash } from '../../../../utils'
-import Parametro from './Parametro'
+import type { Parametro as TypeParametro, Etapa as TypeEtapa } from '../../../../types/conflicto'
 import Parametros from './Parametros';
 
 type EtapaProps = {
@@ -30,7 +27,7 @@ export default function Etapa({etapa, posicion, clickElement, clickParametro}: E
         <div id={`etapa-${etapa.id}`} className={`accordion-collapse ${etapa.collapse}`}>
             <div className="accordion-body">
                 <div className="alert alert-success" role="alert">
-                    {etapa.capturas && <Parametros params={etapa.capturas} etapaId={etapa.id} clickParametro={clickParametro} key={`listado-params-${etapa.id}`} />}
+                    {etapa.capturas && <Parametros params={etapa.capturas} etapaId={etapa.id} clickParametro={clickParametro} key={`stage-params-${etapa.id}`} />}
                 </div>
             </div>
         </div>

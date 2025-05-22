@@ -25,11 +25,12 @@ export default function Seguimiento() {
         /*if (!parametro?.captura && parametro?.requiereDoc !== 1) {
             updateCapturaEtapa(etapaId, parametro.id, {value:true, type:'boolean'} as ValueCapture);
             return;
-        }
-
-        if (!parametro?.captura) {
-            updateCapturaEtapa(etapaId, parametro.id, {value:true, type:'boolean'} as ValueCapture);            
         }*/
+
+        if (!parametro?.captura) {console.log('...aún no capturado...')
+            //updateCapturaEtapa(etapaId, parametro.id, {value:true, type:'boolean'} as ValueCapture);            
+            initCapture(etapaId, parametro.id);
+        }
 
         MySwal.fire({
             title:"Elija una opción",

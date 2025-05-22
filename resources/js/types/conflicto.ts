@@ -44,3 +44,8 @@ export type FilterReport = {
     estatus?:string,
     texto?:string
 }
+
+export type InputType = {
+    inputType: string,
+    value:string|number,    
+}
