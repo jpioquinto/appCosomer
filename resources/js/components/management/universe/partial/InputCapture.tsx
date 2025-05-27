@@ -1,5 +1,6 @@
 import React, {useState, ChangeEvent, KeyboardEvent} from 'react'
 import type { InputType } from '../../../../types/conflicto'
+
 type InputProps = InputType & {
     index:number,
     endCapture:() => void,

@@ -1,9 +1,9 @@
 import React, {MouseEvent, ChangeEvent, useState, useEffect} from 'react'
 
-import { Parametro, TypeSelectedFile } from '../../../../types/conflicto'
 import { useSeguimiento } from '../../../../hooks/useSeguimiento'
 import useReadFiles from '../../../../hooks/useReadFiles'
-import { notificacion, clone, makeHash } from '../../../../utils'
+import { Parametro } from '../../../../types/conflicto'
+import { notificacion } from '../../../../utils'
 
 type CaptureProps = {
     parametro: Parametro
@@ -29,7 +29,7 @@ export default function InfoCaptura({parametro}: CaptureProps) {
 
     const clickEditar = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        if (parametro.accion !== 'Afirmacion') {
+        if (!['Afirmacion', 'Superficie', 'SelectCapture'].includes(parametro.accion!)) {
             cerrarModal();
         }
         

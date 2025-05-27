@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Catalog\{Vertiente, Unidad, Regimen, Organizacion, Estatus};
+use App\Models\Catalog\{Vertiente, Unidad, Regimen, Organizacion, Estatus, Valuador};
 
 class CatalogoController extends Controller
 {
@@ -51,6 +51,15 @@ class CatalogoController extends Controller
             'solicitud'=>true,
             'message'=>'Listado de estatus.',            
             'listado'=>Estatus::where('estatus', 1)->get(),
+        ], 200);
+    }
+
+    public function listarValuadores()
+    {
+        return response([
+            'solicitud'=>true,
+            'message'=>'Listado de valuadores.',            
+            'listado'=>Valuador::where('estatus', 1)->get(),
         ], 200);
     }
 }

@@ -46,6 +46,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/perfil/listado-perfil', [\App\Http\Controllers\API\PerfilController::class, 'getPerfils']);    
     
     Route::get('/catalog/listado-organizaciones', [\App\Http\Controllers\API\CatalogoController::class, 'listarOrganizaciones']); 
+    Route::get('/catalog/listado-valuadores', [\App\Http\Controllers\API\CatalogoController::class, 'listarValuadores']); 
     Route::get('/catalog/listado-vertientes', [\App\Http\Controllers\API\CatalogoController::class, 'listarVertientes']); 
     Route::get('/catalog/listado-regimenes', [\App\Http\Controllers\API\CatalogoController::class, 'listarRegimenes']); 
     Route::get('/catalog/listado-unidades', [\App\Http\Controllers\API\CatalogoController::class, 'listarUnidades']); 

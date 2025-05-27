@@ -1,12 +1,11 @@
-import React, {useEffect, useMemo, StrictMode} from 'react'
+import React, {lazy, useEffect, useMemo} from 'react'
 
-import type { Etapa as TypeEtapa, Parametro, ValueCapture } from '../../../types/conflicto'
+import type { Etapa as TypeEtapa, Parametro } from '../../../types/conflicto'
 import { useConflictStore } from '../../../store/conflict/conflictStore'
 import { useSeguimiento } from '../../../hooks/useSeguimiento'
 import ModalEvidencia from '../procedure/ModalEvidencia'
-import { tienePermiso, makeHash } from '../../../utils'
 import { useModuloStore } from '../../../store/modulo'
-import InfoCaptura from './partial/InfoCaptura'
+import { tienePermiso } from '../../../utils'
 import type { Acciones } from '../../../types'
 import useModal from '../../../hooks/useModal'
 import Afirmacion from './partial/Afirmacion'
@@ -15,20 +14,18 @@ import Etapa from './partial/Etapa'
 export default function Seguimiento() {
     const {conflicto, etapas, captura, listStages, updateEtapa, updateCapturaEtapa, initCapture} = useConflictStore()
 
-    const {clickBtnGuardar, MySwal, reset} = useSeguimiento()
+    const {clickBtnGuardar, MySwal, reset, loadCatalog} = useSeguimiento()
 
     const modulo = useModuloStore(state => state.modulo)
 
     const {modal, closeModal} = useModal()
 
-    const accionAfirmacion = (parametro:Parametro, etapaId:TypeEtapa['id']) => {
-        /*if (!parametro?.captura && parametro?.requiereDoc !== 1) {
-            updateCapturaEtapa(etapaId, parametro.id, {value:true, type:'boolean'} as ValueCapture);
-            return;
-        }*/
+    const loadComponent = (component:string): React.ComponentType<any> => {
+        return lazy(() => import(`./partial/${component}`))
+    }
 
-        if (!parametro?.captura) {console.log('...aún no capturado...')
-            //updateCapturaEtapa(etapaId, parametro.id, {value:true, type:'boolean'} as ValueCapture);            
+    const accionAfirmacion = (parametro:Parametro, etapaId:TypeEtapa['id']) => {
+        if (!parametro?.captura) {                       
             initCapture(etapaId, parametro.id);
         }
 
@@ -49,25 +46,47 @@ export default function Seguimiento() {
             return;
         }
 
+        const CaptureComponent = loadComponent(parametro.accion==='Superficie' ? 'InputSuperficie' : 'InfoCaptura')
+
         MySwal.fire({
             title:"Información capturada",
             text: `¿Qué acción desea realizar?`,
             icon: "warning",
-            html:<InfoCaptura parametro={parametro}/>,
+            html:<CaptureComponent parametro={parametro}/>,
             showConfirmButton:false,
             allowOutsideClick:false,
             allowEscapeKey:false,
         });
     }
 
+    const accionSelect = (parametro:Parametro, etapaId:TypeEtapa['id']) => {
+        if (!parametro?.captura) {            
+            initCapture(etapaId, parametro.id);            
+        }
+
+        const CaptureComponent = loadComponent('SelectCapture')
+
+        MySwal.fire({
+            title:"Información capturada",
+            text: `¿Qué acción desea realizar?`,
+            icon: "warning",
+            html:<CaptureComponent parametro={parametro}/>,
+            showConfirmButton:false,
+            allowOutsideClick:false,
+            allowEscapeKey:true,
+        });
+    }
+
     const accionParametro = (parametro:Parametro, etapaId:TypeEtapa['id']) => {
         switch(parametro.accion) {
-            case 'Afirmacion':                 
-                //console.log(parametro)
+            case 'Afirmacion':                                 
                 accionAfirmacion(parametro, etapaId)              
             break;
-            case 'CantidadEntera': case 'CantidadNumerica': case 'Fecha': case 'Moneda':
+            case 'CantidadEntera': case 'CantidadNumerica': case 'Fecha': case 'Moneda': case 'Superficie':
                 accionInput(parametro, etapaId)
+            break;
+            case 'SelectCapture':
+                accionSelect(parametro, etapaId)
             break;
             default:break;
         }
@@ -87,6 +106,7 @@ export default function Seguimiento() {
 
     useEffect(() => {
         reset()
+        loadCatalog()
         listStages(conflicto.id)        
     }, [modulo])
 

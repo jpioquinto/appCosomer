@@ -24,7 +24,7 @@ export default function Parametro({parametro, etapaId, clickParametro}: Parametr
 
     const showIconDoc = useMemo(() => parametro?.captura?.docs ? parametro.captura.docs.length>0 : false, [parametro.captura?.docs])
     
-    const showCapture = useMemo(() => ['CantidadNumerica', 'CantidadEntera', 'Fecha', 'Moneda', 'Afirmacion', 'Texto'].includes(parametro.accion!) && parametro.captura, 
+    const showCapture = useMemo(() => ['CantidadNumerica', 'CantidadEntera', 'Fecha', 'Moneda', 'Afirmacion', 'Superficie', 'Texto', 'SelectCapture'].includes(parametro.accion!) && parametro.captura, 
                                 [parametro.captura])
     
     const showInputCapture = useMemo(() => ['CantidadNumerica', 'CantidadEntera', 'Fecha', 'Moneda', 'Texto'].includes(parametro.accion!) && parametro.capturando, 
@@ -44,7 +44,7 @@ export default function Parametro({parametro, etapaId, clickParametro}: Parametr
                             return tipo
                         } , [parametro.accion])
     
-    const captureFormat = useMemo(() => {//return capture
+    const captureFormat = useMemo(() => {
         if (capture === 'N/A' || !capture) {
             return capture
         }
@@ -82,8 +82,6 @@ export default function Parametro({parametro, etapaId, clickParametro}: Parametr
         return 'text-bg-success'
     }, [capture])
 
-    const getCapture = (): string|number|(number | string)[] => capture
-
     const updateCapture = (value: string, index:number) => {
         //console.log(value)
 
@@ -112,7 +110,7 @@ export default function Parametro({parametro, etapaId, clickParametro}: Parametr
         setCaptura((inputType === 'number' && value && value !== 'N/A') ? +value : value)
     }
         
-    const finish = () => {console.log(getCapture())
+    const finish = () => {
         let value = capture || ''
 
         if (!isArray) {
@@ -229,7 +227,7 @@ export default function Parametro({parametro, etapaId, clickParametro}: Parametr
                     NO APLICA
                 </label>
             </div>  
-            {JSON.stringify(state.inputCapture)}                  
+                <span className='d-none'>{JSON.stringify(state.inputCapture)}</span>                
             </div>
         )}            
     </>

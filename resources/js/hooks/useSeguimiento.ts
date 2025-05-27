@@ -5,10 +5,11 @@ import { useConflictStore } from "../store/conflict/conflictStore";
 import { saveStage, uploadDoc } from '../services/ConflictoService';
 import { useFileStore } from '../store/conflict/fileStore';
 import { useConfigStore } from '../store/config';
+import { useConflicto } from './useConflicto';
 import { notificacion } from '../utils';
 
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import { useModalStore } from '../store/modal';
 
 const MySwal = withReactContent(Swal)
@@ -23,6 +24,12 @@ export function useSeguimiento() {
     const {keyModal, setKeyModal} = useModalStore();
 
     const cerrarModal = () => MySwal.close();
+
+    const {catalog} = useConflicto();
+
+    const loadCatalog = () => {        
+        catalog.getValuadores().length == 0 ? catalog.listValuadores() : undefined
+    }
 
     const reset = () => {
         resetUpload({}); resetCaptura({}); setLoadTotal(0); setCancel(0); setTotal(0);
@@ -97,6 +104,7 @@ export function useSeguimiento() {
         setKeyModal,
         cerrarModal,
         initCapture,
+        loadCatalog,
         reset,
         keyModal,
         MySwal

@@ -49,3 +49,9 @@ export type InputType = {
     inputType: string,
     value:string|number,    
 }
+
+export type Superficie = {
+    ha:number,
+    a:number,
+    ca:number
+}

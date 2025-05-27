@@ -48,11 +48,12 @@ const formats = [
 ]
 
 export function useConflicto() {
-    const {getVertientes, getRegimenes, getEstatus, getOrganizaciones, 
-            listVertientes, listRegimenes, listEstatus, listOrganizaciones} = useCatalogStore();
+    const {getVertientes, getRegimenes, getEstatus, getOrganizaciones, getValuadores,
+            listVertientes, listRegimenes, listEstatus, listOrganizaciones, listValuadores} = useCatalogStore();
     return {
         catalog: {
-            getVertientes, getRegimenes, getEstatus, getOrganizaciones,listVertientes, listRegimenes, listEstatus, listOrganizaciones 
+            getVertientes, getRegimenes, getEstatus, getOrganizaciones, getValuadores, listVertientes, listRegimenes, 
+            listEstatus, listOrganizaciones, listValuadores 
         },
         form: {
             schema            

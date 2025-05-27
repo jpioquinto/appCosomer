@@ -75,3 +75,18 @@ export async function listadoEstatus() {
         return []      
     } 
 }
+
+export async function listadoValuadores() {
+    try {
+        const response =  await $axios.get('/api/catalog/listado-valuadores');  
+        if (response.status==200) {
+            const result = OrganizacionesSchema.safeParse(response.data?.listado);
+            
+            return result.success ? result.data : []
+        }   
+        
+        return []
+    } catch(error) {
+        return []      
+    } 
+}

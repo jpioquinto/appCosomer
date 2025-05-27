@@ -1,12 +1,28 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 
+import type { InputType, Superficie, ValueCapture } from "../types/conflicto"
 import { formatNumeric, formatCurrency, formatDateShort } from "../utils"
-import type { InputType } from "../types/conflicto"
+import { useConflicto } from "./useConflicto"
+import type { Option } from "../types"
+import { isNumeric } from "../utils"
 
 export function useCapture() {
+    const [optionsValuadores, setOptionsValuadores] = useState<Option[]>([])
+
     const [inputCapture, setInputCapture] = useState<InputType[]>([])
     
     const [disabledBtnAdd, setDisabledBtnAdd] = useState<boolean>(false)
+
+    const {catalog} = useConflicto()
+
+    const generateOptionsValuadores = () => {
+        let $options: Option[] = []
+        catalog.getValuadores().forEach((value) => {
+            $options.push({value: value.acronimo, label: value.acronimo!})
+        })
+
+        return $options
+    }
 
     const updateValueInput = (value: string, index:number, inputType:string = 'text') => {
         const updateInput = inputCapture.map(($value:InputType, $index: number) => {
@@ -50,9 +66,31 @@ export function useCapture() {
 
         return listado
     }
+
+    const initSuperficie = (capture: string[]): Superficie => {
+        return {
+            ha:capture[0] ? +capture[0] : 0,
+            a:capture[1]  ? +capture[1] : 0,
+            ca:capture[2] ? +capture[2] : 0
+        }        
+    }
+
+    const initValueCapture = (value: string|number|undefined): string|number|undefined => {
+        if (!value) {
+            return;
+        }
+
+        return isNumeric(value.toString()) ? +value : value.toString()
+    }
+
+    
+    useEffect(() => {
+        setOptionsValuadores(generateOptionsValuadores())
+    }, [])
     
     return {        
+        options:{optionsValuadores},
         format: {applyFormatNumeric, applyFormatCurrency, applyFormatDateShort},
-        state:{inputCapture, setInputCapture, disabledBtnAdd, setDisabledBtnAdd, updateValueInput, getValuesInput}
+        state:{inputCapture, setInputCapture, disabledBtnAdd, setDisabledBtnAdd, updateValueInput, getValuesInput, initSuperficie, initValueCapture}
     }
 }

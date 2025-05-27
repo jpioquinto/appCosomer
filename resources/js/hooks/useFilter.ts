@@ -114,11 +114,11 @@ export function useFilter() {
     const selectEnty = (newValue: MultiValue<TypeOption>, actionMeta: ActionMeta<TypeOption>) => {//console.log(actionMeta)        
         switch(actionMeta.action) {
             case 'select-option':
-                listMunpios(actionMeta.option?.value!)     
-                !entySelected.includes(actionMeta.option?.value!) ? setEntySelected([...entySelected, actionMeta.option?.value!]) : undefined           
+                listMunpios(+actionMeta.option?.value!)     
+                !entySelected.includes(+actionMeta.option?.value!) ? setEntySelected([...entySelected, +actionMeta.option?.value!]) : undefined           
             break
             case 'remove-value':
-                removeMunpios(actionMeta.removedValue.value)
+                removeMunpios(+actionMeta.removedValue.value)
                 setEntySelected([...entySelected.filter(enty => enty !== actionMeta.removedValue.value)])
             break
             default:break
@@ -140,7 +140,7 @@ export function useFilter() {
     const selectSlope = (newValue: MultiValue<TypeOption>, actionMeta: ActionMeta<TypeOption>) => {
         switch(actionMeta.action) {
             case 'select-option':                    
-                !slopeSelected.includes(actionMeta.option?.value!) ? setSlopeSelected([...slopeSelected, actionMeta.option?.value!]) : undefined           
+                !slopeSelected.includes(+actionMeta.option?.value!) ? setSlopeSelected([...slopeSelected, +actionMeta.option?.value!]) : undefined           
             break
             case 'remove-value':                
                 setSlopeSelected([...slopeSelected.filter(slope => slope !== actionMeta.removedValue.value)])
@@ -152,7 +152,7 @@ export function useFilter() {
     const selectStatus = (newValue: MultiValue<TypeOption>, actionMeta: ActionMeta<TypeOption>) => {
         switch(actionMeta.action) {
             case 'select-option':                    
-                !statusSelected.includes(actionMeta.option?.value!) ? setStatusSelected([...statusSelected, actionMeta.option?.value!]) : undefined           
+                !statusSelected.includes(+actionMeta.option?.value!) ? setStatusSelected([...statusSelected, +actionMeta.option?.value!]) : undefined           
             break
             case 'remove-value':                
                 setStatusSelected([...statusSelected.filter(status => status !== actionMeta.removedValue.value)])
