@@ -100,7 +100,7 @@ export default function TablaAsuntos({conflictos, seguimiento}: ConflictsProps) 
         <thead>
             <tr>
                 <th className="text-center">Folio</th>
-                <th className="text-center">Rubro</th>
+                <th className="text-center">Tipo Asunto</th>
                 <th className="text-center">Ejercicio Fiscal</th>
                 <th className="text-center">Asunto</th>
                 <th className="text-center">Entidad</th>

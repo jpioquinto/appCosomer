@@ -11,8 +11,8 @@ import Perfil from './components/profile/Perfil.tsx'
 import EditarPerfil from './components/users/EditarPerfil.tsx'
 import UR from './components/urs/UR.tsx'
 
-const Historico = lazy(() => import('./components/management/universe/Universe.tsx'))
-const Tramite = lazy(() => import('./components/management/procedure/Tramite.tsx')) 
+const Universe = lazy(() => import('./components/management/universe/Universe'))
+const Tramite = lazy(() => import('./components/management/concluded/Tramite')) 
 import Seguimiento from './components/management/universe/Seguimiento.tsx'
 import MarcoJuridico from './components/management/legal/MarcoJuridico.tsx'
 import Solicitud from './components/management/request/Solicitud.tsx'
@@ -38,7 +38,7 @@ export default function AppRouter() {
                     <Route path='/urs' element={<UR />} />                    
                     <Route path='/control-de-gestion' element={<Solicitud />} />                    
                     <Route path='/marco-juridico' element={<MarcoJuridico />} />                    
-                    <Route path='/historico' element={<Suspense fallback={<Loading />}><Historico /></Suspense>} />                    
+                    <Route path='/historico' element={<Suspense fallback={<Loading />}><Universe /></Suspense>} />                    
                     <Route path='/registro' element={<Registro />} />                    
                     <Route path='/asuntos-concluidos' element={<Suspense fallback={<Loading />}><Tramite /></Suspense>} />                    
                     <Route path='/seguimiento/asunto' element={<Seguimiento />} />                    

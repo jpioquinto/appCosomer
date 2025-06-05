@@ -1,11 +1,12 @@
 import { create } from 'zustand'
-import { Registro, Registros, EstatusParam, Etapas, Etapa, Parametro, ValueCapture } from '../../types/conflicto'
+import { Registro, Registros, EstatusParam, Etapas, Etapa, Parametro, ValueCapture, FilterReport } from '../../types/conflicto'
 import { listadoConflictos, listadoEtapas } from '../../services/ConflictoService'
 import { makeHash } from '../../utils'
 import { Option } from '../../types'
 
 type ConflictState = {
     conflictos:Registros,
+    completed:Registros,
     conflicto:Registro,
     estatus:Option,
     keyTable:string,
@@ -24,7 +25,8 @@ type ConflictState = {
     updateCaptura:(captura:object) => void,
     addConflicto:(conflicto: Registro) => void,
     deleteConflicto:(id: Registro['id']) => void,
-    listConflicts:(estatus?: Array<number> | undefined) => Promise<void>,
+    listConflicts:(data?: FilterReport) => Promise<void>,
+    listConflictsCompleted:(data?: FilterReport) => Promise<void>,
     listStages:(id: Registro['id']) => Promise<void>,
     updateStatusConflicto:(data: EstatusParam) => void,
     setKeyTable:(keyTable:string) => void,
@@ -39,6 +41,7 @@ type ConflictState = {
 
 export const useConflictStore = create<ConflictState>((set, get) => ({
     conflictos:[],
+    completed:[],
     conflicto:{} as Registro,
     parametro:{} as Parametro,
     estatus:{value:0, label:''},
@@ -57,10 +60,16 @@ export const useConflictStore = create<ConflictState>((set, get) => ({
         const captura = {...get().captura, ...$captura}
         set({captura})
     },
-    listConflicts: async (estatus) => {
-        const conflictos = await listadoConflictos(estatus)
+    listConflicts: async (data) => {
+        const conflictos = await listadoConflictos(data)
         set({
             conflictos
+        })
+    },
+    listConflictsCompleted: async (data) => {
+        const completed = await listadoConflictos(data)
+        set({
+            completed
         })
     },
     listStages: async (id) => {
@@ -85,7 +94,7 @@ export const useConflictStore = create<ConflictState>((set, get) => ({
     updateStatusConflicto: (data) => {
         const conflictos = get().conflictos.map(conflicto => {
             if (conflicto.id === data.id) {
-                conflicto.estatusId   = data.estatus.value
+                conflicto.estatusId   = +data.estatus.value
                 conflicto.descEstatus = data.estatus.label
             }
             return conflicto
@@ -145,7 +154,8 @@ export const useConflictStore = create<ConflictState>((set, get) => ({
             if (etapa.id === etapaId) {
                 etapa.capturas?.map(captura => {
                     if (captura.id === paramId) {
-                        captura.captura  = $captura
+                        $captura = (captura.captura && captura.captura?.id) ? {...$captura, id:captura.captura?.id} : $captura
+                        captura.captura  = captura.captura ? {...captura.captura, ...$captura} : $captura
                         captura.keyParam = `param-${captura.id}` + makeHash(5) 
                     }
                     return captura

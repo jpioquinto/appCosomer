@@ -30,7 +30,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::post('/conflict/report/excel', [\App\Http\Controllers\API\ReporteController::class, 'download']); 
     Route::post('/conflict/report/listado-conflictos', [\App\Http\Controllers\API\ReporteController::class, 'getConflicts']); 
-    Route::get('/conflict/listado-conflictos/{estatus?}', [\App\Http\Controllers\API\ConflictoController::class, 'getConflictos']); 
+    Route::post('/conflict/listado-conflictos', [\App\Http\Controllers\API\ConflictoController::class, 'getConflicts']); 
     Route::post('/conflict/delete-conflicto', [\App\Http\Controllers\API\ConflictoController::class, 'deleteConflicto']); 
     Route::get('/conflict/listado-etapas/{conflictoId}', [\App\Http\Controllers\API\SeguimientoController::class, 'listarEtapas']);
     Route::post('/conflict/change-estatus', [\App\Http\Controllers\API\ConflictoController::class, 'changeStatus']); 

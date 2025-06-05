@@ -234,7 +234,7 @@ export default function ModalUR({propModal, close}: Modaltype) {
                                     <Select 
                                         placeholder='Seleccione...'
                                         options={optionsMunpios} 
-                                        menuPortalTarget={document.querySelector('.swal2-container')}
+                                        menuPortalTarget={document.body}
                                         styles={{
                                             menuPortal: base => ({ ...base, zIndex: 9999 }),
                                             control: (baseStyles, state) => ({

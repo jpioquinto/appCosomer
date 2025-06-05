@@ -10,9 +10,9 @@ import { notificacion } from '../utils'
 export function useReport() {
     const {conflicts, keyTable, url, setUrl, getUrl, getConflicts} = useReportStore()
 
-    const {listEdos, getEdos}     = useEdoStore()
-
     const {keyElement, setKeyElement, getParams} = useFilterStore()
+
+    const {edos, listEdos, getEdos} = useEdoStore()
 
     const {catalog} = useConflicto()
 
@@ -23,6 +23,8 @@ export function useReport() {
     }
 
     const isEmpty = useMemo(() => getConflicts().length == 0, [conflicts])
+
+    const loadedStates = useMemo(() => edos.length > 0, [edos])
 
     const generateLink = () => {
         const elem = document.getElementById("reportExcel");
@@ -57,5 +59,9 @@ export function useReport() {
         getReport()
     }
 
-    return {key: {keyTable, keyElement}, isEmpty, url, setKeyElement, loadCatalog, getConflicts, clickDescargar}
+    return {
+        key: {keyTable, keyElement}, 
+        catalog:{edos:getEdos(), vertientes:catalog.getVertientes(), status:catalog.getEstatus()},
+        isEmpty, url, setKeyElement, loadCatalog, getConflicts, clickDescargar
+    }
 }

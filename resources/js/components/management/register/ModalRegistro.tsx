@@ -1,7 +1,7 @@
 import React, {ChangeEvent, MouseEvent, useEffect, useState} from 'react'
 import type { Option, PropsModal } from '../../../types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 
 import ReactQuill from 'react-quill-new'
@@ -11,10 +11,10 @@ import Select from 'react-select'
 
 import { updateConflicto as updateConflictoService} from '../../../services/ConflictoService'
 import { useConflictStore } from '../../../store/conflict/conflictStore'
-import { DraftRegistro, Registro } from '../../../types/conflicto'
 import { RegistroSchema } from '../../../schema/conflicto-schema'
+import type { DraftFormConflicto } from '../../../types/form'
 import { useConflicto } from '../../../hooks/useConflicto'
-import { isInteger, notificacion } from '../../../utils'
+import { notificacion } from '../../../utils'
 import { useEdoStore } from '../../../store/edoStore'
 import ErrorForm from '../../partial/ErrorForm'
 import useModal from '../../../hooks/useModal'
@@ -26,10 +26,11 @@ type Modaltype = {
 }
 
 export default function ModalRegistro({propModal, close}: Modaltype) {
-    const [munpioId, setMunpioId] = useState<number>(0);
     const {currentMnpios, listEdos, getEdos, listMunpios} = useEdoStore();
     const {conflicto, updateConflicto, setKeyTable} = useConflictStore();
+    const [munpioId, setMunpioId] = useState<number>(0);
 
+    const [observaciones, setObservaciones] = useState<string>(conflicto ? conflicto.observaciones! : '');
     const [problematica, setProblematica] = useState<string>(conflicto ? conflicto.problematica! : '');
 
     const {catalog, form, config} = useConflicto();
@@ -38,7 +39,7 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
 
     const [optionsMunpios, setOptionsMunpios] = useState<Option[]>([]);
 
-    const [option, setOption] = useState<Option>({} as Option)
+    const [optionSelected, setOptionSelected] = useState<Option>({} as Option)
 
     type ValidationSchemaType = z.infer<typeof form.schema>
 
@@ -53,7 +54,7 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
 
     const selectedMunpio = (e) => {
         setMunpioId(e.value)
-        setOption(e)
+        setOptionSelected(e)
     }
 
      const processResult = response => {
@@ -64,7 +65,14 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
         }             
     }
 
-    const registerConflicto = async (data: DraftRegistro) => {
+    const initMunpio = (munpio: Option[]) => {
+        if (munpio.length == 0) {
+            return 
+        }
+        setOptionSelected(munpio[0])
+    }
+
+    const registerConflicto: SubmitHandler<DraftFormConflicto> = async (data) => {
         if (munpioId<=0) {
             notificacion("Seleccione el municipio ó alcaldía.", 'error');
             return;
@@ -76,7 +84,7 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
         }
         
         try {
-            data.munpioId = +munpioId;
+            data.munpioId = munpioId.toString();
             data.problematica = problematica;
             
             const result = await updateConflictoService({...data, id: conflicto.id})
@@ -105,41 +113,35 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
     useEffect(() => {
         let $options: Option[] = [];
         currentMnpios.forEach((municipio) => {
-            $options.push({value: municipio.id, label: municipio.municipio, sigla:undefined})
+            $options.push({value: municipio.id, label: municipio.municipio})
         })
 
-        setOptionsMunpios($options)        
+        setOptionsMunpios($options)   
+        initMunpio($options.filter($option => $option.value === munpioId))     
     } , [currentMnpios])
 
     useEffect(() => {
         let supConflicto = conflicto?.supconflicto ? conflicto.supconflicto.split('-') : [];
-        let supAtentida  = conflicto?.supatendida ? conflicto.supatendida.split('-')  : [];
-        
+                
         if (supConflicto.length> 0) {
             setValue('ha', +supConflicto[0]);
             setValue('area', +supConflicto[1]);
             setValue('ca', +supConflicto[2]);
         }
 
-        if (supAtentida.length> 0) {
-            setValue('haa', +supAtentida[0]);
-            setValue('areaa', +supAtentida[1]);
-            setValue('caa', +supAtentida[2]);
-        }
-
-        setValue('fecha', conflicto.fecha)
+        setValue('fecha', conflicto.fecha!)
         setValue('edoId', conflicto?.edoId ? conflicto.edoId.toString() : '')
         setValue('munpioId', conflicto?.munpioId ? conflicto.munpioId.toString() : '')
         setValue('vertienteId', conflicto?.vertienteId ? conflicto.vertienteId.toString() : '')
-        setValue('promovente', conflicto.promovente)
-        setValue('contraparte', conflicto.contraparte)
-        setValue('numBeneficiario', conflicto.numBeneficiario)
+        setValue('promovente', conflicto.promovente!)
+        setValue('contraparte', conflicto.contraparte!)
+        setValue('numBeneficiario', conflicto.numBeneficiario!)
         setValue('regSocialId', conflicto?.regSocialId ? conflicto.regSocialId.toString() : '')
         setValue('estatusId', conflicto?.estatusId ? conflicto.estatusId.toString() : '')
-        setValue('orgInvolucradaId', conflicto?.orgInvolucradaId ? conflicto.orgInvolucradaId.toString() : '')
-        setValue('sintEstatus', conflicto.sintEstatus)
+        setValue('orgInvolucradaId', conflicto?.orgInvolucradaId ? conflicto.orgInvolucradaId.toString() : '')        
         setValue('problematica', conflicto.problematica)
-        setProblematica(conflicto.problematica)
+        setProblematica(conflicto.problematica!)
+        setObservaciones(conflicto.observaciones!)
         setMunpioId(conflicto.munpioId)
         conflicto.edoId ? listMunpios(+conflicto.edoId) : undefined 
                 
@@ -196,7 +198,7 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
                                     <Select 
                                         placeholder='Seleccione...'
                                         options={optionsMunpios} 
-                                        menuPortalTarget={document.querySelector('.swal2-container')}
+                                        menuPortalTarget={document.body}
                                         styles={{
                                             menuPortal: base => ({ ...base, zIndex: 9999 }),
                                             control: (baseStyles, state) => ({
@@ -204,7 +206,8 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
                                                 textAlign: 'left',
                                             })
                                         }}                                                    
-                                        onChange={selectedMunpio}                                                    
+                                        onChange={selectedMunpio}
+                                        value={optionSelected}                                                    
                                     />
                                 </div>
                             </div>
@@ -228,7 +231,7 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
 
                             <div className='col-md-6'>
                                 <div className="form-group">
-                                    <label htmlFor="id-asunto" className='fw-bold'>Nombre del Asunto:</label>
+                                    <label htmlFor="id-asunto" className='fw-bold'>Asunto:</label>
                                     <input id="id-asunto" type="text" className={`form-control input-solid ${errors.asunto ? 'is-invalid' : ''}`} 
                                         {...register('asunto')}
                                     />
@@ -296,21 +299,18 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
 
                             <div className='col-md-6'>
                                 <div className="form-group">
-                                    <label htmlFor="id-super-atendida" className='fw-bold'>Superficie Atendida:</label>                                        
-                                    <div className='d-flex align-items-center'>
-                                        <input type='number' placeholder='Hectárea(s)' className={`form-control ${errors.haa ? 'is-invalid' : ''}`} {...register('haa')}/> - 
-                                        <input type='number' placeholder='Área(s)' className={`form-control ${errors.areaa ? 'is-invalid' : ''}`} {...register('areaa')}/> - 
-                                        <input type='text' placeholder='Centiárea(s)' className={`form-control ${errors.caa ? 'is-invalid' : ''}`} {...register('caa')}/>
-                                    </div>
-                                    {errors.haa && (                                    
-                                        <ErrorForm>{errors.haa?.message}</ErrorForm>
-                                    )}  
-                                    {errors.areaa && (                                    
-                                        <ErrorForm>{errors.areaa?.message}</ErrorForm>
-                                    )} 
-                                    {errors.caa && (                                    
-                                        <ErrorForm>{errors.caa?.message}</ErrorForm>
-                                    )} 
+                                    <label htmlFor="id-org-involucrada" className='fw-bold'>Organización Involucrada:</label>
+                                    <select id="id-org-involucrada"  className={`form-control input-solid ${errors.orgInvolucradaId ? 'is-invalid' : ''}`} 
+                                        {...register('orgInvolucradaId')}
+                                    >
+                                        <option value="">Seleccione...</option>
+                                        {catalog.getOrganizaciones().map(organizacion => (
+                                            <option value={organizacion.id} key={organizacion.id}>{organizacion.nombre}</option>
+                                        ))}
+                                    </select>
+                                    {errors.orgInvolucradaId && (                                    
+                                        <ErrorForm>{errors.orgInvolucradaId?.message}</ErrorForm>
+                                    )}
                                 </div>
                             </div>
 
@@ -369,18 +369,6 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
 
                             <div className='col-md-4'>
                                 <div className="form-group">
-                                    <label htmlFor="id-pueblo-indigena" className='fw-bold'>Pueblo Indigena:</label>
-                                    <input id="id-pueblo-indigena" type="text" className={`form-control input-solid ${errors.puebloIndigena ? 'is-invalid' : ''}`} 
-                                        {...register('puebloIndigena')}
-                                    />
-                                    {errors.puebloIndigena && (                                    
-                                        <ErrorForm>{errors.puebloIndigena?.message}</ErrorForm>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className='col-md-3'>
-                                <div className="form-group">
                                     <label htmlFor="id-estatus" className='fw-bold'>Estatus:</label>
                                     <select id="id-estatus"  className={`form-control input-solid ${errors.estatusId ? 'is-invalid' : ''}`} 
                                         {...register('estatusId')}
@@ -395,24 +383,19 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
                                     )}
                                 </div>
                             </div>
-                            
-                            <div className='col-md-3'>
+
+                            <div className='col-md-6'>
                                 <div className="form-group">
-                                    <label htmlFor="id-org-involucrada" className='fw-bold'>Organización Involucrada:</label>
-                                    <select id="id-org-involucrada"  className={`form-control input-solid ${errors.orgInvolucradaId ? 'is-invalid' : ''}`} 
-                                        {...register('orgInvolucradaId')}
-                                    >
-                                        <option value="">Seleccione...</option>
-                                        {catalog.getOrganizaciones().map(organizacion => (
-                                            <option value={organizacion.id} key={organizacion.id}>{organizacion.nombre}</option>
-                                        ))}
-                                    </select>
-                                    {errors.orgInvolucradaId && (                                    
-                                        <ErrorForm>{errors.orgInvolucradaId?.message}</ErrorForm>
+                                    <label htmlFor="id-pueblo-indigena" className='fw-bold'>Pueblo Indigena:</label>
+                                    <input id="id-pueblo-indigena" type="text" className={`form-control input-solid ${errors.puebloIndigena ? 'is-invalid' : ''}`} 
+                                        {...register('puebloIndigena')}
+                                    />
+                                    {errors.puebloIndigena && (                                    
+                                        <ErrorForm>{errors.puebloIndigena?.message}</ErrorForm>
                                     )}
                                 </div>
-                            </div>
-
+                            </div>                            
+                                                        
                             <div className='col-md-12'>
                                 <div className="form-group">
                                     <label htmlFor="id-problematica" className='fw-bold'>Problemática:</label>
@@ -428,15 +411,14 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
 
                             <div className='col-md-12'>
                                 <div className="form-group">
-                                    <label htmlFor="id-sintesis-estatus" className='fw-bold'>Sintésis de Atención:</label>
-                                    <textarea 
-                                        id="id-sintesis-estatus" className={`form-control input-solid ${errors.sintEstatus ? 'is-invalid' : ''}`} 
-                                        {...register('sintEstatus')}
-                                        rows={3}
+                                    <label htmlFor="id-sintesis-estatus" className='fw-bold'>Observaciones:</label>
+                                    <ReactQuill 
+                                        theme="snow" 
+                                        modules={config.modules}
+                                        formats={config.formats}
+                                        value={observaciones} 
+                                        onChange={setObservaciones}
                                     />
-                                    {errors.sintEstatus && (                                    
-                                        <ErrorForm>{errors.sintEstatus?.message}</ErrorForm>
-                                    )}
                                 </div>
                             </div>
                         </div>

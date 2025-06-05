@@ -22,18 +22,23 @@ export default function TablaReportes({conflicts}: ConflictsProps) {
     const table = useRef<DataTableRef>(null);
 
     const columns = [
-        { data: 'folio' },
+        { data: 'folio'},
         { data: 'vertAcronimo', className:'text-center'},
         { data: 'anioFiscal', className:'text-center'},
-        { data: 'asunto' },
-        { data: 'estado' },
-        { data: 'municipio' },
+        { data: 'asunto'},
+        { data: 'estado'},
+        { data: 'municipio'},
         { data: 'promovente'},
         { data: 'predio'},
-        { data: 'descEstatus' },
+        { data: 'descEstatus'},
         { data: 'supconflicto'},
         { data: 'supatendida'},
-        { data: 'id' },
+        { data: 'numBeneficiario'},
+        { data: 'regimen'},
+        { data: 'nombreRegSoc'},
+        { data: 'puebloIndigena'},
+        { data: 'problematica'},
+        { data: 'observaciones'},
       ];
 
   return (
@@ -57,7 +62,7 @@ export default function TablaReportes({conflicts}: ConflictsProps) {
         <thead>
             <tr>
                 <th className="text-center">Folio</th>
-                <th className="text-center">Rubro</th>
+                <th className="text-center">Tipo Asunto</th>
                 <th className="text-center">Ejercicio Fiscal</th>
                 <th className="text-center">Asunto</th>
                 <th className="text-center">Entidad</th>
@@ -67,7 +72,12 @@ export default function TablaReportes({conflicts}: ConflictsProps) {
                 <th className="text-center">Estatus</th>
                 <th className="text-center">Superficie Legal</th>
                 <th className="text-center">Superficie Medida</th>
-                <th className="text-center">Id</th>
+                <th className="text-center">Núm. Beneficiados</th>
+                <th className="text-center">Régimen Social</th>
+                <th className="text-center">Nombre Rég. Social</th>
+                <th className="text-center">Pueblo Indigena</th>
+                <th className="text-center">Problemática</th>
+                <th className="text-center">Observaciones</th>
             </tr>
         </thead>
     </DataTable>

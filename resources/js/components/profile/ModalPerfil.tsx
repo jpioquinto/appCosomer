@@ -8,9 +8,6 @@ import { usePerfilStore } from '../../store/perfil'
 import type { PropsModal } from '../../types'
 import ErrorForm from '../partial/ErrorForm'
 
-import 'react-checkbox-tree/lib/react-checkbox-tree.css';
-import CheckboxTree from 'react-checkbox-tree';
-
 
 type Modaltype = {
     propModal:PropsModal,
@@ -104,18 +101,6 @@ export default function ModalPerfil({propModal, close}: Modaltype) {
                                     <i className="fa flaticon-lock-1"></i> Permisos a Módulos
                                 </span><hr />
                                 <div id="jq_arbol_modulos"></div>
-                                <CheckboxTree
-                                    nodes={nodes}
-                                    checked={checked}
-                                    expanded={expanded}
-                                    onCheck={(checked) => setChecked(checked)}
-                                    onExpand={(expanded) => setExpanded(expanded)}
-                                    icons={{
-                                        expandClose:<span className="fas fa-caret-right" />,
-                                        expandOpen:<span className="fas fa-caret-down" />,
-                                        leaf: <span className="fas fa-wrench" />,
-                                    }}
-                                />
                             </div>
                         </div>                   
                     </div>

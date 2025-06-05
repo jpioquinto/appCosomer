@@ -20,7 +20,7 @@ export default function CambiarPerfil({options}: PerfilProps) {
       <Select 
         placeholder='Seleccione el perfil'
         options={options} 
-        menuPortalTarget={document.querySelector('.swal2-container')}
+        menuPortalTarget={document.body}
         styles={{
             menuPortal: base => ({ ...base, zIndex: 9999 }),
             control: (baseStyles, state) => ({

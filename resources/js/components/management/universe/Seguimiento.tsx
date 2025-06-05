@@ -3,7 +3,7 @@ import React, {lazy, useEffect, useMemo} from 'react'
 import type { Etapa as TypeEtapa, Parametro } from '../../../types/conflicto'
 import { useConflictStore } from '../../../store/conflict/conflictStore'
 import { useSeguimiento } from '../../../hooks/useSeguimiento'
-import ModalEvidencia from '../procedure/ModalEvidencia'
+import ModalEvidencia from '../concluded/ModalEvidencia'
 import { useModuloStore } from '../../../store/modulo'
 import { tienePermiso } from '../../../utils'
 import type { Acciones } from '../../../types'
@@ -21,7 +21,7 @@ export default function Seguimiento() {
     const {modal, closeModal} = useModal()
 
     const loadComponent = (component:string): React.ComponentType<any> => {
-        return lazy(() => import(`./partial/${component}`))
+        return lazy(() => import(`./partial/${component}.tsx`))
     }
 
     const accionAfirmacion = (parametro:Parametro, etapaId:TypeEtapa['id']) => {
@@ -121,7 +121,7 @@ export default function Seguimiento() {
                             <h3 className="text-white fw-bold mb-3 text-uppercase">NOMBRE DEL PREDIO: {conflicto.predio}</h3>
                             <h3 className="text-white fw-bold mb-3 text-uppercase">ESTATUS: {conflicto.descEstatus}</h3>
                         </div>
-                        <h6 className="text-white op-7 mb-2">{conflicto.observaciones}</h6>
+                        <h6 className="text-white op-7 mb-2">{conflicto.problematica}</h6>
                     </div>
                     <div className="ms-md-auto ps-3 py-2 py-md-0">
                         <a href="#" className="btn btn-secondary btn-round">Salir</a>

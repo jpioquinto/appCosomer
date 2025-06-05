@@ -4,6 +4,7 @@
 #Storage::disk('public')->deleteDirectory('Docs');
 
 ?>
+@use('Illuminate\Support\Facades\Vite')
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -13,23 +14,16 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
+        <link href='https://framework-gb.cdn.gob.mx/favicon.ico' rel='shortcut icon'>
+
         <title>{{ config('app.name', 'Programa de Atención de Conflictos Agrarios') }}</title>
 
         <!-- Fonts -->
-        
-
-        <!-- Styles -->
 
         @viteReactRefresh
-        @vite([
-            'resources/css/bootstrap.min.css', 
-            'resources/css/app/plugins.min.css', 
-            'resources/css/app/kaiadmin.creative.min.css',             
-            'resources/js/popper.min.js', 
-            'resources/js/bootstrap.min.js', 
-            'resources/css/app.css', 
-            'resources/js/app.js', 
-            'resources/js/main.tsx'])
+        @vite([           
+            'resources/js/app.js'            
+            ])
     </head>
     <body class="trendy-layout">
         <div id="app"></div>

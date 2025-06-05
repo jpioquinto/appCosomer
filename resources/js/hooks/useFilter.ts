@@ -33,15 +33,32 @@ export function useFilter() {
 
     const {catalog} = useConflicto() 
 
-    const {optionsMunpiosSelected, setParams, setOptionsMunpiosSelected, getOptionsMunpiosSelected} = useFilterStore()
+    const {
+        optionsMunpiosSelected, entySelected, slopeSelected, statusSelected, query, setQuery, setStatusSelected, 
+        setEntySelected, setSlopeSelected, setParams, setOptionsMunpiosSelected, getOptionsMunpiosSelected } = useFilterStore()
 
-    const [statusSelected, setStatusSelected] = useState<number[]>([])
+    const getFilters = (): FilterReport => {
+        let params = {} as FilterReport
 
-    const [slopeSelected, setSlopeSelected] = useState<number[]>([])    
+        (entySelected.length > 0  && getOptionsMunpiosSelected().length == 0)
+        ? params['entidades'] = entySelected.join(',') : undefined
 
-    const [entySelected, setEntySelected] = useState<number[]>([])
-    
-    const [query, setQuery] = useState<string>('')
+        getOptionsMunpiosSelected().length > 0
+        ? params['munpios'] = getValues(getOptionsMunpiosSelected()).join(',') : undefined
+
+        slopeSelected.length > 0
+        ? params['vertiente'] = slopeSelected.join(',') : undefined
+
+        value.length > 0
+        ? params['anio'] = getValues(value as OptionParent[]).join(',') : undefined
+
+        statusSelected.length > 0
+        ? params['estatus'] = statusSelected.join(',') : undefined
+
+        query.trim() != '' ? params['texto'] = query.trim() : undefined
+
+        return params
+    }
     
     const createOption = (label: string) => ({
         label,
@@ -168,30 +185,10 @@ export function useFilter() {
 
     const clickConsultar = (e: MouseEvent<HTMLElement>) => {
         e.preventDefault()
-
-        let params = {} as FilterReport
-
-        (entySelected.length > 0  && getOptionsMunpiosSelected().length == 0)
-        ? params['entidades'] = entySelected.join(',') : undefined
-
-        getOptionsMunpiosSelected().length > 0
-        ? params['munpios'] = getValues(getOptionsMunpiosSelected()).join(',') : undefined
-
-        slopeSelected.length > 0
-        ? params['vertiente'] = slopeSelected.join(',') : undefined
-
-        value.length > 0
-        ? params['anio'] = getValues(value as OptionParent[]).join(',') : undefined
-
-        statusSelected.length > 0
-        ? params['estatus'] = statusSelected.join(',') : undefined
-
-        query.trim() != '' ? params['texto'] = query.trim() : undefined
-
-        //console.log(params)
-        setParams(params)
+       
+        setParams(getFilters())
         
-        listConflicts(params)
+        listConflicts(getFilters())
     }
 
     useEffect(() => {
@@ -210,5 +207,6 @@ export function useFilter() {
         events: {selectEnty, selectMunpio, selectSlope, selectStatus, clickConsultar, changeInputCapture},
         yearConfig:{setInputValue, setValue, handleKeyDown, value, inputValue},
         data: {optionsMunpios},
+        getFilters
     }
 }

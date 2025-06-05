@@ -9,7 +9,7 @@ use Exception;
 
 class ConflictoController extends Controller
 {
-    public function getConflictos(Request $request)
+    public function getConflicts(Request $request)
     {
         try {            
             $conflicto = new ConflictoStore();                   
@@ -20,7 +20,7 @@ class ConflictoController extends Controller
         return response([
             'solicitud'=>true,
             'message'=>'Listado de conflictos.',            
-            'listado'=>$conflicto->getConflictos($request->estatus ? explode(',', $request->estatus) : []),
+            'listado'=>$conflicto->getConflictos($request->all()),
         ], 200);
     }
     

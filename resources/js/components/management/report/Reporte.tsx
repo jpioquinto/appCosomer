@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 
 import { makeHash, tienePermiso } from '../../../utils'
 import { useModuloStore } from '../../../store/modulo'
+import { useEdoStore } from '../../../store/edoStore'
 import { useReport } from '../../../hooks/useReport'
 import { useLocation } from 'react-router-dom'
 import type { Acciones } from '../../../types'
@@ -13,18 +14,21 @@ export default function Reporte() {
   
   const {modulo, setModulo} = useModuloStore()
 
-  const location = useLocation()
+  const {edos} = useEdoStore()
 
-  useEffect(() => {
-    loadCatalog()
-    setKeyElement(makeHash(6))
-  }, [])
+  const location = useLocation()
 
   useEffect(() => {    
     setModulo(location.state) 
     loadCatalog() 
-    setKeyElement(makeHash(6))  
+     
   }, [modulo])
+
+  useEffect(() => {
+    if (edos.length>0) {
+      setKeyElement(makeHash(6)) 
+    }
+  }, [edos])
 
   return (
     <>

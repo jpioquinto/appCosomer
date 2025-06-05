@@ -185,7 +185,7 @@ export default function EditarPerfil() {
                                                     placeholder='Seleccione...'
                                                     value={optionsMunpios.filter(({ value }) => value === contact.munpioId)}
                                                     options={optionsMunpios} 
-                                                    menuPortalTarget={document.querySelector('.swal2-container')}
+                                                    menuPortalTarget={document.body}
                                                     styles={{
                                                         menuPortal: base => ({ ...base, zIndex: 9999 }),
                                                         control: (baseStyles, state) => ({

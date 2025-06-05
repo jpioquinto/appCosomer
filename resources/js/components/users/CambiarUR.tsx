@@ -19,7 +19,7 @@ export default function CambiarUR({options}: URProps) {
       <Select 
         placeholder='Seleccione la Unidad Responsable'
         options={options} 
-        menuPortalTarget={document.querySelector('.swal2-container')}
+        menuPortalTarget={document.body}
         styles={{
             menuPortal: base => ({ ...base, zIndex: 9999 }),
             control: (baseStyles, state) => ({

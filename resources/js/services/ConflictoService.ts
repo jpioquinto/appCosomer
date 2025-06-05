@@ -1,10 +1,11 @@
-import type { DraftCaptura, DraftRegistro, Registro, EstatusParam, Parametro } from "../types/conflicto"
+import type { DraftCaptura, DraftRegistro, Registro, EstatusParam, Parametro, FilterReport } from "../types/conflicto"
 import { RegistrosSchema, Etapas, ResponseLoadFile } from "../schema/conflicto-schema"
+import type { DraftFormConflicto } from "../types/form"
 import $axios from '../utils/axios'
 
-export async function listadoConflictos(estatus: Array<number> | undefined) {
+export async function listadoConflictos(data?: FilterReport) {
     try {
-        const response =  await $axios.get('api/conflict/listado-conflictos' + (estatus ? '/' + estatus.join(',') : ''));          
+        const response =  await $axios.post('api/conflict/listado-conflictos', data);          
         if (response.data.solicitud) {
             const result = RegistrosSchema.safeParse(response.data?.listado);
             return result.success ? result.data : [];
@@ -26,7 +27,7 @@ export async function listadoEtapas(conflictoId: Registro['id']) {
     } 
 }
 
-export async function saveConflicto(data: DraftRegistro) {
+export async function saveConflicto(data: DraftFormConflicto) {
     try {
         const response =  await $axios.post('api/conflict/save', data);
         
@@ -36,7 +37,7 @@ export async function saveConflicto(data: DraftRegistro) {
     } 
 }
 
-export async function updateConflicto(data: Registro) {
+export async function updateConflicto(data: DraftFormConflicto) {
     try {
         const response =  await $axios.post('api/conflict/save', data);
         

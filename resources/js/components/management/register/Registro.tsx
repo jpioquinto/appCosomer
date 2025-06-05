@@ -1,12 +1,13 @@
 import React, {useState, useEffect, ChangeEvent} from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 
 import { saveConflicto } from '../../../services/ConflictoService';
+import type { DraftFormConflicto } from '../../../types/form';
 import { useConflicto } from '../../../hooks/useConflicto';
 import { DraftRegistro } from '../../../types/conflicto';
 import { notificacion, isInteger} from '../../../utils';
@@ -17,6 +18,7 @@ import Select from 'react-select';
 
 export default function Registro() {
     const {currentMnpios, listEdos, getEdos, listMunpios} = useEdoStore();
+    const [observaciones, setObservaciones] = useState<string>('');
     const [problematica, setProblematica] = useState<string>('');
     const [munpioId, setMunpioId] = useState<string>('');
     const {catalog, form, config} = useConflicto();
@@ -38,7 +40,7 @@ export default function Registro() {
         setMunpioId(e.value)
     }
 
-    const registerConflicto = async (data: DraftRegistro) => {
+    const registerConflicto:SubmitHandler<DraftFormConflicto>  = async (data) => {
         if (!isInteger(munpioId)) {
             notificacion("Seleccione el municipio ó alcaldía.", 'error');
             return;
@@ -48,17 +50,18 @@ export default function Registro() {
             notificacion("Capture la problemática de manera precisa y concisa.", 'error');
             return;
         }
-        
+
         try {
-            data.munpioId = +munpioId;
+            data.munpioId = munpioId;
             data.problematica = problematica;
+            problematica.trim() !== '' ? data.observaciones = observaciones : undefined;
             //console.log(data)
 
             const result = await saveConflicto(data);
             
             if (result?.solicitud) {
                 reset(); setProblematica(''); setMunpioId(''); setOptionsMunpios([]); selectedMunpio({label:'', value:0});
-                notificacion(result.message, 'success');
+                setObservaciones(''); notificacion(result.message, 'success');
             } else {
                 throw new Error(result?.response?.data?.message || result.message);
             }
@@ -138,7 +141,7 @@ export default function Registro() {
                                         <Select 
                                             placeholder='Seleccione...'
                                             options={optionsMunpios} 
-                                            menuPortalTarget={document.querySelector('.swal2-container')}
+                                            menuPortalTarget={document.body}
                                             styles={{
                                                 menuPortal: base => ({ ...base, zIndex: 9999 }),
                                                 control: (baseStyles, state) => ({
@@ -170,7 +173,7 @@ export default function Registro() {
 
                                 <div className='col-md-6'>
                                     <div className="form-group">
-                                        <label htmlFor="id-asunto" className='fw-bold'>Nombre del Asunto:</label>
+                                        <label htmlFor="id-asunto" className='fw-bold'>Asunto:</label>
                                         <input id="id-asunto" type="text" className={`form-control input-solid ${errors.asunto ? 'is-invalid' : ''}`} 
                                             {...register('asunto')}
                                         />
@@ -238,21 +241,18 @@ export default function Registro() {
 
                                 <div className='col-md-6'>
                                     <div className="form-group">
-                                        <label htmlFor="id-super-atendida" className='fw-bold'>Superficie Atendida:</label>                                        
-                                        <div className='d-flex align-items-center'>
-                                            <input type='number' placeholder='Hectárea(s)' className={`form-control ${errors.haa ? 'is-invalid' : ''}`} {...register('haa')}/> - 
-                                            <input type='number' placeholder='Área(s)' className={`form-control ${errors.areaa ? 'is-invalid' : ''}`} {...register('areaa')}/> - 
-                                            <input type='text' placeholder='Centiárea(s)' className={`form-control ${errors.caa ? 'is-invalid' : ''}`} {...register('caa')}/>
-                                        </div>
-                                        {errors.haa && (                                    
-                                            <ErrorForm>{errors.haa?.message}</ErrorForm>
-                                        )}  
-                                        {errors.areaa && (                                    
-                                            <ErrorForm>{errors.areaa?.message}</ErrorForm>
-                                        )} 
-                                        {errors.caa && (                                    
-                                            <ErrorForm>{errors.caa?.message}</ErrorForm>
-                                        )} 
+                                        <label htmlFor="id-org-involucrada" className='fw-bold'>Organización Involucrada:</label>
+                                        <select id="id-org-involucrada"  className={`form-control input-solid ${errors.orgInvolucradaId ? 'is-invalid' : ''}`} 
+                                            {...register('orgInvolucradaId')}
+                                        >
+                                            <option value="">Seleccione...</option>
+                                            {catalog.getOrganizaciones().map(organizacion => (
+                                                <option value={organizacion.id} key={organizacion.id}>{organizacion.nombre}</option>
+                                            ))}
+                                        </select>
+                                        {errors.orgInvolucradaId && (                                    
+                                            <ErrorForm>{errors.orgInvolucradaId?.message}</ErrorForm>
+                                        )}
                                     </div>
                                 </div>
 
@@ -307,21 +307,9 @@ export default function Registro() {
                                             <ErrorForm>{errors.anioFiscal?.message}</ErrorForm>
                                         )}
                                     </div>
-                                </div>
+                                </div>                                
 
                                 <div className='col-md-4'>
-                                    <div className="form-group">
-                                        <label htmlFor="id-pueblo-indigena" className='fw-bold'>Pueblo Indigena:</label>
-                                        <input id="id-pueblo-indigena" type="text" className={`form-control input-solid ${errors.puebloIndigena ? 'is-invalid' : ''}`} 
-                                            {...register('puebloIndigena')}
-                                        />
-                                        {errors.puebloIndigena && (                                    
-                                            <ErrorForm>{errors.puebloIndigena?.message}</ErrorForm>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div className='col-md-3'>
                                     <div className="form-group">
                                         <label htmlFor="id-estatus" className='fw-bold'>Estatus:</label>
                                         <select id="id-estatus"  className={`form-control input-solid ${errors.estatusId ? 'is-invalid' : ''}`} 
@@ -337,23 +325,18 @@ export default function Registro() {
                                         )}
                                     </div>
                                 </div>
-                                
-                                <div className='col-md-3'>
+
+                                <div className='col-md-6'>
                                     <div className="form-group">
-                                        <label htmlFor="id-org-involucrada" className='fw-bold'>Organización Involucrada:</label>
-                                        <select id="id-org-involucrada"  className={`form-control input-solid ${errors.orgInvolucradaId ? 'is-invalid' : ''}`} 
-                                            {...register('orgInvolucradaId')}
-                                        >
-                                            <option value="">Seleccione...</option>
-                                            {catalog.getOrganizaciones().map(organizacion => (
-                                                <option value={organizacion.id} key={organizacion.id}>{organizacion.nombre}</option>
-                                            ))}
-                                        </select>
-                                        {errors.orgInvolucradaId && (                                    
-                                            <ErrorForm>{errors.orgInvolucradaId?.message}</ErrorForm>
+                                        <label htmlFor="id-pueblo-indigena" className='fw-bold'>Pueblo Indigena:</label>
+                                        <input id="id-pueblo-indigena" type="text" className={`form-control input-solid ${errors.puebloIndigena ? 'is-invalid' : ''}`} 
+                                            {...register('puebloIndigena')}
+                                        />
+                                        {errors.puebloIndigena && (                                    
+                                            <ErrorForm>{errors.puebloIndigena?.message}</ErrorForm>
                                         )}
                                     </div>
-                                </div>
+                                </div>                                
 
                                 <div className='col-md-6'>
                                     <div className="form-group">
@@ -370,15 +353,14 @@ export default function Registro() {
 
                                 <div className='col-md-6'>
                                     <div className="form-group">
-                                        <label htmlFor="id-sintesis-estatus" className='fw-bold'>Sintésis de Atención:</label>
-                                        <textarea 
-                                            id="id-sintesis-estatus" className={`form-control input-solid ${errors.sintEstatus ? 'is-invalid' : ''}`} 
-                                            {...register('sintEstatus')}
-                                            rows={3}
+                                        <label htmlFor="id-sintesis-estatus" className='fw-bold'>Observaciones:</label>
+                                        <ReactQuill 
+                                            theme="snow" 
+                                            modules={config.modules}
+                                            formats={config.formats}
+                                            value={observaciones} 
+                                            onChange={setObservaciones}
                                         />
-                                        {errors.sintEstatus && (                                    
-                                            <ErrorForm>{errors.sintEstatus?.message}</ErrorForm>
-                                        )}
                                     </div>
                                 </div>                                
 
