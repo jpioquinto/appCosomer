@@ -17,6 +17,12 @@ export const addClase = (clases:string[], clase:string): string => {
     return clases.join(' ');
 }
 
+export const removeDiv = (clase:string = "modal-backdrop fade show") => {
+    for(let i=0; i < document.getElementsByClassName(clase).length; i++) {
+        document.getElementsByClassName(clase)[i].remove()
+    }
+}
+
 export const tienePermiso = (acciones: Acciones, permisoId:Accion['id']) => {
     if (!acciones) {
         acciones = []

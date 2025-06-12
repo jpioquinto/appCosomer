@@ -39,17 +39,11 @@ class ConflictsExport implements FromView, WithProperties, WithColumnWidths, Wit
     }
 
     public function sizeColumns($start = 'A', $itera = 1, $pad = 'A')
-    {
+    {        
         $columns = [];
         foreach ($this->getStages() as $stage) {
-            foreach ($stage['parametros'] as $param) {
-                $columns[str_pad($start, $itera, $pad, STR_PAD_LEFT )] = 20;
-                if ($start === 'Z') {
-                    $start = 'A'; $itera++;                                   
-                }
-                $start++;
-            }
-        }
+            $columns = array_merge($columns, $this->initColumns($stage['parametros'], $start, $itera, $pad)); 
+        }   
 
         return $columns;
     }
@@ -62,7 +56,7 @@ class ConflictsExport implements FromView, WithProperties, WithColumnWidths, Wit
     }
 
     public function columnWidths(): array
-    {
+    {#print_r($this->sizeColumns('M'));exit;
         return array_merge($this->defaultColumns(), $this->sizeColumns('M'));
     }
 
@@ -99,7 +93,23 @@ class ConflictsExport implements FromView, WithProperties, WithColumnWidths, Wit
             13=>['stage'=>'#600f2f', 'param'=>'#9a2045'],
             14=>['stage'=>'#042d27', 'param'=>'#145b4d'],
             15=>['stage'=>'#a4802c', 'param'=>'#e6d293'],
-            16=>['stage'=>'#0d0d0d', 'param'=>'#808080'],           
+            16=>['stage'=>'#0d0d0d', 'param'=>'#808080'],
+            17=>['stage'=>'#600f2f', 'param'=>'#9a2045'],
+            18=>['stage'=>'#042d27', 'param'=>'#145b4d'],
+            19=>['stage'=>'#a4802c', 'param'=>'#e6d293'],
+            20=>['stage'=>'#0d0d0d', 'param'=>'#808080'], 
+            21=>['stage'=>'#600f2f', 'param'=>'#9a2045'],
+            22=>['stage'=>'#042d27', 'param'=>'#145b4d'],
+            23=>['stage'=>'#a4802c', 'param'=>'#e6d293'],
+            24=>['stage'=>'#0d0d0d', 'param'=>'#808080'],          
+            25=>['stage'=>'#600f2f', 'param'=>'#9a2045'],
+            26=>['stage'=>'#042d27', 'param'=>'#145b4d'],
+            27=>['stage'=>'#a4802c', 'param'=>'#e6d293'],
+            28=>['stage'=>'#0d0d0d', 'param'=>'#808080'],
+            29=>['stage'=>'#600f2f', 'param'=>'#9a2045'],
+            30=>['stage'=>'#042d27', 'param'=>'#145b4d'],
+            31=>['stage'=>'#a4802c', 'param'=>'#e6d293'],
+            32=>['stage'=>'#0d0d0d', 'param'=>'#808080'],
         ];
     }
 
@@ -141,6 +151,13 @@ class ConflictsExport implements FromView, WithProperties, WithColumnWidths, Wit
 
     public function view(): View
     {#print_r($this->agregarCapturas(QueryBuilder::listarConflictos($this->getParams())));exit;
+
+        /*foreach ($this->agregarCapturas(QueryBuilder::listarConflictos($this->getParams())) as $conflict) {
+            foreach ($conflict->parametros as $param) {
+                $param->captura ? $param->captura = json_decode($param->captura) : null;  
+                isset($param->captura->value) ? print_r($param->captura->value) : null;
+            }
+        }exit;*/
         return view('exports.conflicts', [
             'conflicts' => $this->agregarCapturas(QueryBuilder::listarConflictos($this->getParams())),
             'background'=>$this->background(),
@@ -174,5 +191,29 @@ class ConflictsExport implements FromView, WithProperties, WithColumnWidths, Wit
         }
         
         return $registros;
+    }
+
+    protected function initColumns($params, &$start, &$itera, &$pad)
+    {
+        $columns = [];
+        foreach ($params as $param) {
+            $columns[str_pad($start, $itera, $pad, STR_PAD_LEFT )] = 20;
+            if ($start === 'Z') {
+                $start = 'A'; 
+                if ($pad === 'Z') {
+                    $pad = 'A'; $itera++;
+                    continue;
+                } 
+                if ($itera === 1) {
+                    $itera++;
+                    continue;
+                }
+                $pad++;
+                continue;                                
+            } 
+            $start++;                
+        }
+
+        return $columns;
     }
 }

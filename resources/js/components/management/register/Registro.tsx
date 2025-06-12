@@ -9,7 +9,6 @@ import 'react-quill-new/dist/quill.snow.css';
 import { saveConflicto } from '../../../services/ConflictoService';
 import type { DraftFormConflicto } from '../../../types/form';
 import { useConflicto } from '../../../hooks/useConflicto';
-import { DraftRegistro } from '../../../types/conflicto';
 import { notificacion, isInteger} from '../../../utils';
 import { useEdoStore } from '../../../store/edoStore';
 import ErrorForm from '../../partial/ErrorForm';
@@ -40,7 +39,7 @@ export default function Registro() {
         setMunpioId(e.value)
     }
 
-    const registerConflicto:SubmitHandler<DraftFormConflicto>  = async (data) => {
+    const registerConflicto:SubmitHandler<DraftFormConflicto>  = async (data) => {        
         if (!isInteger(munpioId)) {
             notificacion("Seleccione el municipio ó alcaldía.", 'error');
             return;
@@ -54,9 +53,8 @@ export default function Registro() {
         try {
             data.munpioId = munpioId;
             data.problematica = problematica;
-            problematica.trim() !== '' ? data.observaciones = observaciones : undefined;
-            //console.log(data)
-
+            (observaciones.trim() !== '' && observaciones.trim() !== '<p><br></p>') ? data.observaciones = observaciones : undefined;
+            
             const result = await saveConflicto(data);
             
             if (result?.solicitud) {

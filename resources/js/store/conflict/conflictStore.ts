@@ -13,9 +13,14 @@ type ConflictState = {
     etapas:Etapas,
     etapa:Etapa,
     captura:object,
+    removeCapture:Parametro['capturaId'][],
     parametro:Parametro,
     resetCaptura:($captura:object) => void,
     setCaptura:($captura:object) => void,
+    getCaptura:() => object,
+    resetRemoveCapture:($capture:Parametro['capturaId'][]) => void,
+    setRemoveCapture:(capturaId:Parametro['capturaId']) => void,
+    getRemoveCapture:() => Parametro['capturaId'][],
     setEstatus:(estatus:Option) => void,
     getEstatus:() => Option,
     updateEtapa:(etapa: Etapa) => void,
@@ -49,8 +54,10 @@ export const useConflictStore = create<ConflictState>((set, get) => ({
     etapas:[],
     etapa:{} as Etapa,
     captura: {},
+    removeCapture:[],
     setParametro:(parametro:Parametro) => set({parametro}),
     resetCaptura:(captura) => set({captura}),
+    resetRemoveCapture:(removeCapture) => set({removeCapture}),
     setEstatus:(estatus) => set({estatus}),
     getEstatus:() => get().estatus,
     setCurrentEtapa:(etapa) => set({etapa}),
@@ -60,6 +67,12 @@ export const useConflictStore = create<ConflictState>((set, get) => ({
         const captura = {...get().captura, ...$captura}
         set({captura})
     },
+    setRemoveCapture:(capturaId) => {
+        const removeCapture = [...get().removeCapture, capturaId]
+        set({removeCapture})
+    },
+    getCaptura:() => get().captura,
+    getRemoveCapture:() => get().removeCapture,
     listConflicts: async (data) => {
         const conflictos = await listadoConflictos(data)
         set({
@@ -171,23 +184,24 @@ export const useConflictStore = create<ConflictState>((set, get) => ({
         const captura = {...get().captura, newCaptura}
         set({captura})
     },
-    updateEvidenceCapture:(paramId, $path) => {
+    updateEvidenceCapture:(paramId, $path) => {     
         const etapas = get().etapas.map(etapa => {            
             etapa.capturas?.map(captura => {
                 if (captura.id !== paramId) {
-                    return true
+                    return captura
                 }
-                captura?.captura?.docs?.push($path)  //here              
+                
+                let docs = captura.captura?.docs 
+                ? [...captura.captura.docs.filter(path => path!==$path), $path] : [$path]
+                captura.captura ? captura.captura = {...captura.captura, docs} : undefined
+                
+                get().setCaptura({[paramId]:captura.captura} as object)
+
                 return captura
             })            
             return etapa
         })
 
-        const captura = get().captura
-        !captura[paramId].hasOwnProperty('docs') ? captura[paramId]['docs'] = [] : undefined
-        captura[paramId].docs = [...captura[paramId].docs.filter(path => path!==$path), $path]
-
-        set({captura})
         set({etapas})
     }
 }))

@@ -49,16 +49,11 @@ class ConflictoStore extends ValidaConflicto
     {
         $campos = [
             'municipio_id'=>$data['munpioId'],
-            'promovente'=>$data['promovente'],
-            'contraparte'=>$data['contraparte'],
+            'promovente'=>$data['promovente'],            
             'vertiente_id'=>$data['vertienteId'],
             'ha'=>$data['ha'],
             'area'=>$data['area'],
-            'ca'=>$data['ca'],
-            #'sup_conflicto'=>sprintf("%s-%s-%s", $data['ha'], $data['area'], $data['ca']),
-            #'sup_atendida'=>sprintf("%s-%s-%s", $data['haa'], $data['areaa'], $data['caa']),
-            'reg_soc_id'=>$data['regSocialId'],
-            'observaciones'=>$data['observaciones'],
+            'ca'=>$data['ca'],            
             'problematica'=>$data['problematica'],
         ];
 
@@ -67,14 +62,17 @@ class ConflictoStore extends ValidaConflicto
         isset($data['puebloIndigena'])   ? $campos['pueblo_indigena'] = $data['puebloIndigena']   : null;
         isset($data['observaciones'])    ? $campos['observaciones'] = $data['observaciones']      : null;
         isset($data['nombreRegSoc'])     ? $campos['nombre_reg_soc'] = $data['nombreRegSoc']      : null;
+        isset($data['contraparte'])      ? $campos['contraparte'] = $data['contraparte']          : null;
         isset($data['anioFiscal'])       ? $campos['anio_fiscal'] = $data['anioFiscal']           : null;
+        isset($data['regSocialId'])      ? $campos['reg_soc_id'] = $data['regSocialId']           : null;
         isset($data['asunto'])           ? $campos['asunto'] = $data['asunto'] : null;
         isset($data['predio'])           ? $campos['predio'] = $data['predio'] : null;
         isset($data['fecha'])            ? $campos['fecha'] = $data['fecha']   : null;
        
-        $id === -1 ? $campos['folio'] = $this->generaFolio() : null;
+        $id === -1 ? $campos['folio'] = $this->generaFolio()    : null;
         $id === -1 ? $campos['estatus_id'] = $data['estatusId'] : null;
         $id === -1 ? $campos['creado_por'] = $data['user'] : null;
+        $id === -1 ? $campos['ur_id']      = $data['ur']   : null;
 
         if ($id > 0) {
             $campos['actualizado_el']  = "now()";

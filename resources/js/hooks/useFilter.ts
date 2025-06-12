@@ -1,13 +1,12 @@
 import {useEffect, useState, MouseEvent, ChangeEvent, KeyboardEventHandler}  from 'react'
 import {MultiValue, ActionMeta} from 'react-select'
 
-import { useEdoStore } from "../store/edoStore"
-import { useConflicto } from "./useConflicto"
 import type { Option as TypeOption, OptionParent} from "../types"
 import { useReportStore } from '../store/conflict/reportStore'
 import { useFilterStore } from '../store/conflict/filterStore'
 import { FilterReport } from '../types/conflicto'
-import { makeHash } from '../utils'
+import { useEdoStore } from "../store/edoStore"
+import { useConflicto } from "./useConflicto"
 
 interface OptionAnio {
     readonly label: string,
@@ -194,7 +193,14 @@ export function useFilter() {
     useEffect(() => {
         setOptionsEdos(generateOptionEdos())
         setOptionsStatus(generateOptionStatus())    
-        setOptionsVertientes(generateOptionVertientes())            
+        setOptionsVertientes(generateOptionVertientes())    
+        
+        setQuery('')  
+        setParams({})
+        setEntySelected([])  
+        setSlopeSelected([])   
+        setStatusSelected([]) 
+        setOptionsMunpiosSelected([])
     }, [])
 
     useEffect(() => {

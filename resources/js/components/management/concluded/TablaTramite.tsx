@@ -11,9 +11,9 @@ import { Registros, Registro } from '../../../types/conflicto'
 import languaje from '../../../data/Spanish_Mexico.json'
 import { useModuloStore } from '../../../store/modulo'
 import type { Acciones } from '../../../types'
+import { removeDiv } from '../../../utils'
 import * as bootstrap from 'bootstrap'
 import BtnAccion from './BtnAccion'
-
 
 
 DataTable.use(DT);
@@ -53,6 +53,10 @@ export default function TablaTramite({conflictos, seguimiento}: ConflictsProps) 
         return () => tooltipList.map(t => t.dispose())
     }
 
+    const removeToolips = () => {        
+        removeDiv("tooltip bs-tooltip-auto fade show")
+    }
+
     const initTooltips = (table, intervalId:number) => {     
         if (!table) {
             return
@@ -62,7 +66,7 @@ export default function TablaTramite({conflictos, seguimiento}: ConflictsProps) 
     }
 
     const initEvent = (e: Event) => {        
-        const intervalId = setInterval(() => initTooltips(table.current ? table.current.dt() : undefined, intervalId), 750);
+        const intervalId = setInterval(() => initTooltips(table.current ? table.current.dt() : undefined, intervalId), 1500);
     }
 
   return (
@@ -71,14 +75,15 @@ export default function TablaTramite({conflictos, seguimiento}: ConflictsProps) 
         ref={table}
         columns={columns}
         className="display"
-        onInit={initEvent}
-        onDraw={(e: Event) =>setTooltips()}
+        onInit={initEvent}       
+        onDraw={initEvent}
+        onDestroy={(e: Event) => removeToolips()}
         options={{
             pageLength: 100,
             language: languaje,
             responsive: {
                 details: {
-                    renderer:   DataTablesCore.Responsive.renderer.listHiddenNodes()
+                    renderer: DataTablesCore.Responsive.renderer.listHiddenNodes()
                 }
             },
             select: true,

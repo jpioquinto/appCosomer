@@ -34,6 +34,11 @@ class CapturaStore extends ValidaCaptura
         return $this->captura['id'] ?: 0;
     }
 
+    public function deletes(array $captureId)
+    {
+        return Captura::whereIn('id', $captureId)->update(['estatus'=>0, 'eliminado_el'=>'now()', 'eliminado_por'=>auth()->user()->id]);
+    }
+
     protected function save(array $data, int $id = -1)
     {
         $campos = [

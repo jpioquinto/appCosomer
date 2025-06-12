@@ -86,6 +86,7 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
         try {
             data.munpioId = munpioId.toString();
             data.problematica = problematica;
+            (observaciones.trim() !== '' && observaciones.trim() !== '<p><br></p>') ? data.observaciones = observaciones : undefined;
             
             const result = await updateConflictoService({...data, id: conflicto.id})
             
@@ -130,6 +131,8 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
         }
 
         setValue('fecha', conflicto.fecha!)
+        setValue('asunto', conflicto.asunto!)
+        setValue('predio', conflicto.predio!)
         setValue('edoId', conflicto?.edoId ? conflicto.edoId.toString() : '')
         setValue('munpioId', conflicto?.munpioId ? conflicto.munpioId.toString() : '')
         setValue('vertienteId', conflicto?.vertienteId ? conflicto.vertienteId.toString() : '')
@@ -137,8 +140,11 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
         setValue('contraparte', conflicto.contraparte!)
         setValue('numBeneficiario', conflicto.numBeneficiario!)
         setValue('regSocialId', conflicto?.regSocialId ? conflicto.regSocialId.toString() : '')
-        setValue('estatusId', conflicto?.estatusId ? conflicto.estatusId.toString() : '')
-        setValue('orgInvolucradaId', conflicto?.orgInvolucradaId ? conflicto.orgInvolucradaId.toString() : '')        
+        setValue('nombreRegSoc', conflicto.nombreRegSoc!)
+        //setValue('estatusId', conflicto?.estatusId ? conflicto.estatusId.toString() : '')
+        setValue('anioFiscal', +conflicto?.anioFiscal!)
+        setValue('orgInvolucradaId', conflicto?.orgInvolucradaId ? conflicto.orgInvolucradaId.toString() : '')   
+        setValue('puebloIndigena', conflicto.puebloIndigena!)     
         setValue('problematica', conflicto.problematica)
         setProblematica(conflicto.problematica!)
         setObservaciones(conflicto.observaciones!)
@@ -314,19 +320,7 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
                                 </div>
                             </div>
 
-                            <div className='col-md-2'>
-                                <div className="form-group">
-                                    <label htmlFor="id-num-beneficiarios" className='fw-bold'>Número de Beneficiarios:</label>
-                                    <input id="id-num-beneficiarios" type="number" className={`form-control input-solid ${errors.numBeneficiario ? 'is-invalid' : ''}`} 
-                                        {...register('numBeneficiario')}
-                                    />
-                                    {errors.numBeneficiario && (                                    
-                                        <ErrorForm>{errors.numBeneficiario?.message}</ErrorForm>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className='col-md-4'>
+                            <div className='col-md-6'>
                                 <div className="form-group">
                                     <label htmlFor="id-regimen" className='fw-bold'>Régimen Social:</label>
                                     <select id="id-regimen"  className={`form-control input-solid ${errors.regSocialId ? 'is-invalid' : ''}`} 
@@ -355,7 +349,19 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
                                 </div>
                             </div>
 
-                            <div className='col-md-2'>
+                            <div className='col-md-3'>
+                                <div className="form-group">
+                                    <label htmlFor="id-num-beneficiarios" className='fw-bold'>Número de Beneficiarios:</label>
+                                    <input id="id-num-beneficiarios" type="number" className={`form-control input-solid ${errors.numBeneficiario ? 'is-invalid' : ''}`} 
+                                        {...register('numBeneficiario')}
+                                    />
+                                    {errors.numBeneficiario && (                                    
+                                        <ErrorForm>{errors.numBeneficiario?.message}</ErrorForm>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className='col-md-3'>
                                 <div className="form-group">
                                     <label htmlFor="id-efiscal" className='fw-bold'>Ejercicio Fiscal:</label>
                                     <input id="id-efiscal" type="number" className={`form-control input-solid ${errors.anioFiscal ? 'is-invalid' : ''}`} 
@@ -363,23 +369,6 @@ export default function ModalRegistro({propModal, close}: Modaltype) {
                                     />
                                     {errors.anioFiscal && (                                    
                                         <ErrorForm>{errors.anioFiscal?.message}</ErrorForm>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className='col-md-4'>
-                                <div className="form-group">
-                                    <label htmlFor="id-estatus" className='fw-bold'>Estatus:</label>
-                                    <select id="id-estatus"  className={`form-control input-solid ${errors.estatusId ? 'is-invalid' : ''}`} 
-                                        {...register('estatusId')}
-                                    >
-                                        <option value="">Seleccione...</option>
-                                        {catalog.getEstatus().map(estatus => (
-                                            <option value={estatus.id} key={estatus.id}>{estatus.descripcion}</option>
-                                        ))}
-                                    </select>
-                                    {errors.estatusId && (                                    
-                                        <ErrorForm>{errors.estatusId?.message}</ErrorForm>
                                     )}
                                 </div>
                             </div>

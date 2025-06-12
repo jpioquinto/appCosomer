@@ -11,6 +11,7 @@ import { useCatalogStore } from '../../../store/catalogStore'
 import languaje from '../../../data/Spanish_Mexico.json'
 import { useModuloStore } from '../../../store/modulo'
 import type { Acciones } from '../../../types'
+import { removeDiv } from '../../../utils'
 import * as bootstrap from 'bootstrap'
 import BtnAccion from './BtnAccion'
 
@@ -45,7 +46,7 @@ export default function TablaAsuntos({conflictos, seguimiento}: ConflictsProps) 
         { data: 'id' },
       ];
 
-    const generarAcciones = (registro:Registro) => {            
+    const generarAcciones = (registro:Registro) => {       
         return <BtnAccion acciones={modulo.acciones as Acciones} conflicto={registro} key={registro.id} seguimiento={seguimiento}/>     
     }
 
@@ -53,6 +54,10 @@ export default function TablaAsuntos({conflictos, seguimiento}: ConflictsProps) 
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
         return () => tooltipList.map(t => t.dispose())
+    }
+
+    const removeToolips = () => {        
+        removeDiv("tooltip bs-tooltip-auto fade show")
     }
 
     const initTooltips = (table, intervalId:number) => {     
@@ -63,8 +68,8 @@ export default function TablaAsuntos({conflictos, seguimiento}: ConflictsProps) 
         clearInterval(intervalId)                
     }
 
-    const initEvent = (e: Event) => {        
-        const intervalId = setInterval(() => initTooltips(table.current ? table.current.dt() : undefined, intervalId), 750);
+    const initEvent = (e: Event) => { 
+        const intervalId = setInterval(() => initTooltips(table.current ? table.current.dt() : undefined, intervalId), 1500);
     }
 
     useEffect(() => {
@@ -80,9 +85,10 @@ export default function TablaAsuntos({conflictos, seguimiento}: ConflictsProps) 
         data={conflictos}
         ref={table}
         columns={columns}
-        className="display"
-        onInit={initEvent}
-        onDraw={(e: Event) =>setTooltips()}
+        className="display" 
+        onInit={initEvent}       
+        onDraw={initEvent}
+        onDestroy={(e: Event) => removeToolips()}
         options={{
             pageLength: 100,
             language: languaje,

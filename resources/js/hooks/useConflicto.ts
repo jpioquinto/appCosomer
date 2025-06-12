@@ -11,21 +11,17 @@ const schema = z.object({
     anioFiscal:z.optional(z.coerce.number().min(0, {message:'Ingrese una dato numérico.'})),
     puebloIndigena:z.optional(z.string()).nullable(), 
     promovente:z.string().min(6, {message: 'Ingrese el Promovente.'}),    
-    contraparte:z.string().min(6, {message: 'Ingrese la Contraparte.'}),    
+    contraparte:z.optional(z.string()).nullable(),    
     vertienteId:z.string().min(1, {message: 'Seleccione el Tipo de Conflicto.'}),
     numBeneficiario:z.coerce.number().min(0, {message:'Ingrese una dato numérico mayor o igual a 0'}),
-    regSocialId:z.string().min(1, {message: 'Seleccione el Régimen Social.'}),
-    estatusId:z.string().min(1, {message: 'Seleccione el Estatus.'}),
-    sintEstatus:z.optional(z.string()).nullable(),
+    regSocialId:z.optional(z.string()).nullable(),
+    estatusId:z.optional(z.string().min(1, {message: 'Seleccione el Estatus.'})),
+    observaciones:z.optional(z.string()).nullable(),
     orgInvolucradaId:z.optional(z.string()).nullable(),
     problematica:z.optional(z.string()).nullable(),
     ha:z.coerce.number().min(0, {message:'Ingrese una dato numérico mayor o igual a 0'}),
     area:z.coerce.number().min(0, {message:'Ingrese una dato numérico mayor o igual a 0'}),
     ca:z.coerce.number({required_error: 'Se requiere una cantidad numérica positiva.', invalid_type_error: 'Ingrese una cantidad numérica positiva.'})
-        .min(0, {message:'Ingrese una dato numérico mayor o igual a 0'}),
-    haa:z.coerce.number().min(0, {message:'Ingrese una dato numérico mayor o igual a 0'}),
-    areaa:z.coerce.number().min(0, {message:'Ingrese una dato numérico mayor o igual a 0'}),
-    caa:z.coerce.number({required_error: 'Se requiere una cantidad numérica positiva.', invalid_type_error: 'Ingrese una cantidad numérica positiva.'})
         .min(0, {message:'Ingrese una dato numérico mayor o igual a 0'})
 })
 

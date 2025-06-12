@@ -17,7 +17,9 @@ const MySwal = withReactContent(Swal)
 export function useSeguimiento() {
     const {upload, resetUpload, setLoadTotal, setProcessed, setCancel, setTotal, getProcessed, getTotal, getCancel, getLoadTotal} = useFileStore();
 
-    const {captura, conflicto, updateEvidenceCapture, resetCaptura, deleteCapturaEtapa, initCapture} = useConflictStore();
+    const {
+        captura, conflicto, removeCapture, getCaptura, updateEvidenceCapture, resetRemoveCapture, setRemoveCapture, getRemoveCapture, 
+        resetCaptura, deleteCapturaEtapa, initCapture} = useConflictStore();
 
     const {setIntervalId, getIntervalId} = useConfigStore();
 
@@ -33,6 +35,7 @@ export function useSeguimiento() {
 
     const reset = () => {
         resetUpload({}); resetCaptura({}); setLoadTotal(0); setCancel(0); setTotal(0);
+        resetRemoveCapture([])
     }
 
     const uploadFiles = (parametroId: Parametro['id'], files: File[]) => {
@@ -54,7 +57,7 @@ export function useSeguimiento() {
                 uploadFiles(+parametroId, upload[parametroId])
             }
 
-            const iTimer = setInterval(()=> {console.log(getProcessed())
+            const iTimer = setInterval(()=> {//console.log(getProcessed())
                 if (getProcessed() < (getTotal() + getCancel())) {
                     return;
                 }
@@ -64,16 +67,18 @@ export function useSeguimiento() {
                 }
 
                 clearInterval(getIntervalId());
-                resolve(null);
+                setTimeout(() => resolve(null), 1000)
             },500)
 
             setIntervalId(iTimer);            
         })
     }
 
-    const save = async () => {        
+    const save = async () => {      //console.log(getCaptura())  
         try {
-            const result = await saveStage({conflictoId: conflicto.id, capturas: JSON.stringify(captura)} as DraftCaptura)
+            let params = {conflictoId: conflicto.id, captures: JSON.stringify(getCaptura())}
+            getRemoveCapture().length > 0 ? params['removes'] = getRemoveCapture() : undefined
+            const result = await saveStage(params as DraftCaptura)
             if (result?.solicitud) {  
                 reset();          
                 notificacion(result.message, 'success');
@@ -87,18 +92,20 @@ export function useSeguimiento() {
 
     const clickBtnGuardar = (e:MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        console.log(upload)
-        console.log(captura)
+        /*console.log(upload)
+        console.log(captura)*/
         setProcessed(0);
         Object.keys(upload).length > 0 ? processUpload().then(save) : save()
     }
 
     const eliminarCaptura = (parametro:Parametro) => {
         deleteCapturaEtapa(parametro.etapaId, parametro.id)
+        setRemoveCapture(parametro.capturaId)
         cerrarModal()
     }
 
     return {
+        data:{captura, upload, removeCapture},
         clickBtnGuardar,
         eliminarCaptura,
         setKeyModal,

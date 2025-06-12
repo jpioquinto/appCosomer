@@ -1,4 +1,5 @@
-import React, {lazy, useEffect, useMemo} from 'react'
+import React, {lazy, useEffect, useMemo, MouseEvent} from 'react'
+import {useNavigate} from 'react-router-dom'
 
 import type { Etapa as TypeEtapa, Parametro } from '../../../types/conflicto'
 import { useConflictStore } from '../../../store/conflict/conflictStore'
@@ -12,13 +13,15 @@ import Afirmacion from './partial/Afirmacion'
 import Etapa from './partial/Etapa'
 
 export default function Seguimiento() {
-    const {conflicto, etapas, captura, listStages, updateEtapa, updateCapturaEtapa, initCapture} = useConflictStore()
+    const {conflicto, etapas, listStages, updateEtapa, initCapture} = useConflictStore()
 
-    const {clickBtnGuardar, MySwal, reset, loadCatalog} = useSeguimiento()
+    const {clickBtnGuardar, MySwal, data, reset, loadCatalog} = useSeguimiento()
 
     const modulo = useModuloStore(state => state.modulo)
 
     const {modal, closeModal} = useModal()
+
+    const navigate = useNavigate()
 
     const loadComponent = (component:string): React.ComponentType<any> => {
         return lazy(() => import(`./partial/${component}.tsx`))
@@ -42,8 +45,8 @@ export default function Seguimiento() {
 
     const accionInput = (parametro:Parametro, etapaId:TypeEtapa['id']) => {
         if (!parametro?.captura) {            
-            initCapture(etapaId, parametro.id);
-            return;
+            initCapture(etapaId, parametro.id); 
+            return           
         }
 
         const CaptureComponent = loadComponent(parametro.accion==='Superficie' ? 'InputSuperficie' : 'InfoCaptura')
@@ -59,12 +62,12 @@ export default function Seguimiento() {
         });
     }
 
-    const accionSelect = (parametro:Parametro, etapaId:TypeEtapa['id']) => {
+    const accionInputSelect = (parametro:Parametro, etapaId:TypeEtapa['id']) => {
         if (!parametro?.captura) {            
             initCapture(etapaId, parametro.id);            
         }
 
-        const CaptureComponent = loadComponent('SelectCapture')
+        const CaptureComponent = loadComponent(parametro.accion==='Superficie' ? 'InputSuperficie' : 'SelectCapture')
 
         MySwal.fire({
             title:"Información capturada",
@@ -82,14 +85,19 @@ export default function Seguimiento() {
             case 'Afirmacion':                                 
                 accionAfirmacion(parametro, etapaId)              
             break;
-            case 'CantidadEntera': case 'CantidadNumerica': case 'Fecha': case 'Moneda': case 'Superficie':
+            case 'CantidadEntera': case 'CantidadNumerica': case 'Fecha': case 'Moneda':
                 accionInput(parametro, etapaId)
             break;
-            case 'SelectCapture':
-                accionSelect(parametro, etapaId)
+            case 'SelectCapture': case 'Superficie':
+                accionInputSelect(parametro, etapaId)
             break;
             default:break;
         }
+    }
+
+    const clickGoBack = (e: MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault()
+        navigate(-1)
     }
 
     const clickElement = (etapa:TypeEtapa) => {
@@ -102,7 +110,7 @@ export default function Seguimiento() {
         accionParametro(parametro, etapaId)
     }
 
-    const isEmptyCapture = useMemo(() => Object.keys(captura).length == 0, [captura])
+    const isEmptyCapture = useMemo(() => Object.keys(data.captura).length == 0 && Object.keys(data.upload).length == 0 && Object.keys(data.removeCapture).length == 0, [data.captura, data.upload, data.removeCapture])
 
     useEffect(() => {
         reset()
@@ -124,7 +132,7 @@ export default function Seguimiento() {
                         <h6 className="text-white op-7 mb-2">{conflicto.problematica}</h6>
                     </div>
                     <div className="ms-md-auto ps-3 py-2 py-md-0">
-                        <a href="#" className="btn btn-secondary btn-round">Salir</a>
+                        <a href="#" className="btn btn-secondary btn-round" onClick={clickGoBack}>Regresar</a>
                     </div>
                 </div>
             </div>

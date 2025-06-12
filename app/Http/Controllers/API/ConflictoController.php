@@ -27,7 +27,7 @@ class ConflictoController extends Controller
     public function save(Request $request)
     {        
         try {            
-            $conflicto = new ConflictoStore( array_merge($request->all(), ['user'=>auth()->user()->id]) ); #var_dump($conflicto->getFirstError());exit;
+            $conflicto = new ConflictoStore( array_merge($request->all(), ['user'=>auth()->user()->id, 'ur'=>auth()->user()->ur_id]) ); 
             if ($conflicto->existsError()) {
                 throw new Exception($conflicto->getFirstError());
             }              

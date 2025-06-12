@@ -33,7 +33,8 @@ export type TypeSelectedFile = {
 
 export type DraftCaptura = {
     conflictoId:Registro['id'],
-    capturas:string
+    captures:string
+    removes?:Parametro['capturaId'][],
 }
 
 export type FilterReport = {

@@ -11,7 +11,7 @@
         </tr>        
         <tr>
             <th height="50" style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:200;vertical-align:middle;">Folio</th>
-            <th style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;">Rubro</th>
+            <th style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;">Tipo Asunto</th>
             <th style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;">Ejercicio Fiscal</th>
             <th style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;">Asunto</th>
             <th style="text-align: center;background:#000000;color:#FFFFFF;font-size:9pt;font-weight:100;vertical-align:middle;">Entidad</th>
@@ -52,8 +52,8 @@
                         $param->captura ? $param->captura = json_decode($param->captura) : null;
                     @endphp
                     <td>
-                        @if ($param->captura)
-                            {{$param->captura->type === 'boolean' ? 'SI' : $param->captura->value}}
+                        @if (isset($param->captura->value))
+                            {{$param->captura->type !== 'array' ? $param->captura->value : implode(' ', $param->captura->value)}}
                         @endif
                     </td>
                 @endforeach

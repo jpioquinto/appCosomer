@@ -48,8 +48,9 @@ export const useFileStore = create<FileState>((set, get) =>({
     getCancel:() => get().cancel,
     getTotal:() => get().total,
     setUpload:(parametroId, file) => {
-        const upload = get().upload
-        upload[parametroId] = file
+        let upload = get().upload        
+        upload = {...upload, [parametroId]:file}
+        
         set({upload})
     }   
 }))
