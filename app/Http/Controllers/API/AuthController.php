@@ -18,10 +18,10 @@ class AuthController extends Controller
         ]);
 
         if(!Auth::attempt($loginData)) {
-            return response(['message'=>'Credenciales invalidas'],401);
+            return response(['solicitud'=>false,'message'=>'Credenciales invalidas'],401);
         }
 
-        $resultToken = auth()->user()->createToken('authToken');#dd($resultToken->plainTextToken);exit;
+        $resultToken = auth()->user()->createToken('authToken');
 
         if ($request->rememberme) {
            $resultToken->accessToken->expires_at = Carbon::now()->addWeeks(1);
@@ -47,7 +47,7 @@ class AuthController extends Controller
                         'foto'=>Storage::disk('avatars')->exists(auth()->user()->contacto->foto ?? 'no_existe')
                                 ? Storage::disk('avatars')->url(auth()->user()->contacto->foto) . '?hash=' . mt_rand()
                                 : Storage::disk('avatars')->url('default.png')
-                    ],
+                    ],                    
                     'token' => $resultToken->plainTextToken,
                     'token_type'   => 'Bearer',
                     'expires_at'   => Carbon::parse($resultToken->accessToken->expires_at)->toDateTimeString(),                    

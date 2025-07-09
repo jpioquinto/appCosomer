@@ -30,11 +30,11 @@ class UploadEvidence extends ValidaUploadEvidence
 
         $this->setRequest($request);
 
-        $this->setConflict(Conflicto::where('id', $request->conflictoId)->first());
+        $this->setConflict(Conflicto::with(['ur'])->where('id', $request->conflictoId)->first());
 
         $this->setParam(Parametro::where('id', $request->parametroId)->first());
 
-        $this->setDirectory(sprintf("docs/%s/", auth()->user()->ur->carpeta));
+        $this->setDirectory(sprintf("docs/%s/", $this->conflict->ur->carpeta ?? auth()->user()->ur->carpeta));
     }
 
     public function setRequest(Request $request)
@@ -102,7 +102,7 @@ class UploadEvidence extends ValidaUploadEvidence
             'solicitud'=>true, 
             'path'=>$this->getPath(), 
             'message'=>'Carga realizada correctamente.',
-            'url'=>Storage::disk('public')->url($this->getPath()) . '?hash=' . mt_rand()
+            'url'=>Storage::disk('s3')->url($this->getPath()) . '?hash=' . mt_rand()
         ];
     }
 
@@ -111,7 +111,7 @@ class UploadEvidence extends ValidaUploadEvidence
         $load = $this->request->file('archivo')->storePubliclyAs(
             $this->getDirectory(),
             $this->fileName(CadenaHelper::clearFileName($this->param->parametro)),
-            'public'
+            's3'
         );
 
         if ($load!==FALSE) {
@@ -123,11 +123,11 @@ class UploadEvidence extends ValidaUploadEvidence
 
     protected function fileName(string $name, $numFile = 2)
     {
-        if (count(Storage::disk('public')->files($this->getDirectory())) == 0) {
+        if (count(Storage::disk('s3')->files($this->getDirectory())) == 0) {
             return $name;
         }
 
-        if (Storage::disk('public')->exists($this->getDirectory() . "/{$name}")) {
+        if (Storage::disk('s3')->exists($this->getDirectory() . "/{$name}")) {
             return $this->fileName( trim( preg_replace("/(\d+)$/", "", $name) ) . ' ' . $numFile, ++$numFile);
         }
 

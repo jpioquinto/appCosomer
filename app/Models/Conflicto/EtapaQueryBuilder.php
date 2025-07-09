@@ -15,7 +15,7 @@ class EtapaQueryBuilder
                         ->where('i.estatus', '=', 1);
                     })
                 ->select(self::campos())
-                ->where('p.estatus', 1)
+                ->where('p.estatus', 1)                
                 ->orderBy('p.etapa_id', 'ASC')
                 ->orderBy('p.orden', 'ASC')->get();
     }

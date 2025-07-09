@@ -48,6 +48,7 @@ class CapturaStore extends ValidaCaptura
         ];
        
         $id === -1 ? $campos['creado_por'] = $data['user'] : null;
+        $id === -1 ? Captura::where([['id', '!=', 0], ['conflicto_id', '=', $data['conflictoId']], ['parametro_id', '=', $data['parametroId']]])->update(['estatus'=>0, 'eliminado_el'=>'now()', 'eliminado_por'=>auth()->user()->id]) : null;
 
         if ($id > 0) {
             $campos['actualizado_el']  = "now()";
