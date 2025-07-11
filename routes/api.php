@@ -36,6 +36,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/conflict/listado-conflictos', [\App\Http\Controllers\API\ConflictoController::class, 'getConflicts']); 
     Route::post('/conflict/delete-conflicto', [\App\Http\Controllers\API\ConflictoController::class, 'deleteConflicto']); 
     Route::post('/conflict/change-estatus', [\App\Http\Controllers\API\ConflictoController::class, 'changeStatus']); 
+    Route::post('/conflict/evidence', [\App\Http\Controllers\API\EvidenceController::class, 'getEvidence']);
     Route::post('/conflict/report/excel', [\App\Http\Controllers\API\ReporteController::class, 'download']); 
     Route::post('/conflict/upload-evidence', [\App\Http\Controllers\API\CapturaController::class, 'upload']); 
     Route::post('/conflict/save-stage', [\App\Http\Controllers\API\CapturaController::class, 'save']); 

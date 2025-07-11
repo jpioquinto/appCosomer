@@ -26,6 +26,9 @@ class AuthController extends Controller
         if ($request->rememberme) {
            $resultToken->accessToken->expires_at = Carbon::now()->addWeeks(1);
         }
+
+        $mimeType = Storage::disk('avatars')->mimeType(auth()->user()->contacto->foto ?? 'not-found.png');
+        $data = base64_encode(Storage::disk('avatars')->get(auth()->user()->contacto->foto ?? 'not-found.png'));
         #$resultToken->token->save();
 
         return response([
@@ -43,10 +46,11 @@ class AuthController extends Controller
                         'puestoId'=>auth()->user()->contacto->puesto_id,
                         'munpioId'=>auth()->user()->contacto->municipio_id,
                         'edoId'=>auth()->user()->contacto->municipio->estado_id,
-                        'correo'=>auth()->user()->mail,
-                        'foto'=>Storage::disk('avatars')->exists(auth()->user()->contacto->foto ?? 'no_existe')
-                                ? Storage::disk('avatars')->url(auth()->user()->contacto->foto) . '?hash=' . mt_rand()
-                                : Storage::disk('avatars')->url('default.png')
+                        'correo'=>auth()->user()->email,
+                        'foto'=>Storage::disk('avatars')->exists(auth()->user()->contacto->foto ?? 'not-found.png')
+                                ? "data:{$mimeType};base64,{$data}"
+                                : null,
+                        'mime'=>$mimeType
                     ],                    
                     'token' => $resultToken->plainTextToken,
                     'token_type'   => 'Bearer',

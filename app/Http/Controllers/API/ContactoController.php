@@ -36,19 +36,27 @@ class ContactoController extends Controller
             'foto.max' => 'La imagen sobre pasa el tamaño permitido de 500 KB.' 
         ]);
 
-        $foto = $request->file('foto')->storeAs('/', "avatar_".auth()->user()->nickname."_".base64_encode(auth()->user()->id), 'avatars');
+        $foto = $request->file('foto')->storePubliclyAs(
+            'images/user-avatars', 
+            "avatar_".auth()->user()->nickname."_".base64_encode(auth()->user()->id) . "." . $request->file('foto')->extension(), 
+            'avatars'
+        );
 
         if ($foto) {
-            auth()->user()->contacto->foto = $foto;# . '.' .  $request->file('foto')->extension();
+            auth()->user()->contacto->foto = $foto;
             auth()->user()->contacto->save();
         }
+
+        $mimeType = Storage::disk('avatars')->mimeType($foto);
+        $data = base64_encode(Storage::disk('avatars')->get($foto));
         
         return response([
             'solicitud'=>true,
-            'message'=>'Foto de perfil cargada correctamente.',            
+            'message'=>'Foto de perfil cargada correctamente.',                        
             'url'=>Storage::disk('avatars')->exists($foto) 
-                    ? Storage::disk('avatars')->url($foto) . '?hash=' . mt_rand()
-                    : Storage::disk('avatars')->url('default.png')
+                    ? "data:{$mimeType};base64,{$data}"
+                    : null,
+            'mime'=>$mimeType,
         ], 200);
     }
 

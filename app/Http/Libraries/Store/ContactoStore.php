@@ -23,7 +23,7 @@ class ContactoStore extends ValidaContacto
     protected function save(array $data)
     {
         if (isset($data['correo'])) {
-            auth()->user()->mail = $data['correo'];
+            auth()->user()->email = $data['correo'];
             auth()->user()->save();
         }
 

@@ -110,9 +110,15 @@ class UploadEvidence extends ValidaUploadEvidence
     {
         $load = $this->request->file('archivo')->storePubliclyAs(
             $this->getDirectory(),
-            $this->fileName(CadenaHelper::clearFileName($this->param->parametro)),
+            $this->fileName(CadenaHelper::clearFileName($this->param->parametro)) . "." .$this->request->file('archivo')->extension(),
             's3'
         );
+
+        /*$load = Storage::disk('s3')->putFileAs(
+            $this->getDirectory(),
+            $this->request->file('archivo'),
+            $this->fileName(CadenaHelper::clearFileName($this->param->parametro)) . "." .$this->request->file('archivo')->extension()
+        );*/
 
         if ($load!==FALSE) {
             $this->setPath($load);

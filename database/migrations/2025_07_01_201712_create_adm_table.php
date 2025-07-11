@@ -44,7 +44,7 @@ return new class extends Migration
 
         Schema::create('adm_estados', function (Blueprint $table) {
             $table->smallIncrements('id');            
-            $table->string('estado', 45);
+            $table->string('estado', 80);
             $table->string('escudo', 256);
             $table->string('estado_iso', 20);
             $table->string('abreviatura', 15);
@@ -59,14 +59,14 @@ return new class extends Migration
             $table->smallIncrements('id');            
             $table->string('nombre', 200);
             $table->string('controlador', 80)->nullable();
-            $table->string('icono', 30)->nullable();
-            $table->string('clase', 30)->nullable();
+            $table->string('icono', 45)->nullable();
+            $table->string('clase', 45)->nullable();
             $table->smallInteger('orden')->nullable();
             $table->smallInteger('nodo_padre')->default(0);
             $table->smallInteger('estatus')->default(1);
             $table->string('acciones', 180)->nullable();
             $table->string('descripcion', 256)->nullable();
-            $table->string('ruta', 30)->nullable();
+            $table->string('ruta', 70)->nullable();
             $table->smallInteger('grupo')->default(1);
         });
 

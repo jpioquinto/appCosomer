@@ -13,19 +13,19 @@ return new class extends Migration
     {
         Schema::create('adm_cat_puestos', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->string('puesto', 65);
+            $table->string('puesto', 180);
             $table->smallInteger('estatus')->default(1);
         });
 
         Schema::create('adm_cat_tipo_correos', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->string('tipo', 45);
+            $table->string('tipo', 50);
             $table->smallInteger('estatus')->default(1);
         });
 
         Schema::create('adm_cat_tipo_telefonos', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->string('tipo', 45);
+            $table->string('tipo', 50);
             $table->smallInteger('estatus')->default(1);
         });
     }

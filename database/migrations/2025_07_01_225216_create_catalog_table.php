@@ -41,11 +41,11 @@ return new class extends Migration
 
         Schema::create('cat_parametros_acciones', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->string('accion', 45);
+            $table->string('accion', 80);
             $table->text('descripcion')->nullable();                        
-            $table->string('tabla', 45)->nullable();                        
-            $table->string('metodo', 45)->nullable();                        
-            $table->string('clave', 25)->nullable();                        
+            $table->string('tabla', 80)->nullable();                        
+            $table->string('metodo', 80)->nullable();                        
+            $table->string('clave', 30)->nullable();                        
             $table->smallInteger('estatus')->default(1);          
         });
 

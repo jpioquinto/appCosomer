@@ -1,10 +1,3 @@
-<?php
-#use Illuminate\Support\Facades\Storage;
-#Storage::disk('public')->makeDirectory('docs/OR-CAMP');
-#Storage::disk('public')->deleteDirectory('Docs');
-
-?>
-@use('Illuminate\Support\Facades\Vite')
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -17,13 +10,6 @@
         <link href='https://framework-gb.cdn.gob.mx/favicon.ico' rel='shortcut icon'>
 
         <title>{{ config('app.name', 'Programa de Atención de Conflictos Agrarios') }}</title>
-
-        <!-- Fonts -->
-
-        @viteReactRefresh
-        @vite([           
-            'resources/js/app.js'            
-            ])
     </head>
     <body class="trendy-layout">
         <div id="app"></div>
